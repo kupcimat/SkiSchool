@@ -1,0 +1,82 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.prime.com.tr/ui">
+
+    <body>
+
+        <ui:composition template="./WEB-INF/skiSchoolTemplate.xhtml">
+            <ui:param name="pageTitle" value="#{msgs.createstudent_createStudent}"/>
+            <ui:define name="content">
+
+                <h:form>
+                    <p:panel id="panel" header="#{msgs.createstudent_createStudent}" footer="* #{msgs.global_required}" rendered="#{securityBean.inRoleAdministrator}">
+
+                        <p:panel>
+                            <h:panelGrid columns="3">
+                                <h:outputLabel value="#{msgs.createinstructor_firstName}" for="firstName"/>
+                                <h:inputText id="firstName" value="#{studentsBean.student.firstName}" title="FirstName" />
+                                <p:message for="firstName"/>
+
+                                <h:outputLabel value="#{msgs.createinstructor_lastName}*" for="lastName" />
+                                <h:inputText id="lastName" value="#{studentsBean.student.lastName}" title="LastName" />
+                                <p:message for="lastName"/>
+
+                                <h:outputLabel value="#{msgs.createstudent_age}" for="age" />
+                                <h:inputText id="age" value="#{studentsBean.student.age}" title="Age" />
+                                <p:message for="age"/>
+
+                                <h:outputLabel value="#{msgs.createinstructor_birthNumber}" for="birthNumber" />
+                                <h:inputText id="birthNumber" value="#{studentsBean.student.birthNumber}" title="BirthNumber" />
+                                <p:message for="birthNumber"/>
+                            </h:panelGrid>
+                        </p:panel>
+
+                        <p:panel>
+                            <h:panelGrid columns="3">
+                                <h:outputLabel value="#{msgs.createinstructor_email}" for="email" />
+                                <h:inputText id="email" value="#{studentsBean.student.email}" title="Email" />
+                                <p:message for="email"/>
+
+                                <h:outputLabel value="#{msgs.createinstructor_phone}" for="phone" />
+                                <h:inputText id="phone" value="#{studentsBean.student.phone}" title="Phone" />
+                                <p:message for="phone"/>
+
+                                <h:outputLabel value="#{msgs.createinstructor_address}" for="address" />
+                                <h:inputTextarea id="address" value="#{studentsBean.student.address}" title="Address" rows="3"/>
+                                <p:message for="address"/>
+
+                                <h:outputLabel value="#{msgs.createinstructor_note}" for="note" />
+                                <h:inputTextarea id="note" value="#{studentsBean.student.note}" rows="3" title="Note" />
+                                <p:message for="note"/>
+                            </h:panelGrid>
+                        </p:panel>
+
+                        <p:panel>
+                            <h:panelGrid columns="3">
+                                <h:outputLabel value="#{msgs.createstudent_ski}*" for="ski" />
+                                <h:selectBooleanCheckbox id="ski" value="#{studentsBean.student.ski}" title="Ski" />
+                                <p:message for="ski"/>
+
+                                <h:outputLabel value="#{msgs.createstudent_snowboard}*" for="snowboard" />
+                                <h:selectBooleanCheckbox id="snowboard" value="#{studentsBean.student.snowboard}" title="Snowboard" />
+                                <p:message for="snowboard"/>
+
+                                <h:outputLabel value="#{msgs.createstudent_groupSize}*" for="groupSize" />
+                                <p:spinner id="groupSize" value="#{studentsBean.student.groupSize}" min="1" stepFactor="1" size="5" title="GroupSize" />
+                                <p:message for="groupSize"/>
+                            </h:panelGrid>
+                        </p:panel>
+
+                        <p:commandButton value="#{msgs.global_save}" action="#{studentsBean.saveStudent}"/>
+
+                    </p:panel>
+                </h:form>
+
+            </ui:define>
+        </ui:composition>
+
+    </body>
+</html>

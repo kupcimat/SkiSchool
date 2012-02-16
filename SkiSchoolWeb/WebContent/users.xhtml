@@ -1,0 +1,160 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.prime.com.tr/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <body>
+
+        <ui:composition template="./WEB-INF/skiSchoolTemplate.xhtml">
+            <ui:param name="pageTitle" value="#{msgs.site_usermanagement}" />
+            <ui:define name="content">
+
+                <p:growl id="growl" showDetail="true"/>
+
+                <p:tabView rendered="#{securityBean.inRoleAdministrator}">
+                    <p:tab title="#{msgs.global_instructors}">
+                        <h:form id="instructors">
+                            <p:dataTable value="#{instructorsBean.allInstructors}" var="item">
+                                <p:column filterBy="#{item.lastName} #{item.firstName}">
+                                    <f:facet name="header">
+                                        <h:outputText value="#{msgs.global_name}"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.firstName} #{item.lastName}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="#{msgs.global_email}"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.email}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="#{msgs.global_phone}"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.phone}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="#{msgs.instructor_positionski}"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.positionSki}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="#{msgs.instructor_positionsnb}"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.positionSnowboard}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="#{msgs.global_availability}"/>
+                                    </f:facet>
+                                    <h:commandLink action="#{availabilityBean.newAvailability}" value="#{msgs.global_set}">
+                                        <f:setPropertyActionListener value="#{item}"
+                                                                     target="#{availabilityBean.instructor}" />
+                                    </h:commandLink>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="#{msgs.global_lessons}"/>
+                                    </f:facet>
+                                    <h:commandLink action="instructorlessons" value="#{msgs.global_show}">
+                                        <f:setPropertyActionListener value="#{item}"
+                                                                     target="#{selectBean.instructor}" />
+                                    </h:commandLink>
+                                </p:column>
+                                <p:column rendered="#{securityBean.inRoleAdministrator}">
+                                    <f:facet name="header">
+                                        <h:outputText value="#{msgs.global_edit}"/>
+                                    </f:facet>
+                                    <h:commandLink value="Edit" action="#{instructorsBean.editInstructor(item)}" title="Edit" styleClass="ui-icon ui-icon-pencil"/>
+                                </p:column>
+                            </p:dataTable>
+                        </h:form>
+                    </p:tab>
+
+                    <p:tab title="#{msgs.global_students}">
+                        <h:form id="students">
+                            <p:dataTable value="#{studentsBean.allStudents}" var="student">
+                                <p:column filterBy="#{student.lastName} #{student.firstName}">
+                                    <f:facet name="header">
+                                        <h:outputText value="#{msgs.global_name}"/>
+                                    </f:facet>
+                                    <h:outputText value="#{student.firstName} #{student.lastName}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="#{msgs.global_email}"/>
+                                    </f:facet>
+                                    <h:outputText value="#{student.email}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="#{msgs.global_phone}"/>
+                                    </f:facet>
+                                    <h:outputText value="#{student.phone}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="#{msgs.student_age}"/>
+                                    </f:facet>
+                                    <h:outputText value="#{student.age}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="#{msgs.global_ski}"/>
+                                    </f:facet>
+                                    <h:selectBooleanCheckbox value="#{student.ski}" disabled="true"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="#{msgs.global_snb}"/>
+                                    </f:facet>
+                                    <h:selectBooleanCheckbox value="#{student.snowboard}" disabled="true"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="#{msgs.student_groupsize}"/>
+                                    </f:facet>
+                                    <h:outputText value="#{student.groupSize}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="#{msgs.global_note}"/>
+                                    </f:facet>
+                                    <h:outputText value="#{student.note}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="#{msgs.global_lessons}"/>
+                                    </f:facet>
+                                    <h:commandLink action="studentlessons" value="#{msgs.global_show}">
+                                        <f:setPropertyActionListener value="#{student}"
+                                                                     target="#{selectBean.student}" />
+                                    </h:commandLink>
+                                </p:column>
+                                <p:column rendered="#{securityBean.inRoleAdministrator}">
+                                    <f:facet name="header">
+                                        <h:outputText value="#{msgs.global_edit}"/>
+                                    </f:facet>
+                                    <h:commandLink value="Edit" action="#{studentsBean.editStudent(student)}" title="#{msgs.global_edit}" styleClass="ui-icon ui-icon-pencil"/>
+                                </p:column>                             
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="#{msgs.global_delete}"/>
+                                    </f:facet>
+                                    <p:commandLink action="#{studentsBean.deleteStudent(student)}" value="#{msgs.global_delete}" title="#{msgs.global_delete}" update="students,growl" styleClass="ui-icon ui-icon-trash"/>
+                                </p:column>
+                            </p:dataTable>
+                            <p:messages/>
+                        </h:form>
+                    </p:tab>
+                </p:tabView>
+
+            </ui:define>
+        </ui:composition>
+
+    </body>
+</html>

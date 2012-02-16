@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.prime.com.tr/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <f:view contentType="text/html">
+        <h:head>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+            <link href="./resources/css/cssLayout.css" rel="stylesheet" type="text/css" />
+            <link href="./resources/css/redmond/skin.css" rel="stylesheet" type="text/css" />
+            <title>#{pageTitle}</title>
+        </h:head>
+
+        <h:body>
+
+            <div id="top">
+                <ui:insert name="top">
+                    <a href="./index.xhtml">
+                        <img src="./resources/images/logo.jpg" alt="SkiSchool IS"/>
+                    </a>
+                    <p:ajaxStatus styleClass="ajaxStatus">
+                        <f:facet name="start">
+                            <h:graphicImage alt="Loading..." value="./resources/css/redmond/images/ui-anim_basic_16x16.gif"/>
+                        </f:facet>
+                        <f:facet name="complete">
+                            <h:outputText value=""/>
+                        </f:facet>
+                    </p:ajaxStatus>
+                </ui:insert>
+            </div>
+            <div>
+                <div id="left">
+                    <ui:insert name="left">
+                        <h:form id="menu">
+                            <h:panelGrid columns="1">
+                                <h:link value="#{msgs.menu_timetable}" outcome="timetable" rendered="#{securityBean.inRoleAdministrator}"/>
+                                <h:commandLink action="#{availabilityBean.newAvailability}" value="#{msgs.global_availability}" rendered="#{securityBean.inRoleInstructor}">
+                                    <f:setPropertyActionListener value="#{securityBean.currentInstructor}"
+                                                                 target="#{availabilityBean.instructor}" />
+                                </h:commandLink>
+                                <h:commandLink action="instructorlessons" value="#{msgs.global_lessons}" rendered="#{securityBean.inRoleInstructor}">
+                                    <f:setPropertyActionListener value="#{securityBean.currentInstructor}"
+                                                                 target="#{selectBean.instructor}" />
+                                </h:commandLink>
+                                <h:link value="#{msgs.menu_kindergarten}" outcome="kindergarten" rendered="#{securityBean.inRoleAdministrator}"/>
+                                <h:link value="#{msgs.menu_lessons}" outcome="lessons" rendered="#{securityBean.inRoleAdministrator}"/>
+                                <h:link value="#{msgs.menu_users}" outcome="users" rendered="#{securityBean.inRoleAdministrator}"/>
+                                <h:commandLink value="#{msgs.menu_createinstructor}" action="#{instructorsBean.newInstructor}" rendered="#{securityBean.inRoleAdministrator}"/>
+                                <h:commandLink value="#{msgs.menu_createstudent}" action="#{studentsBean.newStudent}" rendered="#{securityBean.inRoleAdministrator}"/>
+                                <h:link value="#{msgs.menu_lessonscount}" outcome="payments" rendered="#{securityBean.inRoleAdministrator}"/>
+                                <h:commandLink value="Môj profil" action="#{instructorsBean.editInstructor(securityBean.currentInstructor)}" rendered="#{securityBean.inRoleInstructor}"/>
+                                <h:commandLink value="#{msgs.menu_logout}" action="#{securityBean.logout}"/>
+                            </h:panelGrid>
+                        </h:form>
+                    </ui:insert>
+                </div>
+                <div id="content">
+                    <ui:insert name="content">Content</ui:insert>
+                </div>
+            </div>
+            <div id="bottom">
+                <ui:insert name="bottom">
+                    &copy; JA-KA SKI 2011 v0.9 <h:outputText value="(#{securityBean.currentUsername})"/>
+                </ui:insert>
+            </div>
+
+        </h:body>
+    </f:view>
+</html>

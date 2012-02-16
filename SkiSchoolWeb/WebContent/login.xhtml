@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <style type="text/css" >
+            #loginBody {
+                font-family: Lucida Grande, Lucida Sans, Arial, sans-serif;
+                font-size: 0.8em;
+                color: #333333;
+                background-color: #C1DEED;
+            }
+
+            #login {
+                -moz-border-radius: 5px 5px 5px 5px;
+                border: 1px solid white;
+                background-color: white;
+                display: block;
+                width: 20em;
+                height: 10em;
+                margin-left: auto;
+                margin-right: auto;
+                margin-top: 6em;
+                padding: 3em;
+            }
+
+            #login input[type="text"], input[type="password"] {
+                -moz-border-radius: 3px 3px 3px 3px;
+                width: 12em;
+                border: 1px solid #AAAAAA;
+                margin-left: 1em;
+                margin-top: 0.5em;
+                margin-bottom: 0.5em;
+                padding: 4px 2px;
+            }
+
+            #login input[type="text"]:focus, input[type="password"]:focus {
+                -moz-box-shadow: 0 0 8px rgba(82, 168, 236, 0.5);
+                border-color: rgba(82, 168, 236, 0.75) !important;
+                outline: medium none;
+            }
+
+            #login input[type="submit"] {
+                -moz-border-radius: 4px 4px 4px 4px;
+                background-color: #3399DD;
+                border: 1px solid #3399DD;
+                color: #FFFFFF;
+                font-weight: bold;
+                padding: 4px 10px;
+            }
+        </style>
+        <title>SkiSchool Login</title>
+    </head>
+    <body id="loginBody">
+
+        <div id="login">
+            <form action="j_security_check" method="post">
+                <table>
+                    <tr>
+                        <td>Username</td>
+                        <td><input type="text" name="j_username" /></td>
+                    </tr>
+                    <tr>
+                        <td>Password</td>
+                        <td><input type="password" name="j_password" /></td>
+                    </tr>
+                </table>
+                <input type="submit" value="Sign In" />
+            </form>
+        </div>
+
+    </body>
+</html>

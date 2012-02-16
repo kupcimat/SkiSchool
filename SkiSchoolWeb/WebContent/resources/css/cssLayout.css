@@ -1,0 +1,85 @@
+/* LAYOUT SETTINGS */
+
+#top {
+    padding: 0.5em;
+    margin-bottom: 0.2em;
+}
+
+#left {
+    float: left;
+    padding: 0.5em 2em 0.5em 0.5em;
+    margin-bottom: 20em;
+}
+
+#content {
+    float: left;
+    padding: 0.5em;
+}
+
+#bottom {
+    clear: both;
+    padding: 0.5em;
+    font-family: Lucida Grande, Lucida Sans, Arial, sans-serif;
+    font-size: 0.7em;
+    color: white;
+    background: url("redmond/images/ui-bg_gloss-wave_55_5c9ccc_500x100.png") repeat-x scroll 50% 50% #5C9CCC;
+}
+
+/* GENERAL SETTINGS */
+
+body {
+    padding: 0;
+    margin: 0;
+}
+
+img {
+    border-style: none;
+}
+
+.ajaxStatus {
+    float: right;
+}
+
+#menu a {
+    display: block;
+    width: 100%;
+    padding: 0.2em;
+    font-family: Lucida Grande, Lucida Sans, Arial, sans-serif;
+    font-size: 0.8em;
+    font-weight: bold;
+    text-decoration: none;
+    border: 1px solid #C5DBEC;
+    color: #2E6E9E;
+}
+
+#menu a:hover {
+    background-color: #DFEFFC;
+    text-decoration: underline;
+}
+
+.timeline {
+    display: table-cell;
+    width: 59px;
+    text-align: center;
+    border-right: #2E6E9E solid 1px;
+    border-left: #2E6E9E solid 1px;
+}
+
+.timeline a {
+    display: inline-block;
+}
+
+.timeBar {
+    display: inline-block;
+    margin-right: 2px;
+    padding: 0.3em 0em;
+    text-align: center;
+    text-decoration: none;
+    font-size: 9px;
+}
+
+/* PRIMEFACES ADDITIONS */
+
+.ui-panel {
+    margin-bottom: 0.5em;
+}

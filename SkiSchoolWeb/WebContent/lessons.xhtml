@@ -1,0 +1,92 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.prime.com.tr/ui">
+    <body>
+
+        <ui:composition template="./WEB-INF/skiSchoolTemplate.xhtml">
+            <ui:param name="pageTitle" value="#{msgs.site_lessons}"/>
+            <ui:define name="content">
+
+                <h:form id="lessons">
+                    <p:dataTable value="#{lessonsBean.allLessons}" var="lesson" rendered="#{securityBean.inRoleAdministrator}">
+                        <p:column filterBy="#{lesson.lessonType}"
+                                  filterOptions="#{lessonsBean.lessonTypeOptions}"
+                                  filterMatchMode="exact">
+                            <f:facet name="header">
+                                <h:outputText value="#{msgs.lesson_lessontype}"/>
+                            </f:facet>
+                            <h:outputText value="#{lesson.lessonType}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{msgs.global_date}"/>
+                            </f:facet>
+                            <h:outputText value="#{lesson.startTime}">
+                                <f:convertDateTime pattern="dd.MM.yy"
+                                                   timeZone="GMT+1"/>
+                            </h:outputText>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{msgs.global_time}"/>
+                            </f:facet>
+                            <h:outputText value="#{lesson.startTime}">
+                                <f:convertDateTime pattern="HH:mm"
+                                                   timeZone="GMT+1"/>
+                            </h:outputText>
+                            <h:outputText value=" - "/>
+                            <h:outputText value="#{lesson.endTime}">
+                                <f:convertDateTime pattern="HH:mm"
+                                                   timeZone="GMT+1"/>
+                            </h:outputText>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{msgs.global_instructors}"/>
+                            </f:facet>
+                            <h:outputText value="#{lesson.instructors[0].firstName} #{lesson.instructors[0].lastName}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{msgs.global_students}"/>
+                            </f:facet>
+                            <h:outputText value="#{lesson.students[0].firstName} #{lesson.students[0].lastName}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{msgs.global_note}"/>
+                            </f:facet>
+                            <h:outputText value="#{lesson.note}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{msgs.global_snb}"/>
+                            </f:facet>
+                            <h:selectBooleanCheckbox value="#{lesson.snowboard}" disabled="true"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{msgs.lesson_lessonpaid}"/>
+                            </f:facet>
+                            <h:selectBooleanCheckbox value="#{lesson.paid}" disabled="true"/>
+                        </p:column>
+                        <p:column filterBy="#{lesson.executed}"
+                                  filterOptions="#{lessonsBean.executedLessonOptions}"
+                                  filterMatchMode="exact">
+                            <f:facet name="header">
+                                <h:outputText value="#{msgs.lesson_lessonexecuted}"/>
+                            </f:facet>
+                            <h:selectBooleanCheckbox value="#{lesson.executed}" disabled="true"/>
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+
+            </ui:define>
+        </ui:composition>
+
+    </body>
+</html>

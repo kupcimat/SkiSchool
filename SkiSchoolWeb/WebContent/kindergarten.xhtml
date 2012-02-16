@@ -1,0 +1,215 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.prime.com.tr/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html">
+
+    <body>
+
+        <ui:composition template="./WEB-INF/skiSchoolTemplate.xhtml">
+            <ui:param name="pageTitle" value="#{msgs.kindergarten_kindergarten}" />
+            <ui:define name="content">
+                <p:growl id="growl" showDetail="true"/>
+                <h:form id="table" rendered="#{securityBean.inRoleAdministrator}">
+                    <p:panel header="#{msgs.kindergarten_kindergartens}">
+                        <p:dataTable value="#{kindergartenBean.allKindergartens}"
+                                     var="kindergarten">
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="#{msgs.global_date}"/>
+                                </f:facet>
+                                <h:outputText value="#{kindergarten.startTime}">
+                                    <f:convertDateTime pattern="EEEE  dd.MM.yy"
+                                                       timeZone="GMT+1"/>
+                                </h:outputText>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="#{msgs.global_time}"/>
+                                </f:facet>
+                                <h:outputText value="#{kindergarten.startTime}">
+                                    <f:convertDateTime pattern="HH:mm"
+                                                       timeZone="GMT+1"/>
+                                </h:outputText>
+                                <h:outputText value=" - "/>
+                                <h:outputText value="#{kindergarten.endTime}">
+                                    <f:convertDateTime pattern="HH:mm"
+                                                       timeZone="GMT+1"/>
+                                </h:outputText>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="#{msgs.kindergarten_instructorsnumber}"/>
+                                </f:facet>
+                                <h:outputText value="#{kindergarten.instructors.size()}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="#{msgs.kindergarten_studentsnumber}"/>
+                                </f:facet>
+                                <h:outputText value="#{kindergarten.students.size()}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="#{msgs.global_note}"/>
+                                </f:facet>
+                                <h:outputText value="#{kindergarten.note}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="#{msgs.kindergarten_addinstructors}"/>
+                                </f:facet>
+                                <p:commandLink value="add instructors" actionListener="#{kindergartenBean.setAvailableInstructors}" oncomplete="addInstructorsDialog.show()" update="addInstructors" styleClass="ui-icon ui-icon-plusthick"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="#{msgs.kindergarten_addstudents}"/>
+                                </f:facet>
+                                <p:commandLink value="add students" actionListener="#{kindergartenBean.setLessonStudents}" oncomplete="addStudentsDialog.show()" update="addStudents" styleClass="ui-icon ui-icon-plusthick"/>
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
+                </h:form>
+                <h:form rendered="#{securityBean.inRoleAdministrator}">
+                    <p:commandButton value="#{msgs.kindergarten_newkindergarten}" action="#{kindergartenBean.newKindergarten}" update="createKindergarten" oncomplete="createKindergartenDialog.show()"/>
+                </h:form>
+
+                <p:dialog header="#{msgs.kindergarten_createkindergarten}"
+                          widgetVar="createKindergartenDialog"
+                          modal="true"
+                          width="450"
+                          onShow="PrimeFaces.ajax.AjaxRequest('/SkiSchool-war/kindergarten.xhtml',{formId:'createKindergarten'},{'javax.faces.partial.render':'createKindergarten'});">
+                    <h:form id="createKindergarten">
+                        <p:panel>
+                            <h:panelGrid columns="3">
+                                <h:outputText value="#{msgs.global_date}"/>
+                                <p:calendar id="date"
+                                            size="15"
+                                            value="#{kindergartenBean.date}"
+                                            pattern="dd.MM.yyyy"
+                                            timeZone="GMT+1"
+                                            locale="sk"/>
+                                <p:message for="date"/>
+                            </h:panelGrid>
+
+                            <h:panelGrid columns="3">
+                                <h:outputText value="#{msgs.global_starttime}"/>
+                                <p:spinner value="#{kindergartenBean.startHour}" min="8" max="21" stepFactor="1" size="5"/>
+                                <p:spinner value="#{kindergartenBean.startMinutes}" min="0" max="45" stepFactor="15" size="5"/>
+
+                                <h:outputText value="#{msgs.global_endtime}"/>
+                                <p:spinner value="#{kindergartenBean.endHour}" min="8" max="21" stepFactor="1" size="5"/>
+                                <p:spinner value="#{kindergartenBean.endMinutes}" min="0" max="45" stepFactor="15" size="5"/>
+                            </h:panelGrid>
+
+                            <h:panelGrid columns="2">
+                                <h:outputLabel value="#{msgs.global_notefor}" for="note" />
+                                <h:inputText id="note" value="#{kindergartenBean.lesson.note}" title="Note" size="25" />
+                            </h:panelGrid>
+                        </p:panel>
+
+                        <p:messages/>
+                        <h:panelGrid columns="2">
+                            <p:commandButton value="#{msgs.kindergarten_createkindergarten}" actionListener="#{kindergartenBean.createKindergarten}" update="createKindergarten, growl,table" id="submit"/>
+                            <p:commandButton value="#{msgs.global_close}" onclick="createKindergartenDialog.hide()"/>
+                        </h:panelGrid>
+                    </h:form>
+                </p:dialog>
+
+                <p:dialog header="#{msgs.kindergarten_addinstructors}"
+                          widgetVar="addInstructorsDialog"
+                          modal="true"
+                          width="600"
+                          onShow="PrimeFaces.ajax.AjaxRequest('/SkiSchool-war/kindergarten.xhtml',{formId:'addInstructors'},{'javax.faces.partial.render':'addInstructors'});">
+                    <h:form id="addInstructors">
+                        <p:panel>
+
+                            <h:panelGrid columns="3">
+                                <p:pickList value="#{kindergartenBean.instructors}"
+                                            var="instructor" iconOnly="true"
+                                            itemLabel="#{instructor.firstName} #{instructor.lastName}"
+                                            itemValue="#{instructor}" converter="instructor"
+                                            showSourceControls="true" showTargetControls="true">
+                                    <f:facet name="sourceCaption">#{msgs.kindergarten_available}</f:facet>
+                                    <f:facet name="targetCaption">#{msgs.kindergarten_teaching}</f:facet>
+                                </p:pickList>
+                            </h:panelGrid>
+                        </p:panel>
+                        <p:messages/>
+                        <h:panelGrid columns="2">
+                            <p:commandButton value="#{msgs.kindergarten_updateinstructors}" actionListener="#{kindergartenBean.updateKindergarten}" update="addInstructors, growl,table" id="submit"/>
+                            <p:commandButton value="#{msgs.global_close}" onclick="addInstructorsDialog.hide()"/>
+                        </h:panelGrid>
+
+                    </h:form>
+                </p:dialog>
+
+                <p:dialog header="#{msgs.kindergarten_addstudents}"
+                          widgetVar="addStudentsDialog"
+                          modal="true"
+                          width="600"
+                          onShow="PrimeFaces.ajax.AjaxRequest('/SkiSchool-war/kindergarten.xhtml',{formId:'addStudents'},{'javax.faces.partial.render':'addStudents'});">
+                    <h:form id="addStudents">
+                        <p:panel>
+                            <h:panelGrid columns="3">
+                                <h:outputText value="#{msgs.kindergarten_studentname}"/>
+                                <p:autoComplete value="#{kindergartenBean.selectedStudent}"
+                                                completeMethod="#{kindergartenBean.completeStudent}"
+                                                var="student"
+                                                itemLabel="#{student.firstName} #{student.lastName}"
+                                                itemValue="#{student}"
+                                                converter="student"
+                                                id="student"/>
+                                <p:commandButton value="#{msgs.global_createstudent}" actionListener="#{kindergartenBean.createNewStudent}" update="addStudents, growl"/>
+                            </h:panelGrid>
+
+                            <p:commandButton value="#{msgs.kindergarten_addstudent}" update="addStudents, growl">
+                                <p:collector value="#{kindergartenBean.selectedStudent}"
+                                             addTo="#{kindergartenBean.students}" />
+                            </p:commandButton>
+
+                        </p:panel>
+                        <p:panel>
+                            <p:outputPanel id="students">
+                                <p:dataTable value="#{kindergartenBean.students}" var="student">
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="#{msgs.global_name}" />
+                                        </f:facet>
+                                        <h:outputText value="#{student.firstName} #{student.lastName}" />
+                                    </p:column>
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="#{msgs.global_age}" />
+                                        </f:facet>
+                                        <h:outputText value="#{student.age}" />
+                                    </p:column>
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="#{msgs.global_remove}" />
+                                        </f:facet>
+                                        <p:commandLink value="#{msgs.global_remove}" update="addStudents:students" process="@this" styleClass="ui-icon ui-icon-trash">
+                                            <p:collector value="#{student}"
+                                                         removeFrom="#{kindergartenBean.students}" />
+                                        </p:commandLink>
+                                    </p:column>
+
+                                </p:dataTable>
+                            </p:outputPanel>
+                        </p:panel>
+                        <p:messages/>
+                        <h:panelGrid columns="2">
+                            <p:commandButton value="#{msgs.kindergarten_updatestudents}" actionListener="#{kindergartenBean.updateStudents}" update="addStudents, growl,table" id="submit"/>
+                            <p:commandButton value="#{msgs.global_close}" onclick="addStudentsDialog.hide()"/>
+                        </h:panelGrid>
+
+                    </h:form>
+                </p:dialog>
+
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>
