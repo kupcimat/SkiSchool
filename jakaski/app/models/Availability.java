@@ -9,17 +9,20 @@ import java.util.*;
 
 @Entity
 public class Availability extends Model {
+	
 	@Required
 	public Date startTime;
 	@Required
 	public Date endTime;
+	public Location location;
 	public String note;
 	@ManyToOne
 	public Instructor instructor;
 
-	public Availability(Date startTime, Date endTime, String note, Instructor instructor) {
+	public Availability(Date startTime, Date endTime, Location location, String note, Instructor instructor) {
 		this.startTime = startTime;
 		this.endTime = endTime;
+		this.location = location;
 		this.note = note;
 		this.instructor = instructor;
 	}

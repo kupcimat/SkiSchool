@@ -14,27 +14,26 @@ public class Lesson extends Model {
 	public Date startTime;
 	@Required
 	public Date endTime;
-
-	// @Required
-	// @Pattern(regexp = NamingConstants.LESSON_INDIVIDUAL + "|"
-	// + NamingConstants.LESSON_GROUP + "|"
-	// + NamingConstants.LESSON_KINDERGARTEN, message = "{lesson_type}")
-	// private String lessonType;
-	// @Required
-	// public boolean snowboard;
-	// @Required
-	// public boolean executed;
-	// @Required
-	// public boolean paid;
+	public Location location;
+	public LessonType lessonType;
+	public boolean snowboard;
+	public boolean paid;
+	public Lang language;
 	public String note;
+
 	@ManyToMany
 	public List<Instructor> instructors;
-	// @ManyToMany
-	// private List<Student> students;
-	
-	public Lesson(Date startTime, Date endTime, String note) {
+
+	@ManyToMany
+	public List<Student> students;
+
+	public Lesson(Date startTime, Date endTime, Location location, LessonType lessonType, boolean snowboard, boolean paid, Lang language, String note) {
 		this.startTime = startTime;
 		this.endTime = endTime;
+		this.location = location;
+		this.lessonType = lessonType;
+		this.snowboard = snowboard;
+		this.paid = paid;
 		this.note = note;
 	}
 
