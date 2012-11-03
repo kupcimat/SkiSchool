@@ -2,13 +2,15 @@ package models;
 
 import javax.persistence.Entity;
 
+import models.deadbolt.Role;
+
 //import models.deadbolt.Role;
 import play.data.validation.Required;
 import play.db.jpa.Model;
 
 @Entity
-public class ApplicationRole extends Model{
-	
+public class ApplicationRole extends Model implements Role {
+
 	@Required
 	public String name;
 
@@ -23,5 +25,10 @@ public class ApplicationRole extends Model{
 	@Override
 	public String toString() {
 		return this.name;
+	}
+
+	@Override
+	public String getRoleName() {
+		return name;
 	}
 }
