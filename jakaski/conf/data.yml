@@ -4,6 +4,9 @@
 ApplicationRole(admin):
     name: admin
 
+ApplicationRole(instructor):
+    name: instructor
+
 User(john):
     name: John
     email: john@john.com
