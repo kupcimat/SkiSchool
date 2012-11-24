@@ -3,16 +3,17 @@
 <html>
     <head>
         <title>#{get 'title' /}</title>
-        <meta charset="${_response_encoding}">
+        <meta charset="utf-8">
         <!-- twitter bootstrap -->
         <link rel="stylesheet" media="screen" href="@{'/public/stylesheets/main.css'}">
         <link rel="stylesheet" media="screen" href="@{'/public/stylesheets/bootstrap.css'}">
         <link rel="shortcut icon" type="image/png" href="@{'/public/images/favicon.png'}">
-        <script src="@{'/public/javascripts/jquery-1.6.4.min.js'}" type="text/javascript" charset="${_response_encoding}"></script>
-        <script src="@{'/public/javascripts/bootstrap.js'}" type="text/javascript" charset="${_response_encoding}"></script>
+        <script src="@{'/public/javascripts/jquery-1.6.4.min.js'}" type="text/javascript" charset="utf-8"></script>
+        <script src="@{'/public/javascripts/bootstrap.js'}" type="text/javascript" charset="utf-8"></script>
         <!-- dhtmlx scheduler -->
+        <link rel="stylesheet" href="@{'/public/stylesheets/dhtmlxscheduler.css'}" type="text/css">
         <script src="@{'/public/javascripts/dhtmlxscheduler.js'}" type="text/javascript" charset="utf-8"></script>
-        <link rel="stylesheet" href="@{'/public/stylesheets/dhtmlxscheduler.css'}" type="text/css" charset="utf-8">
+        <script src="@{'/public/javascripts/dhtmlxscheduler_timeline.js'}" type="text/javascript" charset="utf-8"></script>
         <!-- other -->
         #{get 'moreStyles' /}
         #{get 'moreScripts' /}
