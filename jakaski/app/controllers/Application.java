@@ -8,6 +8,7 @@ import java.util.*;
 import controllers.deadbolt.Deadbolt;
 import controllers.deadbolt.Restrict;
 import controllers.deadbolt.Restrictions;
+import controllers.scheduler.SchedulerEvent;
 
 import models.*;
 
@@ -32,6 +33,9 @@ public class Application extends Controller {
         // System.out.println("user: " + user);
         // System.out.println("instructor: " + instructor);
 
-        instructor.addAvailability(new Date(), new Date(), Location.JAHODNA, body.text);
+        Availability availability = body.createAvailability(Location.JAHODNA, instructor);
+        instructor.addAvailability(availability);
+
+        renderJSON(new SchedulerEvent.Response(availability.getId()));
     }
 }
