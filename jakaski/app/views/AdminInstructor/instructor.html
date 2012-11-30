@@ -1,0 +1,11 @@
+#{extends 'Application/index.html' /}
+<div id="main">
+    
+    <ul id="instructorMenu">
+        <li class="${request.controller == 'AdminInstructor' ? 'selected' : ''}">
+            <a href="@{AdminInstructor.instructor()}">My posts</a>
+        </li>
+    </ul>
+    
+    #{doLayout /} 
+</div>

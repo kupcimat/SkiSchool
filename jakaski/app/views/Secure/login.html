@@ -1,0 +1,71 @@
+#{extends 'main.html' /}
+<link rel="stylesheet" href="@{'/public/stylesheets/pages/login.css'}">
+<div class="navbar navbar-fixed-top">
+	<div class="navbar-inner">
+		<div class="container">
+			<a class="btn btn-navbar" data-toggle="collapse"
+				data-target=".nav-collapse"> <span class="icon-bar"></span> <span
+				class="icon-bar"></span> <span class="icon-bar"></span>
+			</a> <a class="brand">SkiSchool Manager</a>
+		</div>
+		<!-- /container -->
+	</div>
+	<!-- /navbar-inner -->
+</div>
+<!-- /navbar -->
+<div id="login-container">
+	<div id="login-header">
+		<h3>&{'secure.title'}</h3>
+	</div>
+	<!-- /login-header -->
+	<div id="login-content" class="clearfix">
+		#{form @authenticate()} 
+		#{if flash.error}
+		<p class="error">&{flash.error}</p>
+		#{/if} 
+		#{if flash.success}
+		<p class="success">&{flash.success}</p>
+		#{/if}
+		<fieldset>
+			<div class="control-group">
+				<label class="control-label" for="username">&{'secure.username'}</label>
+				<div class="controls">
+					<input type="text" name="username" class="" id="username"
+						value="${flash.username}">
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="password">&{'secure.password'}</label>
+				<div class="controls">
+					<input type="password" name="password" class="" id="password"
+						value="">
+				</div>
+			</div>
+		</fieldset>
+
+		<div id="remember-me" class="pull-left">
+			<input type="checkbox" name="remember" id="remember" value="true"
+				${flash.remember ? 'checked="true"' : ''}> <label
+				id="remember-label" for="remember">&{'secure.remember'}</label>
+		</div>
+
+		<div class="pull-right">
+			<button type="submit" class="btn btn-primary btn-large">
+				&{'secure.signin'}</button>
+		</div>
+		#{/form}
+
+	</div>
+	<!-- /login-content -->
+
+
+	<!-- <div id="login-extra">
+			
+			<p>Don't have an account? <a href="javascript:;">Sign Up.</a></p>
+			
+			<p>Remind Password? <a href="http://wbpreview.com/previews/WB00U8L84/forgot_password.html">Retrieve.</a></p>
+			
+		</div>-->
+	<!-- /login-extra -->
+</div>
+<!-- /login-wrapper -->
