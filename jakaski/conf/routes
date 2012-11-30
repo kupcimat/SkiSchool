@@ -12,6 +12,7 @@ GET     /favicon.ico                            404
 *       /                                       module:secure
 
 # Import CRUD routes
+GET     /admin/?                                AdminInstructor.instructor
 *      	/admin              					module:crud
 
 # Map static resources from the /app/public folder to the /public path

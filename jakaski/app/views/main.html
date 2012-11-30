@@ -4,20 +4,32 @@
     <head>
         <title>#{get 'title' /}</title>
         <meta charset="${_response_encoding}">
-        <!-- twitter bootstrap -->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        
         <link rel="stylesheet" media="screen" href="@{'/public/stylesheets/main.css'}">
-        <link rel="stylesheet" media="screen" href="@{'/public/stylesheets/bootstrap.css'}">
         <link rel="shortcut icon" type="image/png" href="@{'/public/images/favicon.png'}">
-        <script src="@{'/public/javascripts/jquery-1.6.4.min.js'}" type="text/javascript" charset="${_response_encoding}"></script>
-        <script src="@{'/public/javascripts/bootstrap.js'}" type="text/javascript" charset="${_response_encoding}"></script>
-        <!-- dhtmlx scheduler -->
-        <script src="@{'/public/javascripts/dhtmlxscheduler.js'}" type="text/javascript" charset="utf-8"></script>
+        <!-- twitter bootstrap -->  
+        <link rel="stylesheet" media="screen" href="@{'/public/stylesheets/bootstrap.min.css'}">
+        <link rel="stylesheet" href="@{'/public/stylesheets/bootstrap-responsive.min.css'}">
+        
+        <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,400,600">
+        <link rel="stylesheet" href="@{'/public/stylesheets/font-awesome.css'}">
+        <link rel="stylesheet" href="@{'/public/stylesheets/adminia.css'}">
+        <link rel="stylesheet" href="@{'/public/stylesheets/adminia-responsive.css'}">
         <link rel="stylesheet" href="@{'/public/stylesheets/dhtmlxscheduler.css'}" type="text/css" charset="utf-8">
-        <!-- other -->
+
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+        
         #{get 'moreStyles' /}
         #{get 'moreScripts' /}
     </head>
     <body>
         #{doLayout /}
+        <script src="@{'/public/javascripts/jquery-1.7.2.min.js'}" type="text/javascript" charset="${_response_encoding}"></script>
+        <script src="@{'/public/javascripts/bootstrap.js'}" type="text/javascript" charset="${_response_encoding}"></script>    
+        <script src="@{'/public/javascripts/dhtmlxscheduler.js'}" type="text/javascript" charset="utf-8"></script>    
     </body>
 </html>

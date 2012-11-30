@@ -4,7 +4,7 @@
 
 <div id="header">
   <div id="logo">
-    <span>administration</span>
+    <span>administration, Welcome ${user}!</span>
   </div>
   <ul id="tools">
     <li><a href="@{Secure.logout()}">Log out</a></li>
@@ -39,3 +39,5 @@
         });
     });
 </script>
+
+#{doLayout /}

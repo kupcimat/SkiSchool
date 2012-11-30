@@ -12,3 +12,9 @@ User(john):
     email: john@john.com
     password: secret
     role: [admin]
+    
+Instructor(miso):
+    name: Miso
+    email: miso@miso.com
+    password: secret
+    role: [instructor]
