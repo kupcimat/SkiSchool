@@ -3,10 +3,9 @@
 <html>
     <head>
         <title>#{get 'title' /}</title>
-        <meta charset="${_response_encoding}">
+        <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
         <meta name="apple-mobile-web-app-capable" content="yes">
-        <meta charset="utf-8">
 
         <link rel="stylesheet" media="screen" href="@{'/public/stylesheets/main.css'}">
         <link rel="shortcut icon" type="image/png" href="@{'/public/images/favicon.png'}">
@@ -16,16 +15,13 @@
         <link rel="stylesheet" href="@{'/public/stylesheets/font-awesome.css'}">
         <link rel="stylesheet" href="@{'/public/stylesheets/adminia.css'}">
         <link rel="stylesheet" href="@{'/public/stylesheets/adminia-responsive.css'}">
-        <link rel="stylesheet" href="@{'/public/stylesheets/dhtmlxscheduler.css'}" type="text/css" charset="utf-8">
-        <script src="@{'/public/javascripts/dhtmlxscheduler.js'}" type="text/javascript" charset="utf-8"></script>   
-        <script src="@{'/public/javascripts/dhtmlxscheduler_timeline.js'}" type="text/javascript" charset="utf-8"></script> 
+        #{get 'moreStyles' /}
+        #{get 'moreScripts' /}
 
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-        
-        #{get 'moreStyles' /}
-        #{get 'moreScripts' /}
+                
     </head>
     <body>
         #{doLayout /}

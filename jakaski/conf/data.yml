@@ -17,4 +17,6 @@ Instructor(miso):
     name: Miso
     email: miso@miso.com
     password: secret
+    firstname: Michal
+    surname: Sabol
     role: [instructor]

@@ -16,7 +16,11 @@ public class Security extends Secure.Security implements DeadboltHandler {
 	static void onDisconnected() {
 		Application.index();
 	}
-
+	
+	static void onAuthenticated(){
+		AdminInstructor.instructor();
+	}
+	
 	@Override
 	public void beforeRoleCheck() {
 		if (!Secure.Security.isConnected()) {

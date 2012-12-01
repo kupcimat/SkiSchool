@@ -15,7 +15,7 @@ public class AdminInstructor extends Controller {
 	    static void setConnectedUser() {
 	        if(Security.isConnected()) {
 	            Instructor instructor = Instructor.find("byEmail", Security.connected()).first();
-	            renderArgs.put("user", instructor.email);
+	            renderArgs.put("user", instructor);
 	        }
 	    }
 	 
