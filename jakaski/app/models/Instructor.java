@@ -33,6 +33,13 @@ public class Instructor extends User {
         return this;
     }
 
+    public Instructor addAvailability(Availability availability) {
+        availability.save();
+        this.availabilities.add(availability);
+        this.save();
+        return this;
+    }
+
     public static Instructor getByEmail(String userName) {
         return find("byEmail", userName).first();
     }
