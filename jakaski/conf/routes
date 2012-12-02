@@ -25,5 +25,9 @@ GET     /public/                                staticDir:public
 
 POST    /Application/availability               Application.createAvailability
 
+# Lesson resources
+GET     /lesson/{<[0-9]+>id}                    rest.LessonController.getLesson
+POST    /lesson                                 rest.LessonController.createLesson
+
 # Catch all
 *       /{controller}/{action}                  {controller}.{action}
