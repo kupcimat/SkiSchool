@@ -80,8 +80,10 @@ public class BasicTest extends UnitTest {
 	    Instructor bob = new Instructor("bob@gmail.com", "secret", "Bob", "B", "1234").save();
 	 
 	    // add Availabilities
-	    bob.addAvailability(new SimpleDateFormat("dd.MM.yyyy").parse("01.09.2012"), new SimpleDateFormat("dd.MM.yyyy").parse("01.10.2012"),models.Location.JAHODNA,"ahoj" );
-	    bob.addAvailability(new SimpleDateFormat("dd.MM.yyyy").parse("02.09.2012"), new SimpleDateFormat("dd.MM.yyyy").parse("02.10.2012"),models.Location.JAHODNA,"bla" );
+	    Availability a1 = new Availability(new SimpleDateFormat("dd.MM.yyyy").parse("01.09.2012"), new SimpleDateFormat("dd.MM.yyyy").parse("01.10.2012"), models.Location.JAHODNA, "ahoj", bob);
+	    Availability a2 = new Availability(new SimpleDateFormat("dd.MM.yyyy").parse("02.09.2012"), new SimpleDateFormat("dd.MM.yyyy").parse("02.10.2012"), models.Location.JAHODNA, "bla", bob);
+	    bob.addAvailability(a1);
+	    bob.addAvailability(a2);
 	 
 	    // Count things
 	    assertEquals(1, User.count());

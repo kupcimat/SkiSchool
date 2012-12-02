@@ -1,10 +1,12 @@
 package models;
 
-import play.*;
-import play.db.jpa.*;
+import java.util.HashSet;
+import java.util.Set;
 
-import javax.persistence.*;
-import java.util.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Instructor extends User {
@@ -20,27 +22,26 @@ public class Instructor extends User {
     @OneToMany(mappedBy = "instructor", cascade = CascadeType.ALL)
     public Set<Availability> availabilities;
 
+    public static Instructor getByEmail(String userName) {
+        return find("byEmail", userName).first();
+    }
+
     public Instructor(String email, String password, String firstname, String surname, String phone) {
         super(email, password, firstname, surname, phone);
         this.availabilities = new HashSet<Availability>();
         this.lessons = new HashSet<Lesson>();
     }
 
-    public Instructor addAvailability(Date startTime, Date endTime, Location location, String note) {
-        Availability availability = new Availability(startTime, endTime, location, note, this).save();
-        this.availabilities.add(availability);
-        this.save();
-        return this;
-    }
-
-    public Instructor addAvailability(Availability availability) {
+    public void addAvailability(Availability availability) {
         availability.save();
-        this.availabilities.add(availability);
-        this.save();
-        return this;
+        availabilities.add(availability);
+        save();
     }
 
-    public static Instructor getByEmail(String userName) {
-        return find("byEmail", userName).first();
+    public void addLesson(Lesson lesson) {
+        lesson.save();
+        lessons.add(lesson);
+        save();
     }
+
 }
