@@ -39,9 +39,9 @@ public class Instructor extends User {
     }
 
     public void addLesson(Lesson lesson) {
-        lesson.save();
+        //lesson.save();
         lessons.add(lesson);
-        save();
+        //save();
     }
 
 }

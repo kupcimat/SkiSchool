@@ -41,8 +41,12 @@ public class Lesson extends Model {
         this.location = location;
         this.lessonType = lessonType;
         this.note = note;
+        
+        // TODO Solve for multiple records 
         this.instructors = new HashSet<>();
+        this.instructors.add(instructor);
         this.students = new HashSet<>();
+        this.students.add(student);
 
         // TODO Will be used in future releases
         this.snowboard = false;

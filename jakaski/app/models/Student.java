@@ -30,9 +30,9 @@ public class Student extends Model {
     }
 
     public void addLesson(Lesson lesson) {
-        lesson.save();
+        //lesson.save();
         lessons.add(lesson);
-        save();
+        //save();
     }
 
 }
