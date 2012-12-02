@@ -1,0 +1,69 @@
+#{extends 'content.html' /}
+
+<h1 class="page-title">
+ <i class="icon-calendar"></i>
+    &{'timetable'}          
+</h1>
+        
+<div class="widget">
+    <div class="widget-content">        
+      <div id="scheduler_here" class="dhx_cal_container" style='width: 100%; height: 600px'>
+        <div class="dhx_cal_navline">
+          <div class="dhx_cal_prev_button">&nbsp;</div>
+          <div class="dhx_cal_next_button">&nbsp;</div>
+          <div class="dhx_cal_today_button"></div>
+          <div class="dhx_cal_date"></div>
+          <div class="dhx_cal_tab" name="timeline_tab" style="right: 280px;">Timeline</div>
+          <div class="dhx_cal_tab" name="day_tab" style="right: 204px;"></div>
+          <div class="dhx_cal_tab" name="week_tab" style="right: 140px;"></div>
+          <div class="dhx_cal_tab" name="month_tab" style="right: 76px;"></div>
+        </div>
+        <div class="dhx_cal_header"></div>
+        <div class="dhx_cal_data"></div>
+      </div>
+
+        <script>
+            scheduler.createTimelineView({
+                name: "timeline",
+                x_unit: "minute",
+                x_date: "%H:%i",
+                x_step: 60,
+                x_start: 9,
+                x_size: 10,
+                y_unit:[  
+                    {key:45, label:"James Smith"},
+                    {key:2, label:"John Williams"},
+                    {key:3, label:"David Miller"},
+                    {key:4, label:"Linda Brown"}  
+                ],
+                y_property:"section_id",
+                render: "bar"
+            });
+            scheduler.init('scheduler_here', null, "timeline");
+        
+            var createAvailability = #{jsRoute @Application.createAvailability() /};
+        
+            scheduler.attachEvent("onEventAdded", function(eventId, eventObject) {
+                var convert = scheduler.date.date_to_str("%Y-%m-%d %H:%i");
+                var dataObject = jQuery.extend(true, {}, eventObject);
+        
+                dataObject['start_date'] = convert(dataObject['start_date']);
+                dataObject['end_date'] = convert(dataObject['end_date']);
+        
+                $.ajax({
+                    url : createAvailability.url(),
+                    type : createAvailability.method,
+                    contentType : 'application/json; charset=UTF-8',
+                    data : JSON.stringify(dataObject),
+                    dataType : "json",
+                    success : function(data){
+                        scheduler.changeEventId(eventId, data.id);
+                    }
+                });
+            });
+            scheduler.attachEvent("onEventChanged", function(eventId,eventObject){
+                alert("event_id: " + eventObject.id);
+            });
+        </script>
+    </div>
+</div>

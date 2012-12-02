@@ -4,7 +4,6 @@
 
 # Home page
 
-GET     /admin/?                                AdminInstructor.instructor
 GET     /                                       Application.index
 
 # Ignore favicon requests
@@ -15,6 +14,10 @@ GET     /favicon.ico                            404
 
 # Import CRUD routes
 
+GET     /admin/timetable                        AdminInstructor.timetable
+GET		/admin/availabilities					AdminInstructor.availabilities
+POST	/admin/instructor						AdminInstructor.update
+GET		/admin/instructor						AdminInstructor.instructor
 *      	/admin              					module:crud
 
 # Map static resources from the /app/public folder to the /public path

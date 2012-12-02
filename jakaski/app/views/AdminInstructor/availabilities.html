@@ -1,0 +1,44 @@
+#{extends 'content.html' /}
+
+<div class="widget widget-table">
+                    
+          <div class="widget-header">
+            <i class="icon-th-list"></i>
+            <h3>Table</h3>
+          </div> <!-- /widget-header -->
+          
+          <div class="widget-content">
+          
+            <table class="table table-striped table-bordered">
+              <thead>
+                <tr>
+                  <th>Start time</th>
+                  <th>End time</th>
+                  <th>Location</th>
+                  <th>note</th>
+                  <th>&nbsp;</th>
+                </tr>
+              </thead>           
+              <tbody>
+              #{list items:availabilities, as:'availability'}
+                <tr>
+                  <td>${availability.startTime}</td>
+                  <td>${availability.endTime}</td>
+                  <td>${availability.location}</td>
+                  <td>${availability.note}</td>
+                  <td class="action-td">
+                    <a href="javascript:;" class="btn btn-small btn-warning">
+                      <i class="icon-ok"></i>               
+                    </a>          
+                    <a href="javascript:;" class="btn btn-small">
+                      <i class="icon-remove"></i>           
+                    </a>
+                  </td>
+                </tr>               
+              #{/list}
+              </tbody>
+            </table>
+          
+          </div> <!-- /widget-content -->
+          
+        </div> <!-- /widget -->

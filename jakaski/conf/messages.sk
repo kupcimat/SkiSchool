@@ -6,3 +6,6 @@ secure.signin=Prihlásiť
 secure.error=Oops, unknown username or password.
 secure.logout=You have been logged out.
 timetable=Rozvrh
+availabilities=Dostupnosť
+oldPasswordDiff=Heslo sa nezhoduje s pôvodným
+newPasswordDiff=Nové heslá sa nerovnajú

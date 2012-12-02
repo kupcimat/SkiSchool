@@ -2,9 +2,11 @@ package models;
 
 import play.*;
 import play.data.validation.Email;
+import play.data.validation.MinSize;
 import play.data.validation.Password;
 import play.data.validation.Phone;
 import play.data.validation.Required;
+import play.data.validation.Unique;
 import play.db.jpa.*;
 
 import javax.persistence.*;
@@ -21,10 +23,13 @@ public class User extends Model implements RoleHolder {
 
 	@Email
 	@Required
+	@Unique
 	public String email;
 	@Password
 	@Required
+	@MinSize(5)
 	public String password;
+	@Required
 	public String firstname;
 	public String surname;
 	@Phone

@@ -18,7 +18,7 @@ public class Security extends Secure.Security implements DeadboltHandler {
 	}
 	
 	static void onAuthenticated(){
-		AdminInstructor.instructor();
+		AdminInstructor.timetable();
 	}
 	
 	@Override
