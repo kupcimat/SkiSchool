@@ -95,49 +95,35 @@
         
         <ul id="main-nav" class="nav nav-tabs nav-stacked">
           
-          <li class="active">
+          <li class="${request.action == 'AdminInstructor.timetable' ? 'active' : ''}">
             <a href="@{AdminInstructor.timetable()}">
-              <i class="icon-calendar"></i>
+              <i class="icon-table"></i>
              &{'timetable'}     
             </a>
           </li>
           
-          <li>
+          <li class="${request.action == 'AdminInstructor.availabilities' ? 'active' : ''}">
             <a href="@{AdminInstructor.availabilities()}">
-              <i class="icon-pushpin"></i>
+              <i class="icon-calendar"></i>
               &{'availabilities'} 
             </a>
           </li>
           
-          <li>
-            <a href="http://wbpreview.com/previews/WB00U8L84/plans.html">
-              <i class="icon-th-list"></i>
-              Pricing Plans   
-            </a>
-          </li>
-          
-          <li>
-            <a href="http://wbpreview.com/previews/WB00U8L84/grid.html">
-              <i class="icon-th-large"></i>
-              Grid Layout 
-              <span class="label label-warning pull-right">5</span>
-            </a>
-          </li>
-          
-          <li>
-            <a href="http://wbpreview.com/previews/WB00U8L84/charts.html">
-              <i class="icon-signal"></i>
-              Charts  
-            </a>
-          </li>
-          
-          <li>
-            <a href="http://wbpreview.com/previews/WB00U8L84/account.html">
+          #{deadbolt.restrict roles:[['admin']]}
+          <li class="${request.controller == 'Instructors' ? 'active' : ''}">
+            <a href="@{Instructors.list()}">
               <i class="icon-user"></i>
-              User Account              
+              Instructors              
             </a>
           </li>
           
+          <li class="${request.controller == 'Students' ? 'active' : ''}">
+            <a href="@{Students.list()}">
+              <i class="icon-user"></i>
+              Students              
+            </a>
+          </li>
+          #{/deadbolt.restrict}
         </ul> 
         
         <hr>
