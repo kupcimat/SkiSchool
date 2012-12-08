@@ -19,14 +19,14 @@ public class Lesson extends Model {
     public Date startTime;
     @Required
     public Date endTime;
-    @Enumerated(EnumType.STRING)
     public Location location;
     public LessonType lessonType;
     public boolean snowboard;
-    public boolean paid;
-    @Enumerated(EnumType.STRING)
+    //TODO this information is not required, this function is covered by attribute paidLessons in Student class
+    //public boolean paid;
     public Lang language;
     public String note;
+    public Integer studentsCount;
 
     @ManyToMany
     public Set<Instructor> instructors;
@@ -50,8 +50,8 @@ public class Lesson extends Model {
 
         // TODO Will be used in future releases
         this.snowboard = false;
-        this.paid = false;
-        this.language = Lang.SK;
+        //this.paid = false;
+        //this.language = Lang;
     }
 
 }

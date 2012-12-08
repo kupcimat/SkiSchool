@@ -18,7 +18,7 @@ import java.util.*;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-@Table(name = "SkischoolUser")
+@Table(name = "SkiSchoolUser")
 public class User extends Model implements RoleHolder {
 
 	@Email
@@ -35,7 +35,6 @@ public class User extends Model implements RoleHolder {
 	@Phone
 	public String phone;
 	@Required
-	//TODO: ManyToMany
 	@ManyToOne
 	public ApplicationRole role;
 

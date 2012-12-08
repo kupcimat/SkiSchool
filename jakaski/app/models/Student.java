@@ -23,6 +23,11 @@ public class Student extends Model {
     @ManyToMany(mappedBy = "students")
     public Set<Lesson> lessons;
 
+    /**
+     * Absolute number of paid Lessons
+     */
+    public Integer paidLessons;
+    
     public Student(String fullname, String email, String phone) {
         this.fullname = fullname;
         this.email = email;

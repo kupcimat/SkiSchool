@@ -33,7 +33,7 @@ public class Application extends Controller {
         // System.out.println("user: " + user);
         // System.out.println("instructor: " + instructor);
 
-        Availability availability = body.createAvailability(Location.JAHODNA, instructor);
+        Availability availability = body.createAvailability(new Location("Jahodna"), instructor);
         instructor.addAvailability(availability);
 
         renderJSON(new SchedulerEvent.Response(availability.getId()));

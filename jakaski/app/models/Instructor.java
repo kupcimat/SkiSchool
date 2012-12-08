@@ -13,8 +13,8 @@ public class Instructor extends User {
 
     public String positionSki;
     public String positionSnowboard;
-    // @Enumerated(EnumType.STRING)
-    // public Lang languages;
+    @OneToMany
+    public Set<Lang> languages;
 
     @ManyToMany(mappedBy = "instructors")
     public Set<Lesson> lessons;

@@ -34,7 +34,7 @@ public class LessonController extends Controller {
             notFound("Instructor or student does not exist");
         }
         // TODO Temporary static assignement of variables
-        Lesson lesson = body.createLesson(Location.JAHODNA, LessonType.INDIVIDUAL, instructor, student);
+        Lesson lesson = body.createLesson(new Location("Jahodna"), LessonType.INDIVIDUAL, instructor, student);
         instructor.addLesson(lesson);
         student.addLesson(lesson);
         lesson.save();
