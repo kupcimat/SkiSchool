@@ -41,7 +41,7 @@ public class LessonWrapper {
         return Resources.getStudentId(lesson.student);
     }
 
-    public Lesson createLesson(Location location, LessonType lessonType, Instructor instructor, Student student) {
+    public Lesson getLesson(Location location, LessonType lessonType, Instructor instructor, Student student) {
         return new Lesson(lesson.start, lesson.end, location, lessonType, lesson.note, instructor, student);
     }
 

@@ -36,7 +36,7 @@ public class LessonController extends Controller {
 
         // TODO Temporary static assignment of variables
         Location location = Location.find("byName", "jahodna").first();
-        Lesson lesson = body.createLesson(location, LessonType.INDIVIDUAL, instructor, student);
+        Lesson lesson = body.getLesson(location, LessonType.INDIVIDUAL, instructor, student);
         instructor.addLesson(lesson);
         student.addLesson(lesson);
         lesson.save();
