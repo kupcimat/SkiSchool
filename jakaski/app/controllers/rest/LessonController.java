@@ -16,9 +16,8 @@ public class LessonController extends Controller {
     public static void getLesson(Long id) {
         Lesson lesson = Lesson.findById(id);
         notFoundIfNull(lesson, "Lesson does not exist");
-        LessonWrapper result = new LessonWrapper(lesson);
 
-        renderJSON(result, new DateSerializer());
+        renderJSON(new LessonWrapper(lesson), new DateSerializer());
     }
 
     /*
@@ -43,6 +42,23 @@ public class LessonController extends Controller {
 
         response.status = Http.StatusCode.CREATED;
         renderJSON(new UriResponse(Resources.getLessonUri(lesson)));
+    }
+
+    public static void updateLesson(Long id, LessonWrapper body) {
+        Lesson lesson = Lesson.findById(id);
+        notFoundIfNull(lesson, "Lesson does not exist");
+        // TODO check validity of instructor and student
+
+        body.updateLesson(lesson).save();
+        response.status = Http.StatusCode.NO_RESPONSE;
+    }
+
+    public static void deleteLesson(Long id) {
+        Lesson lesson = Lesson.findById(id);
+        notFoundIfNull(lesson, "Lesson does not exist");
+
+        lesson.delete();
+        response.status = Http.StatusCode.NO_RESPONSE;
     }
 
 }

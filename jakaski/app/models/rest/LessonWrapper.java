@@ -45,6 +45,15 @@ public class LessonWrapper {
         return new Lesson(lesson.start, lesson.end, location, lessonType, lesson.note, instructor, student);
     }
 
+    public Lesson updateLesson(Lesson lesson) {
+        lesson.startTime = this.lesson.start;
+        lesson.endTime = this.lesson.end;
+        lesson.note = this.lesson.note;
+        // TODO what about other fields
+
+        return lesson;
+    }
+
     public static class InnerLesson {
 
         private Date start;

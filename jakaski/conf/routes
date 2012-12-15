@@ -28,6 +28,8 @@ POST    /Application/availability               Application.createAvailability
 # Lesson resources
 GET     /lesson/{<[0-9]+>id}                    rest.LessonController.getLesson
 POST    /lesson                                 rest.LessonController.createLesson
+PUT     /lesson/{<[0-9]+>id}                    rest.LessonController.updateLesson
+DELETE  /lesson/{<[0-9]+>id}                    rest.LessonController.deleteLesson
 
 # Catch all
 *       /{controller}/{action}                  {controller}.{action}
