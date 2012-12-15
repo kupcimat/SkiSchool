@@ -15,7 +15,6 @@ public class Availability extends Model {
 	public Date startTime;
 	@Required
 	public Date endTime;
-	@Enumerated(EnumType.STRING)
 	public Location location;
 	public String note;
 	@ManyToOne

@@ -35,8 +35,8 @@ public class User extends Model implements RoleHolder {
 	@Phone
 	public String phone;
 	@Required
-	@ManyToOne
-	public ApplicationRole role;
+	@ManyToMany
+	public List<ApplicationRole> roles;
 
 	public User(String email, String password, String fullname, String surname, String phone) {
 		this.email = email;
@@ -62,7 +62,7 @@ public class User extends Model implements RoleHolder {
 
 	@Override
     public List<? extends Role> getRoles() {
-		return Arrays.asList(this.role);
+		return this.roles;
     }
 
 }

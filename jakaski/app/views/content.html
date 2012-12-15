@@ -79,7 +79,7 @@
           
             <span class="account-name">${instructor.toString()}</span>
             
-            <span class="account-role">${instructor.role}</span>
+            <span class="account-role">${instructor.roles}</span>
             
             <span class="account-actions">
               <a href="javascript:;">Profile</a> |
@@ -123,6 +123,22 @@
               Students              
             </a>
           </li>
+          
+          <li class="${request.controller == 'Employees' ? 'active' : ''}">
+            <a href="@{Employees.list()}">
+              <i class="icon-user"></i>
+              Users              
+            </a>
+          </li>
+          
+          <li class="${request.controller == 'Langs' ? 'active' : ''}">
+            <a href="@{Langs.list()}">
+              <i class="icon-user"></i>
+              Languages              
+            </a>
+          </li>
+          
+      
           #{/deadbolt.restrict}
         </ul> 
         

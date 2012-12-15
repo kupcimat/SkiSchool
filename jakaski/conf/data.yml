@@ -4,6 +4,9 @@
 ApplicationRole(admin):
     name: admin
 
+ApplicationRole(editor):
+    name: editor
+
 ApplicationRole(instructor):
     name: instructor
 
