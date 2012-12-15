@@ -1,5 +1,8 @@
 package models.rest;
 
+import static org.apache.commons.lang.Validate.notEmpty;
+import static org.apache.commons.lang.Validate.notNull;
+
 import java.util.Date;
 
 import models.Instructor;
@@ -18,8 +21,9 @@ public class LessonWrapper {
     }
 
     public LessonWrapper(Lesson lesson) {
-        // TODO notEmpty(instructors)
-        // TODO notEmpty(students)
+        notEmpty(lesson.instructors, "Instructors can't be empty");
+        notEmpty(lesson.students, "Students can't be empty");
+
         Instructor instructor = lesson.instructors.iterator().next();
         Student student = lesson.students.iterator().next();
 
@@ -28,12 +32,12 @@ public class LessonWrapper {
     }
 
     public Long getInstructorId() {
-        // TODO notNull(lesson)
+        notNull(lesson, "Lesson can't be null");
         return Resources.getInstructorId(lesson.instructor);
     }
 
     public Long getStudentId() {
-        // TODO notNull(lesson)
+        notNull(lesson, "Lesson can't be null");
         return Resources.getStudentId(lesson.student);
     }
 

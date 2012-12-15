@@ -4,3 +4,4 @@ require:
     - play -> secure
     - play -> crud
     - play -> deadbolt 1.5.4
+    - commons-lang -> commons-lang 2.6
