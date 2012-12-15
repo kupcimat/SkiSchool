@@ -23,3 +23,11 @@ Instructor(miso):
     firstname: Michal
     surname: Sabol
     role: [instructor]
+
+Student(mato):
+    email: mato@mato.com
+    fullname: mato k.
+    phone: 123456789
+
+Location(jahodna):
+    name: jahodna

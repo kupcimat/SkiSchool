@@ -27,7 +27,7 @@ public class Student extends Model {
      * Absolute number of paid Lessons
      */
     public Integer paidLessons;
-    
+
     public Student(String fullname, String email, String phone) {
         this.fullname = fullname;
         this.email = email;
@@ -35,9 +35,7 @@ public class Student extends Model {
     }
 
     public void addLesson(Lesson lesson) {
-        //lesson.save();
         lessons.add(lesson);
-        //save();
     }
 
 }

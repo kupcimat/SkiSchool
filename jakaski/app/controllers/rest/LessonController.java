@@ -14,10 +14,7 @@ public class LessonController extends Controller {
 
     public static void getLesson(Long id) {
         Lesson lesson = Lesson.findById(id);
-
-        if (lesson == null) {
-            notFound();
-        }
+        notFoundIfNull(lesson, "Lesson does not exist");
         LessonWrapper result = new LessonWrapper(lesson);
 
         renderJSON(result);
@@ -27,14 +24,18 @@ public class LessonController extends Controller {
      * Parameter must be named body in order to work.
      */
     public static void createLesson(LessonWrapper body) {
-        Instructor instructor = Instructor.findById(body.getInstructorId());
-        Student student = Student.findById(body.getStudentId());
-
-        if (instructor == null || student == null) {
-            notFound("Instructor or student does not exist");
+        if (body == null) {
+            badRequest();
         }
-        // TODO Temporary static assignement of variables
-        Lesson lesson = body.createLesson(new Location("Jahodna"), LessonType.INDIVIDUAL, instructor, student);
+
+        Instructor instructor = Instructor.findById(body.getInstructorId());
+        notFoundIfNull(instructor, "Instructor does not exist");
+        Student student = Student.findById(body.getStudentId());
+        notFoundIfNull(student, "Student does not exist");
+
+        // TODO Temporary static assignment of variables
+        Location location = Location.find("byName", "jahodna").first();
+        Lesson lesson = body.createLesson(location, LessonType.INDIVIDUAL, instructor, student);
         instructor.addLesson(lesson);
         student.addLesson(lesson);
         lesson.save();
