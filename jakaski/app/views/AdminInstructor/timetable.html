@@ -36,7 +36,7 @@
   }
 
   function lessonsToEvents(data) {
-      var events = [];
+      var events = new Array();
 
       $.each(data, function(index, value) {
           var lesson = value.lesson;
@@ -47,14 +47,25 @@
       return events;
   }
 
-  function loadEvents(date) {
-      var queryDate = "date=" + getShortDate(date);
-      var getLessons = #{jsRoute @rest.QueryController.getLessons() /};
+  function eventToLesson(event) {
+      var convert = scheduler.date.date_to_str("%Y-%m-%d %H:%i");
+      var lesson = new Object();
 
+      lesson.start = convert(event.start_date);
+      lesson.end = convert(event.end_date);
+      lesson.note = event.text;
+      lesson.instructor = "/instructor/" + event.instructor_id;
+      // TODO
+      lesson.student = "/student/224";
+
+      return {lesson: lesson};
+  }
+
+  function loadEvents(date) {
       $.ajax({
-          url: getLessons.url(),
-          type: getLessons.method,
-          data: queryDate,
+          type: "GET",
+          url: "/query/lessons",
+          data: "date=" + getShortDate(date)
       }).done(function(data) {
           scheduler.parse(lessonsToEvents(data.result), "json");
       });
@@ -89,6 +100,14 @@
   // Events management
   scheduler.attachEvent("onViewChange", function(mode, date) {
       loadEvents(date);
+  });
+
+  scheduler.attachEvent("onEventChanged", function(eventId, eventObject) {
+      $.ajax({
+          type: "PUT",
+          url: "/lesson/" + eventId,
+          data: JSON.stringify(eventToLesson(eventObject))
+      });
   });
 </script>
 </div>
