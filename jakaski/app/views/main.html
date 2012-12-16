@@ -15,6 +15,7 @@
         <link rel="stylesheet" href="@{'/public/stylesheets/font-awesome.css'}">
         <link rel="stylesheet" href="@{'/public/stylesheets/adminia.css'}">
         <link rel="stylesheet" href="@{'/public/stylesheets/adminia-responsive.css'}">
+        <script src="@{'/public/javascripts/jquery-1.7.2.min.js'}" type="text/javascript" charset="${_response_encoding}"></script>
         #{get 'moreStyles' /}
         #{get 'moreScripts' /}
 
@@ -25,7 +26,6 @@
     </head>
     <body>
         #{doLayout /}
-        <script src="@{'/public/javascripts/jquery-1.7.2.min.js'}" type="text/javascript" charset="${_response_encoding}"></script>
         <script src="@{'/public/javascripts/bootstrap.js'}" type="text/javascript" charset="${_response_encoding}"></script>    
     </body>
 </html>
