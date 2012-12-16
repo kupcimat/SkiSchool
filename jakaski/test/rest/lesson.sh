@@ -1,9 +1,9 @@
 #!/bin/bash
 
 # Check parameters
-if [ $# -ne 2 ]
+if [ $# -ne 3 ]
 then
-  echo "Usage: $0 <GET | POST> <object-uri>"
+  echo "Usage: $0 <GET|POST|PUT|DELETE> <object-uri> <json-file>"
   exit 1
 fi
 
@@ -15,16 +15,35 @@ function getObject {
 
 function postObject {
   URL=$1
+  JSON=$2
   curl -v --header "Accept: application/json" \
           --header "Content-Type: application/json" \
           --request POST \
-          --data "{ \"lesson\" : { \"start\" : \"2012-12-01 12:41\", \"end\" : \"2012-12-01 13:41\", \"note\" : \"Let's rock with this API!\", \"instructor\" : \"/instructor/23\", \"student\" : \"/student/13\" }}" \
+          --data @$JSON \
+          $URL
+}
+
+function putObject {
+  URL=$1
+  JSON=$2
+  curl -v --header "Accept: application/json" \
+          --header "Content-Type: application/json" \
+          --request PUT \
+          --data @$JSON \
+          $URL
+}
+
+function deleteObject {
+  URL=$1
+  curl -v --header "Accept: application/json" \
+          --request DELETE \
           $URL
 }
 
 # Configure parameters
 METHOD=$1
 URL=http://127.0.0.1:9000$2
+JSON=$3
 
 # Get object
 if [ $METHOD == "GET" ]
@@ -37,6 +56,20 @@ fi
 if [ $METHOD == "POST" ]
 then
   echo "===== POST: $URL ====="
-  postObject $URL
+  postObject $URL $JSON
+fi
+
+# Update object
+if [ $METHOD == "PUT" ]
+then
+  echo "===== PUT: $URL ====="
+  putObject $URL $JSON
+fi
+
+# Delete object
+if [ $METHOD == "DELETE" ]
+then
+  echo "===== DELTE: $URL ====="
+  deleteObject $URL
 fi
 
