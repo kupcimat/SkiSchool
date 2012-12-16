@@ -102,11 +102,28 @@
       loadEvents(date);
   });
 
+  scheduler.attachEvent("onEventAdded", function(eventId, eventObject) {
+      $.ajax({
+          type: "POST",
+          url: "/lesson",
+          data: JSON.stringify(eventToLesson(eventObject))
+      }).done(function(data) {
+          scheduler.changeEventId(eventId, data.uri.replace("/lesson/", ""));
+      });
+  });
+
   scheduler.attachEvent("onEventChanged", function(eventId, eventObject) {
       $.ajax({
           type: "PUT",
           url: "/lesson/" + eventId,
           data: JSON.stringify(eventToLesson(eventObject))
+      });
+  });
+
+  scheduler.attachEvent("onEventDeleted", function(eventId) {
+      $.ajax({
+          type: "DELETE",
+          url: "/lesson/" + eventId
       });
   });
 </script>
