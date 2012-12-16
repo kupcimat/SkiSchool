@@ -5,6 +5,7 @@ import play.db.jpa.Model;
 public class Resources {
 
     public static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd HH:mm";
+    public static final String DEFAULT_SHORT_DATE_FORMAT = "yyyy-MM-dd";
 
     private static final String INSTRUCTOR = "/instructor/";
     private static final String STUDENT = "/student/";

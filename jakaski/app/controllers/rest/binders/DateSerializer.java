@@ -1,8 +1,9 @@
 package controllers.rest.binders;
 
 import java.lang.reflect.Type;
-import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import org.apache.commons.lang.time.DateFormatUtils;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
@@ -15,8 +16,8 @@ public class DateSerializer implements JsonSerializer<Date> {
 
     @Override
     public JsonElement serialize(Date date, Type type, JsonSerializationContext contex) {
-        SimpleDateFormat formatter = new SimpleDateFormat(Resources.DEFAULT_DATE_FORMAT);
-        return (date == null) ? null : new JsonPrimitive(formatter.format(date));
+        String value = DateFormatUtils.format(date, Resources.DEFAULT_DATE_FORMAT);
+        return (date == null) ? null : new JsonPrimitive(value);
     }
 
 }

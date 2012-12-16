@@ -29,5 +29,8 @@ POST    /lesson                                 rest.LessonController.createLess
 PUT     /lesson/{<[0-9]+>id}                    rest.LessonController.updateLesson
 DELETE  /lesson/{<[0-9]+>id}                    rest.LessonController.deleteLesson
 
+# Queries
+GET     /query/lessons                          rest.QueryController.getLessons
+
 # Catch all
 *       /{controller}/{action}                  {controller}.{action}
