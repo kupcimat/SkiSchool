@@ -31,21 +31,24 @@
 
 <script type="text/javascript" charset="utf-8">
   // Helper functions
+  function getShortDate(date) {
+      return date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
+  }
+
   function lessonsToEvents(data) {
       var events = [];
 
       $.each(data, function(index, value) {
           var lesson = value.lesson;
           var instructorId = lesson.instructor.replace("/instructor/", "");
-          events.push({start_date: lesson.start, end_date: lesson.end, text: lesson.note, instructor_id: instructorId});
+          events.push({id: lesson.id, start_date: lesson.start, end_date: lesson.end, text: lesson.note, instructor_id: instructorId});
       });
 
       return events;
   }
 
-  function loadEvents() {
-      var date = new Date();
-      var queryDate = "date=" + date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
+  function loadEvents(date) {
+      var queryDate = "date=" + getShortDate(date);
       var getLessons = #{jsRoute @rest.QueryController.getLessons() /};
 
       $.ajax({
@@ -81,6 +84,11 @@
   scheduler.init('scheduler_here', null, "timeline");
   
   // Data loading
-  loadEvents();
+  loadEvents(new Date());
+
+  // Events management
+  scheduler.attachEvent("onViewChange", function(mode, date) {
+      loadEvents(date);
+  });
 </script>
 </div>

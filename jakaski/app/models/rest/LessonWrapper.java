@@ -27,8 +27,8 @@ public class LessonWrapper {
         Instructor instructor = lesson.instructors.iterator().next();
         Student student = lesson.students.iterator().next();
 
-        this.lesson = new InnerLesson(lesson.startTime, lesson.endTime, lesson.note, Resources.getInstructorUri(instructor),
-                Resources.getStudentUri(student));
+        this.lesson = new InnerLesson(lesson.getId(), lesson.startTime, lesson.endTime, lesson.note,
+                Resources.getInstructorUri(instructor), Resources.getStudentUri(student));
     }
 
     public Long getInstructorId() {
@@ -56,6 +56,7 @@ public class LessonWrapper {
 
     public static class InnerLesson {
 
+        private Long id;
         private Date start;
         private Date end;
         private String note;
@@ -66,7 +67,8 @@ public class LessonWrapper {
         public InnerLesson() {
         }
 
-        public InnerLesson(Date start, Date end, String note, String instructor, String student) {
+        public InnerLesson(Long id, Date start, Date end, String note, String instructor, String student) {
+            this.id = id;
             this.start = start;
             this.end = end;
             this.note = note;
