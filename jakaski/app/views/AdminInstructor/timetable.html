@@ -6,6 +6,7 @@
 #{set 'moreScripts'}
 <script src="@{'/public/javascripts/dhtmlxscheduler.js'}" type="text/javascript" charset="utf-8"></script>
 <script src="@{'/public/javascripts/dhtmlxscheduler_timeline.js'}" type="text/javascript" charset="utf-8"></script>
+<script src="@{'/public/javascripts/dhtmlxscheduler_treetimeline.js'}" type="text/javascript" charset="utf-8"></script>
 <script src="@{'/public/javascripts/dhtmlxscheduler_dhx_terrace.js'}" type="text/javascript" charset="utf-8"></script>
 #{/set}
 
@@ -40,8 +41,9 @@
 
       $.each(data, function(index, value) {
           var lesson = value.lesson;
+          var studentId = lesson.student.replace("/student/", "");
           var instructorId = lesson.instructor.replace("/instructor/", "");
-          events.push({id: lesson.id, start_date: lesson.start, end_date: lesson.end, text: lesson.note, instructor_id: instructorId});
+          events.push({id: lesson.id, start_date: lesson.start, end_date: lesson.end, text: lesson.note, instructor_id: instructorId, student_id: studentId});
       });
 
       return events;
@@ -74,12 +76,13 @@
   // Timeline configuration
   scheduler.createTimelineView({
     name: "timeline",
-    render: "bar",
+    render: "tree",
     x_unit: "minute",
     x_date: "%H:%i",
     x_step: 60,
     x_start: 8,
     x_size: 11,
+    x_length: 24,
     y_property:"instructor_id",
     y_unit:[
       {key:223, label:"Michal"},
