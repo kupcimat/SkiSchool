@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import models.Instructor;
 import models.Lesson;
-import models.rest.QueryResponse;
+import models.rest.InstructorWrapper;
 import models.rest.LessonWrapper;
+import models.rest.QueryResponse;
 
 import org.apache.commons.lang.time.DateUtils;
 
@@ -31,6 +33,24 @@ public class QueryController extends Controller {
         }
 
         renderJSON(new QueryResponse<LessonWrapper>(wrappers), new DateSerializer());
+    }
+
+    public static void getInstructors(@As(binder = DateBinder.class) Date date) {
+        if (date == null) {
+            badRequest();
+        }
+
+        // TODO add available instructors
+        Date nextDay = DateUtils.addDays(date, 1);
+        List<Instructor> instructors = Instructor.find(
+                "select distinct i from Instructor i join i.lessons l where l.startTime >= ? and l.startTime < ?", date, nextDay).fetch();
+
+        List<InstructorWrapper> wrappers = new ArrayList<>();
+        for (Instructor instructor : instructors) {
+            wrappers.add(new InstructorWrapper(instructor));
+        }
+
+        renderJSON(new QueryResponse<InstructorWrapper>(wrappers));
     }
 
 }

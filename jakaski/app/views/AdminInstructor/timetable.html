@@ -49,6 +49,17 @@
       return events;
   }
 
+  function instructorsToSections(data) {
+      var sections = new Array();
+
+      $.each(data, function(index, value) {
+          var instructor = value.instructor;
+          sections.push({key: instructor.id, label: instructor.name});
+      });
+
+      return sections;
+  }
+
   function eventToLesson(event) {
       var convert = scheduler.date.date_to_str("%Y-%m-%d %H:%i");
       var lesson = new Object();
@@ -73,6 +84,20 @@
       });
   }
 
+  function loadSections(date) {
+      $.ajax({
+          type: "GET",
+          url: "/query/instructors",
+          data: "date=" + getShortDate(date)
+      }).done(function(data) {
+          $.each(instructorsToSections(data.result), function(index, value) {
+              if (scheduler.getSection(value.key) == null) {
+                  scheduler.addSection(value, null);
+              }
+          });
+      });
+  }
+
   // Timeline configuration
   scheduler.createTimelineView({
     name: "timeline",
@@ -83,13 +108,8 @@
     x_start: 8,
     x_size: 11,
     x_length: 24,
-    y_property:"instructor_id",
-    y_unit:[
-      {key:223, label:"Michal"},
-      {key:2, label:"John Williams"},
-      {key:3, label:"David Miller"},
-      {key:4, label:"Linda Brown"}
-    ]
+    y_property: "instructor_id",
+    y_unit: []
   });
 
   // Scheduler configuration
@@ -99,10 +119,12 @@
   
   // Data loading
   loadEvents(new Date());
+  loadSections(new Date());
 
   // Events management
   scheduler.attachEvent("onViewChange", function(mode, date) {
       loadEvents(date);
+      loadSections(date);
   });
 
   scheduler.attachEvent("onEventAdded", function(eventId, eventObject) {

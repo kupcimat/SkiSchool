@@ -31,6 +31,7 @@ DELETE  /lesson/{<[0-9]+>id}                    rest.LessonController.deleteLess
 
 # Queries
 GET     /query/lessons                          rest.QueryController.getLessons
+GET     /query/instructors                      rest.QueryController.getInstructors
 
 # Catch all
 *       /{controller}/{action}                  {controller}.{action}
