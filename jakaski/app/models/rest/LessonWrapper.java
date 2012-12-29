@@ -21,6 +21,7 @@ public class LessonWrapper {
     }
 
     public LessonWrapper(Lesson lesson) {
+        notNull(lesson, "Lesson can't be null");
         notEmpty(lesson.instructors, "Instructors can't be empty");
         notEmpty(lesson.students, "Students can't be empty");
 
@@ -32,20 +33,24 @@ public class LessonWrapper {
     }
 
     public Long getInstructorId() {
-        notNull(lesson, "Lesson can't be null");
+        notNull(lesson, "InnerLesson can't be null");
         return Resources.getInstructorId(lesson.instructor);
     }
 
     public Long getStudentId() {
-        notNull(lesson, "Lesson can't be null");
+        notNull(lesson, "InnerLesson can't be null");
         return Resources.getStudentId(lesson.student);
     }
 
     public Lesson getLesson(Location location, LessonType lessonType, Instructor instructor, Student student) {
+        notNull(lesson, "InnerLesson can't be null");
         return new Lesson(lesson.start, lesson.end, location, lessonType, lesson.note, instructor, student);
     }
 
     public Lesson updateLesson(Lesson lesson) {
+        notNull(lesson, "Lesson can't be null");
+        notNull(this.lesson, "InnerLesson can't be null");
+
         lesson.startTime = this.lesson.start;
         lesson.endTime = this.lesson.end;
         lesson.note = this.lesson.note;

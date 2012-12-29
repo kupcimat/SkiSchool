@@ -45,6 +45,10 @@ public class LessonController extends Controller {
     }
 
     public static void updateLesson(Long id, LessonWrapper body) {
+        if (body == null) {
+            badRequest();
+        }
+
         Lesson lesson = Lesson.findById(id);
         notFoundIfNull(lesson, "Lesson does not exist");
         // TODO check validity of instructor and student
