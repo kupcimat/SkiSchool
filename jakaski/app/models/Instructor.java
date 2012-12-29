@@ -33,9 +33,7 @@ public class Instructor extends User {
     }
 
     public void addAvailability(Availability availability) {
-        availability.save();
         availabilities.add(availability);
-        save();
     }
 
     public void addLesson(Lesson lesson) {

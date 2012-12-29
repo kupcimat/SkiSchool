@@ -29,6 +29,12 @@ POST    /lesson                                 rest.LessonController.createLess
 PUT     /lesson/{<[0-9]+>id}                    rest.LessonController.updateLesson
 DELETE  /lesson/{<[0-9]+>id}                    rest.LessonController.deleteLesson
 
+# Availability resources
+GET     /availability/{<[0-9]+>id}              rest.AvailabilityController.getAvailability
+POST    /availability                           rest.AvailabilityController.createAvailability
+PUT     /availability/{<[0-9]+>id}              rest.AvailabilityController.updateAvailability
+DELETE  /availability/{<[0-9]+>id}              rest.AvailabilityController.deleteAvailability
+
 # Queries
 GET     /query/lessons                          rest.QueryController.getLessons
 GET     /query/instructors                      rest.QueryController.getInstructors

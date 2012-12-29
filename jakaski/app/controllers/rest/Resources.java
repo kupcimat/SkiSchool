@@ -10,6 +10,7 @@ public class Resources {
     private static final String INSTRUCTOR = "/instructor/";
     private static final String STUDENT = "/student/";
     private static final String LESSON = "/lesson/";
+    private static final String AVAILABILITY = "/availability/";
 
     public static String getInstructorUri(Model object) {
         return getUri(INSTRUCTOR, object);
@@ -21,6 +22,10 @@ public class Resources {
 
     public static String getLessonUri(Model object) {
         return getUri(LESSON, object);
+    }
+
+    public static String getAvailabilityUri(Model object) {
+        return getUri(AVAILABILITY, object);
     }
 
     public static Long getInstructorId(String uri) {
