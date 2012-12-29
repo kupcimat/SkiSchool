@@ -8,6 +8,7 @@
 <script src="@{'/public/javascripts/dhtmlxscheduler_timeline.js'}" type="text/javascript" charset="utf-8"></script>
 <script src="@{'/public/javascripts/dhtmlxscheduler_treetimeline.js'}" type="text/javascript" charset="utf-8"></script>
 <script src="@{'/public/javascripts/dhtmlxscheduler_dhx_terrace.js'}" type="text/javascript" charset="utf-8"></script>
+<script src="@{'/public/javascripts/scheduler-rest-client.js'}" type="text/javascript" charset="utf-8"></script>
 #{/set}
 
 <h1 class="page-title">
@@ -32,48 +33,6 @@
 
 <script type="text/javascript" charset="utf-8">
   // Helper functions
-  function getShortDate(date) {
-      return date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
-  }
-
-  function lessonsToEvents(data) {
-      var events = new Array();
-
-      $.each(data, function(index, value) {
-          var lesson = value.lesson;
-          var studentId = lesson.student.replace("/student/", "");
-          var instructorId = lesson.instructor.replace("/instructor/", "");
-          events.push({id: lesson.id, start_date: lesson.start, end_date: lesson.end, text: lesson.note, instructor_id: instructorId, student_id: studentId});
-      });
-
-      return events;
-  }
-
-  function instructorsToSections(data) {
-      var sections = new Array();
-
-      $.each(data, function(index, value) {
-          var instructor = value.instructor;
-          sections.push({key: instructor.id, label: instructor.name});
-      });
-
-      return sections;
-  }
-
-  function eventToLesson(event) {
-      var convert = scheduler.date.date_to_str("%Y-%m-%d %H:%i");
-      var lesson = new Object();
-
-      lesson.start = convert(event.start_date);
-      lesson.end = convert(event.end_date);
-      lesson.note = event.text;
-      lesson.instructor = "/instructor/" + event.instructor_id;
-      // TODO
-      lesson.student = "/student/224";
-
-      return {lesson: lesson};
-  }
-
   function loadEvents(date) {
       $.ajax({
           type: "GET",
@@ -116,7 +75,7 @@
   scheduler.config.api_date="%Y-%m-%d %H:%i";
   scheduler.config.xml_date="%Y-%m-%d %H:%i";
   scheduler.init('scheduler_here', null, "timeline");
-  
+
   // Data loading
   loadEvents(new Date());
   loadSections(new Date());
@@ -131,7 +90,7 @@
       $.ajax({
           type: "POST",
           url: "/lesson",
-          data: JSON.stringify(eventToLesson(eventObject))
+          data: JSON.stringify(eventToLesson(eventObject, scheduler))
       }).done(function(data) {
           scheduler.changeEventId(eventId, data.uri.replace("/lesson/", ""));
       });
@@ -141,7 +100,7 @@
       $.ajax({
           type: "PUT",
           url: "/lesson/" + eventId,
-          data: JSON.stringify(eventToLesson(eventObject))
+          data: JSON.stringify(eventToLesson(eventObject, scheduler))
       });
   });
 
