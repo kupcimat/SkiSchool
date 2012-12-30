@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import models.Availability;
 import models.Instructor;
 import models.Lesson;
+import models.rest.AvailabilityWrapper;
 import models.rest.InstructorWrapper;
 import models.rest.LessonWrapper;
 import models.rest.QueryResponse;
@@ -33,6 +35,23 @@ public class QueryController extends Controller {
         }
 
         renderJSON(new QueryResponse<LessonWrapper>(wrappers), new DateSerializer());
+    }
+
+    public static void getAvailabilities(@As(binder = DateBinder.class) Date date) {
+        if (date == null) {
+            badRequest();
+        }
+
+        Date nextDay = DateUtils.addDays(date, 1);
+        List<Availability> availabilities = Availability.find("select a from Availability a where a.startTime >= ? and a.startTime < ?",
+                date, nextDay).fetch();
+
+        List<AvailabilityWrapper> wrappers = new ArrayList<>();
+        for (Availability availability : availabilities) {
+            wrappers.add(new AvailabilityWrapper(availability));
+        }
+
+        renderJSON(new QueryResponse<AvailabilityWrapper>(wrappers), new DateSerializer());
     }
 
     public static void getInstructors(@As(binder = DateBinder.class) Date date) {
