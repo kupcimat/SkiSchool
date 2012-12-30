@@ -3,6 +3,18 @@ function getShortDate(date) {
     return date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
 }
 
+function availabilitiesToEvents(data) {
+    var events = new Array();
+
+    $.each(data, function(index, value) {
+        var availability = value.availability;
+        var instructorId = availability.instructor.replace("/instructor/", "");
+        events.push({id: availability.id, start_date: availability.start, end_date: availability.end, text: availability.note, instructor_id: instructorId});
+    });
+
+    return events;
+}
+
 function lessonsToEvents(data) {
     var events = new Array();
 
@@ -25,6 +37,18 @@ function instructorsToSections(data) {
     });
 
     return sections;
+}
+
+function eventToAvailability(event, scheduler) {
+    var convert = scheduler.date.date_to_str("%Y-%m-%d %H:%i");
+    var availability = new Object();
+
+    availability.start = convert(event.start_date);
+    availability.end = convert(event.end_date);
+    availability.note = event.text;
+    availability.instructor = "/instructor/" + event.instructor_id;
+
+    return {availability: availability};
 }
 
 function eventToLesson(event, scheduler) {

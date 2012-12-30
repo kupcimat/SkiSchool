@@ -46,6 +46,7 @@ public class AvailabilityController extends Controller {
 
         Availability availability = Availability.findById(id);
         notFoundIfNull(availability, "Availability does not exist");
+        // TODO check validity of instructor
 
         body.updateAvailability(availability).save();
         response.status = Http.StatusCode.NO_RESPONSE;
