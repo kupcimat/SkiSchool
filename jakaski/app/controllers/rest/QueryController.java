@@ -59,10 +59,15 @@ public class QueryController extends Controller {
             badRequest();
         }
 
-        // TODO add available instructors
         Date nextDay = DateUtils.addDays(date, 1);
+        // Instructors with lessons
         List<Instructor> instructors = Instructor.find(
                 "select distinct i from Instructor i join i.lessons l where l.startTime >= ? and l.startTime < ?", date, nextDay).fetch();
+        // Available instructors
+        List<Instructor> available = Instructor.find(
+                "select distinct i from Instructor i join i.availabilities a where a.startTime >= ? and a.startTime < ?", date, nextDay)
+                .fetch();
+        instructors.addAll(available);
 
         List<InstructorWrapper> wrappers = new ArrayList<>();
         for (Instructor instructor : instructors) {
