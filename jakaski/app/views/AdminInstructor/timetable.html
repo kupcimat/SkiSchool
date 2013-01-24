@@ -33,13 +33,23 @@
 
 <script type="text/javascript" charset="utf-8">
   // Helper functions
-  function loadEvents(date) {
+  function loadLessons(date) {
       $.ajax({
           type: "GET",
           url: "/query/lessons",
           data: "date=" + getShortDate(date)
       }).done(function(data) {
           scheduler.parse(lessonsToEvents(data.result), "json");
+      });
+  }
+
+  function loadAvailabilities(date) {
+      $.ajax({
+          type: "GET",
+          url: "/query/availabilities",
+          data: "date=" + getShortDate(date)
+      }).done(function(data) {
+          scheduler.parse(availabilitiesToEvents(data.result), "json");
       });
   }
 
@@ -55,6 +65,12 @@
               }
           });
       });
+  }
+
+  function loadData(date) {
+      loadSections(date);
+      loadLessons(date);
+      loadAvailabilities(date);
   }
 
   // Timeline configuration
@@ -77,13 +93,11 @@
   scheduler.init("scheduler_here", null, "timeline");
 
   // Data loading
-  loadEvents(new Date());
-  loadSections(new Date());
+  loadData(new Date());
 
   // Events management
   scheduler.attachEvent("onViewChange", function(mode, date) {
-      loadEvents(date);
-      loadSections(date);
+      loadData(date);
   });
 
   scheduler.attachEvent("onEventAdded", function(eventId, eventObject) {
