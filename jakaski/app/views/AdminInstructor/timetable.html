@@ -2,6 +2,7 @@
 
 #{set 'moreStyles'}
 <link rel="stylesheet" href="@{'/public/stylesheets/dhtmlxscheduler_dhx_terrace.css'}" type="text/css" charset="utf-8">
+<link rel="stylesheet" href="@{'/public/stylesheets/scheduler-custom.css'}" type="text/css" charset="utf-8">
 #{/set}
 #{set 'moreScripts'}
 <script src="@{'/public/javascripts/dhtmlxscheduler.js'}" type="text/javascript" charset="utf-8"></script>
@@ -86,6 +87,14 @@
     y_property: "instructor_id",
     y_unit: []
   });
+
+  scheduler.templates.event_class=function(start, end, event) {
+      if (event.type != null) {
+          return event.type;
+      } else {
+          return "";
+      }
+  }
 
   // Scheduler configuration
   scheduler.config.api_date="%Y-%m-%d %H:%i";

@@ -9,7 +9,7 @@ function availabilitiesToEvents(data) {
     $.each(data, function(index, value) {
         var availability = value.availability;
         var instructorId = availability.instructor.replace("/instructor/", "");
-        events.push({id: availability.id, start_date: availability.start, end_date: availability.end, text: availability.note, instructor_id: instructorId});
+        events.push({id: availability.id, start_date: availability.start, end_date: availability.end, text: availability.note, instructor_id: instructorId, type: "availability"});
     });
 
     return events;
@@ -22,7 +22,7 @@ function lessonsToEvents(data) {
         var lesson = value.lesson;
         var studentId = lesson.student.replace("/student/", "");
         var instructorId = lesson.instructor.replace("/instructor/", "");
-        events.push({id: lesson.id, start_date: lesson.start, end_date: lesson.end, text: lesson.note, instructor_id: instructorId, student_id: studentId});
+        events.push({id: lesson.id, start_date: lesson.start, end_date: lesson.end, text: lesson.note, instructor_id: instructorId, student_id: studentId, type: "lesson"});
     });
 
     return events;

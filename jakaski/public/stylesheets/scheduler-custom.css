@@ -1,0 +1,11 @@
+/* Lesson color */
+.dhx_cal_event.lesson div,.dhx_cal_event_line.lesson {
+	background-color: #FF8100 !important;
+	color: white !important;
+}
+
+/* Availability color */
+.dhx_cal_event.availability div,.dhx_cal_event_line.availability {
+	background-color: #00BD39 !important;
+	color: white !important;
+}
