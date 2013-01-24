@@ -2,7 +2,9 @@ package controllers.rest;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import models.Availability;
 import models.Instructor;
@@ -61,12 +63,15 @@ public class QueryController extends Controller {
 
         Date nextDay = DateUtils.addDays(date, 1);
         // Instructors with lessons
-        List<Instructor> instructors = Instructor.find(
+        List<Instructor> withLesson = Instructor.find(
                 "select distinct i from Instructor i join i.lessons l where l.startTime >= ? and l.startTime < ?", date, nextDay).fetch();
         // Available instructors
         List<Instructor> available = Instructor.find(
                 "select distinct i from Instructor i join i.availabilities a where a.startTime >= ? and a.startTime < ?", date, nextDay)
                 .fetch();
+
+        Set<Instructor> instructors = new HashSet<>();
+        instructors.addAll(withLesson);
         instructors.addAll(available);
 
         List<InstructorWrapper> wrappers = new ArrayList<>();
