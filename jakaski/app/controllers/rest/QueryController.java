@@ -9,10 +9,12 @@ import java.util.Set;
 import models.Availability;
 import models.Instructor;
 import models.Lesson;
+import models.Student;
 import models.rest.AvailabilityWrapper;
 import models.rest.InstructorWrapper;
 import models.rest.LessonWrapper;
 import models.rest.QueryResponse;
+import models.rest.StudentWrapper;
 
 import org.apache.commons.lang.time.DateUtils;
 
@@ -80,6 +82,21 @@ public class QueryController extends Controller {
         }
 
         renderJSON(new QueryResponse<InstructorWrapper>(wrappers));
+    }
+
+    public static void getStudents(String name, int limit) {
+        if (name == null) {
+            badRequest();
+        }
+
+        // Students matching query
+        List<Student> students = Student.find("select s from Student s where s.fullname like ?", "%" + name.toLowerCase() + "%").fetch(limit);
+        List<StudentWrapper> wrappers = new ArrayList<>();
+        for (Student student : students) {
+            wrappers.add(new StudentWrapper(student));
+        }
+
+        renderJSON(new QueryResponse<StudentWrapper>(wrappers));
     }
 
 }
