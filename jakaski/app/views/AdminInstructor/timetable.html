@@ -36,7 +36,7 @@
 
 <div id="schedulerModal" class="modal hide fade">
   <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="closeForm()">&times;</button>
     <h3>Event Details</h3>
   </div>
   <div class="modal-body">
@@ -64,30 +64,31 @@
       loadAvailabilities(date, scheduler);
   }
 
-  function openForm() {
-      $("#schedulerModal").modal("show");
+  function deleteForm() {
+      $("#schedulerModal").modal("hide");
+      scheduler.deleteEvent(lightboxID);
   }
 
   function closeForm() {
-      $("#schedulerModal").modal("hide");
+      if (scheduler._new_event == null) { // it's not a new event
+          $("#schedulerModal").modal("hide");
+      } else {                            // it is a new event
+          deleteForm();                   // TODO triggers unnecessary onEventDeleted
+      }
   }
 
   function saveForm() {
       var event = scheduler.getEvent(lightboxID);
       event.text = html("modalText").value;
 
-      closeForm();
+      $("#schedulerModal").modal("hide");
       scheduler.updateView();
       if (scheduler._new_event == null) { // it's not a new event
           scheduler.callEvent("onEventChanged", [lightboxID, event]);
       } else {                            // it is a new event
           scheduler.callEvent("onEventAdded", [lightboxID, event]);
+          scheduler._new_event = null;
       }
-  }
-
-  function deleteForm() {
-      closeForm();
-      scheduler.deleteEvent(lightboxID);
   }
 
   // Student autocomplete
@@ -135,7 +136,7 @@
       lightboxID = id;
       var event = scheduler.getEvent(lightboxID);
       html("modalText").value = event.text || "";
-      openForm();
+      $("#schedulerModal").modal("show");
   };
   scheduler.config.api_date="%Y-%m-%d %H:%i";
   scheduler.config.xml_date="%Y-%m-%d %H:%i";
