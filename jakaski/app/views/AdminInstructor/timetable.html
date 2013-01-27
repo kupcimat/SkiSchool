@@ -10,6 +10,8 @@
 <script src="@{'/public/javascripts/dhtmlxscheduler_treetimeline.js'}" type="text/javascript" charset="utf-8"></script>
 <script src="@{'/public/javascripts/dhtmlxscheduler_dhx_terrace.js'}" type="text/javascript" charset="utf-8"></script>
 <script src="@{'/public/javascripts/scheduler-rest-client.js'}" type="text/javascript" charset="utf-8"></script>
+<script src="@{'/public/javascripts/bootstrap-modal.js'}" type="text/javascript" charset="utf-8"></script>
+<script src="@{'/public/javascripts/bootstrap-typeahead.js'}" type="text/javascript" charset="utf-8"></script>
 #{/set}
 
 <h1 class="page-title">
@@ -32,46 +34,85 @@
     </div>
   </div>
 
+<div id="schedulerModal" class="modal hide fade">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h3>Event Details</h3>
+  </div>
+  <div class="modal-body">
+    <form>
+      <fieldset>
+        <label>Student name</label>
+        <input id="modalStudent" type="text" placeholder="Type something…">
+        <label>Optional Note</label>
+        <input id="modalText" type="text">
+      </fieldset>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <a href="#" class="btn" onclick="deleteForm()">Delete</a>
+    <a href="#" class="btn" onclick="closeForm()">Close</a>
+    <a href="#" class="btn btn-primary" onclick="saveForm()">Save changes</a>
+  </div>
+</div>
+
 <script type="text/javascript" charset="utf-8">
   // Helper functions
-  function loadLessons(date) {
-      $.ajax({
-          type: "GET",
-          url: "/query/lessons",
-          data: "date=" + getShortDate(date)
-      }).done(function(data) {
-          scheduler.parse(lessonsToEvents(data.result), "json");
-      });
+  function loadData(date) {
+      loadSections(date, scheduler);
+      loadLessons(date, scheduler);
+      loadAvailabilities(date, scheduler);
   }
 
-  function loadAvailabilities(date) {
-      $.ajax({
-          type: "GET",
-          url: "/query/availabilities",
-          data: "date=" + getShortDate(date)
-      }).done(function(data) {
-          scheduler.parse(availabilitiesToEvents(data.result), "json");
-      });
+  function openForm() {
+      $("#schedulerModal").modal("show");
   }
 
-  function loadSections(date) {
-      $.ajax({
-          type: "GET",
-          url: "/query/instructors",
-          data: "date=" + getShortDate(date)
-      }).done(function(data) {
-          $.each(instructorsToSections(data.result), function(index, value) {
-              if (scheduler.getSection(value.key) == null) {
-                  scheduler.addSection(value, null);
+  function closeForm() {
+      $("#schedulerModal").modal("hide");
+  }
+
+  function saveForm() {
+      var event = scheduler.getEvent(lightboxID);
+      event.text = html("modalText").value;
+
+      closeForm();
+      scheduler.updateView();
+      if (scheduler._new_event == null) { // it's not a new event
+          scheduler.callEvent("onEventChanged", [lightboxID, event]);
+      } else {                            // it is a new event
+          scheduler.callEvent("onEventAdded", [lightboxID, event]);
+      }
+  }
+
+  function deleteForm() {
+      closeForm();
+      scheduler.deleteEvent(lightboxID);
+  }
+
+  // Student autocomplete
+  var limit = 10;
+  $("#modalStudent").typeahead({
+      items: limit,
+      minLength: 2,
+      source: function(query, process) {
+          $.ajax({
+              type: "GET",
+              url: "/query/students",
+              data: "name=" + query + "&limit=" + limit
+          }).done(function(data) {
+              if (data == null) {
+                  process(["Couldn't load data..."]);
+              } else {
+                  process(studentsToList(data.result));
               }
           });
-      });
-  }
+      }
+  });
 
-  function loadData(date) {
-      loadSections(date);
-      loadLessons(date);
-      loadAvailabilities(date);
+  // Scheduler templates
+  scheduler.templates.event_class=function(start, end, event) {
+      return event.type || "";
   }
 
   // Timeline configuration
@@ -88,20 +129,19 @@
     y_unit: []
   });
 
-  scheduler.templates.event_class=function(start, end, event) {
-      if (event.type != null) {
-          return event.type;
-      } else {
-          return "";
-      }
-  }
-
   // Scheduler configuration
+  var lightboxID = null;
+  scheduler.showLightbox = function(id) {
+      lightboxID = id;
+      var event = scheduler.getEvent(lightboxID);
+      html("modalText").value = event.text || "";
+      openForm();
+  };
   scheduler.config.api_date="%Y-%m-%d %H:%i";
   scheduler.config.xml_date="%Y-%m-%d %H:%i";
-  scheduler.init("scheduler_here", null, "timeline");
 
-  // Data loading
+  // Initialize scheduler
+  scheduler.init("scheduler_here", null, "timeline");
   loadData(new Date());
 
   // Events management

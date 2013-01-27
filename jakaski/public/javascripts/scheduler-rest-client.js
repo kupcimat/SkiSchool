@@ -3,6 +3,11 @@ function getShortDate(date) {
     return date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
 }
 
+function html(id) {
+    return document.getElementById(id);
+}
+
+// REST API objects to scheduler objects
 function availabilitiesToEvents(data) {
     var events = new Array();
 
@@ -39,6 +44,18 @@ function instructorsToSections(data) {
     return sections;
 }
 
+function studentsToList(data) {
+    var list = new Array();
+
+    $.each(data, function(index, value) {
+        var student = value.student;
+        list.push(student.name);
+    });
+
+    return list;
+}
+
+// Scheduler objects to REST API objects
 function eventToAvailability(event, scheduler) {
     var convert = scheduler.date.date_to_str("%Y-%m-%d %H:%i");
     var availability = new Object();
@@ -63,4 +80,39 @@ function eventToLesson(event, scheduler) {
     lesson.student = "/student/224";
 
     return {lesson: lesson};
+}
+
+// Data loading in scheduler
+function loadLessons(date, scheduler) {
+    $.ajax({
+        type: "GET",
+        url: "/query/lessons",
+        data: "date=" + getShortDate(date)
+    }).done(function(data) {
+        scheduler.parse(lessonsToEvents(data.result), "json");
+    });
+}
+
+function loadAvailabilities(date, scheduler) {
+    $.ajax({
+        type: "GET",
+        url: "/query/availabilities",
+        data: "date=" + getShortDate(date)
+    }).done(function(data) {
+        scheduler.parse(availabilitiesToEvents(data.result), "json");
+    });
+}
+
+function loadSections(date, scheduler) {
+    $.ajax({
+        type: "GET",
+        url: "/query/instructors",
+        data: "date=" + getShortDate(date)
+    }).done(function(data) {
+        $.each(instructorsToSections(data.result), function(index, value) {
+            if (scheduler.getSection(value.key) == null) {
+                scheduler.addSection(value, null);
+            }
+        });
+    });
 }
