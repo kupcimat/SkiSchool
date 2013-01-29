@@ -90,7 +90,7 @@ public class QueryController extends Controller {
         }
 
         // Students matching query
-        List<Student> students = Student.find("select s from Student s where s.fullname like ?", "%" + name.toLowerCase() + "%").fetch(limit);
+        List<Student> students = Student.find("select s from Student s where LOWER(s.fullname) like ?", "%" + name.toLowerCase() + "%").fetch(limit);
         List<StudentWrapper> wrappers = new ArrayList<>();
         for (Student student : students) {
             wrappers.add(new StudentWrapper(student));
