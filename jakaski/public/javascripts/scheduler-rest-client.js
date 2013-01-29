@@ -76,8 +76,7 @@ function eventToLesson(event, scheduler) {
     lesson.end = convert(event.end_date);
     lesson.note = event.text;
     lesson.instructor = "/instructor/" + event.instructor_id;
-    // TODO
-    lesson.student = "/student/224";
+    lesson.student = "/student/" + event.student_id;
 
     return {lesson: lesson};
 }

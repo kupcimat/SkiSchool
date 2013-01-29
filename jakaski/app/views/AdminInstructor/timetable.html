@@ -100,7 +100,7 @@
           $.ajax({
               type: "GET",
               url: "/query/students",
-              data: "name=" + query + "&limit=" + limit
+              data: {name: query, limit: limit}
           }).done(function(data) {
               if (data == null) {
                   process(["Couldn't load data..."]);

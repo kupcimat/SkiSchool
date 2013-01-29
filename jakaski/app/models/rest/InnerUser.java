@@ -14,4 +14,8 @@ public class InnerUser {
         this.name = name;
     }
 
+    public String getName() {
+        return name;
+    }
+
 }

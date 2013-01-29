@@ -35,6 +35,10 @@ POST    /availability                           rest.AvailabilityController.crea
 PUT     /availability/{<[0-9]+>id}              rest.AvailabilityController.updateAvailability
 DELETE  /availability/{<[0-9]+>id}              rest.AvailabilityController.deleteAvailability
 
+# Student resources
+GET     /student/{<[0-9]+>id}                   rest.StudentController.getStudent
+POST    /student                                rest.StudentController.createStudent
+
 # Queries
 GET     /query/lessons                          rest.QueryController.getLessons
 GET     /query/availabilities                   rest.QueryController.getAvailabilities
