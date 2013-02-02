@@ -1,6 +1,10 @@
 package controllers.rest;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import models.Student;
+import models.rest.QueryResponse;
 import models.rest.StudentWrapper;
 import models.rest.UriResponse;
 import play.mvc.Controller;
@@ -13,6 +17,16 @@ public class StudentController extends Controller {
         notFoundIfNull(student, "Student does not exist");
 
         renderJSON(new StudentWrapper(student));
+    }
+
+    public static void getAllStudents() {
+        List<Student> students = Student.findAll();
+        List<StudentWrapper> wrappers = new ArrayList<>();
+        for (Student student : students) {
+            wrappers.add(new StudentWrapper(student));
+        }
+
+        renderJSON(new QueryResponse<StudentWrapper>(wrappers));
     }
 
     public static void createStudent(StudentWrapper body) {

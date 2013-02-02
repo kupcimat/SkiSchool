@@ -38,6 +38,7 @@ DELETE  /availability/{<[0-9]+>id}              rest.AvailabilityController.dele
 # Student resources
 GET     /student/{<[0-9]+>id}                   rest.StudentController.getStudent
 POST    /student                                rest.StudentController.createStudent
+GET     /students                               rest.StudentController.getAllStudents
 
 # Queries
 GET     /query/lessons                          rest.QueryController.getLessons
