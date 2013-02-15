@@ -7,6 +7,26 @@ function html(id) {
     return document.getElementById(id);
 }
 
+function generateTimeValues(time) {
+    var offset = "00";
+    var result = new Array();
+    var pattern = new RegExp("[0-1][0-8]:[0-5][0-9]");
+
+    if (time != null && pattern.test(time)) {
+        offset = time.substr(3, 2);
+    }
+
+    for (var hour = 8; hour <= 18; hour++) {
+        var prefix = "";
+        if (hour < 10) {
+            prefix = "0";
+        }
+        result.push(prefix + hour + ":" + offset);
+    }
+
+    return result;
+}
+
 // REST API objects to scheduler objects
 function availabilitiesToEvents(data) {
     var events = new Array();
