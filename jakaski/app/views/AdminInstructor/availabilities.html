@@ -32,30 +32,19 @@
   </div>
 
 <script type="text/javascript" charset="utf-8">
-  // Helper functions
-  function loadEvents(date) {
-      $.ajax({
-          type: "GET",
-          url: "/query/availabilities",
-          data: "date=" + getShortDate(date)
-      }).done(function(data) {
-          scheduler.parse(availabilitiesToEvents(data.result), "json");
-      });
-  }
-
   // Scheduler configuration
   scheduler.config.api_date="%Y-%m-%d %H:%i";
   scheduler.config.xml_date="%Y-%m-%d %H:%i";
   scheduler.config.first_hour=8;
   scheduler.config.last_hour=19;
-  scheduler.init("scheduler_here", null, "day");
 
-  // Data loading
-  loadEvents(new Date());
+  // Initialize scheduler
+  scheduler.init("scheduler_here", null, "day");
+  loadAvailabilities(new Date(), scheduler);
 
   // Events management
   scheduler.attachEvent("onViewChange", function(mode, date) {
-      loadEvents(date);
+      loadAvailabilities(date, scheduler);
   });
 
   scheduler.attachEvent("onEventAdded", function(eventId, eventObject) {
