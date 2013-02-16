@@ -100,6 +100,7 @@
   function saveForm() {
       var event = scheduler.getEvent(lightboxID);
       event.text = html("modalText").value;
+      event.student_id = selectedStudent;
 
       scheduler.updateView();
       if (scheduler._new_event == null) { // it's not a new event
@@ -112,6 +113,7 @@
 
   // Autocomplete
   studentsCache = null;
+  selectedStudent = null;
   $("#modalStudent").typeahead({
       items: 5,
       minLength: 2,
@@ -121,14 +123,16 @@
                   type: "GET",
                   url: "/students"
               }).done(function(data) {
-                  if (data == null) {
-                      process(["Couldn't load data..."]);
-                  } else {
-                      studentsCache = studentsToList(data.result);
-                  }
+                  studentsCache = studentsToMap(data.result);
+                  process(studentsCache.names);
               });
+          } else {
+              process(studentsCache.names);
           }
-          process(studentsCache);
+      },
+      updater: function(item) {
+          selectedStudent = studentsCache.map[item].id;
+          return item;
       }
   });
   $("#modalStart").typeahead({
@@ -172,6 +176,17 @@
       var event = scheduler.getEvent(lightboxID);
 
       html("modalText").value = event.text || "";
+      selectedStudent = event.student_id;
+      if (selectedStudent != null) {
+          $.ajax({
+              type: "GET",
+              url: "/student/" + selectedStudent
+          }).done(function(data) {
+              html("modalStudent").value = data.student.name;
+          });
+      } else {
+          html("modalStudent").value = "";
+      }
       $("#schedulerModal").modal("show");
   };
   scheduler.config.api_date="%Y-%m-%d %H:%i";

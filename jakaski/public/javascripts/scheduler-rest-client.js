@@ -34,7 +34,13 @@ function availabilitiesToEvents(data) {
     $.each(data, function(index, value) {
         var availability = value.availability;
         var instructorId = availability.instructor.replace("/instructor/", "");
-        events.push({id: availability.id, start_date: availability.start, end_date: availability.end, text: availability.note, instructor_id: instructorId, type: "availability"});
+        events.push({
+            id: availability.id,
+            start_date: availability.start,
+            end_date: availability.end,
+            text: availability.note,
+            instructor_id: instructorId,
+            type: "availability"});
     });
 
     return events;
@@ -47,7 +53,14 @@ function lessonsToEvents(data) {
         var lesson = value.lesson;
         var studentId = lesson.student.replace("/student/", "");
         var instructorId = lesson.instructor.replace("/instructor/", "");
-        events.push({id: lesson.id, start_date: lesson.start, end_date: lesson.end, text: lesson.note, instructor_id: instructorId, student_id: studentId, type: "lesson"});
+        events.push({
+            id: lesson.id,
+            start_date: lesson.start,
+            end_date: lesson.end,
+            text: lesson.note,
+            instructor_id: instructorId,
+            student_id: studentId,
+            type: "lesson"});
     });
 
     return events;
@@ -64,15 +77,17 @@ function instructorsToSections(data) {
     return sections;
 }
 
-function studentsToList(data) {
-    var list = new Array();
+function studentsToMap(data) {
+    var map = new Object();
+    var names = new Array();
 
     $.each(data, function(index, value) {
         var student = value.student;
-        list.push(student.name);
+        map[student.name] = student;
+        names.push(student.name);
     });
 
-    return list;
+    return {map: map, names: names};
 }
 
 // Scheduler objects to REST API objects
