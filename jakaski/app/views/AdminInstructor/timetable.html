@@ -76,6 +76,7 @@
   }
 
   function hideForm() {
+      STUDENTS_CACHE = null;
       scheduler._new_event = null;
       $("#schedulerModal").modal("hide");
       $(".alert").hide();
