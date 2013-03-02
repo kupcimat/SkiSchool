@@ -11,6 +11,7 @@
 <script src="@{'/public/javascripts/dhtmlxscheduler_dhx_terrace.js'}" type="text/javascript" charset="utf-8"></script>
 <script src="@{'/public/javascripts/scheduler-rest-client.js'}" type="text/javascript" charset="utf-8"></script>
 <script src="@{'/public/javascripts/bootstrap-modal.js'}" type="text/javascript" charset="utf-8"></script>
+<script src="@{'/public/javascripts/bootstrap-button.js'}" type="text/javascript" charset="utf-8"></script>
 <script src="@{'/public/javascripts/bootstrap-typeahead.js'}" type="text/javascript" charset="utf-8"></script>
 #{/set}
 
@@ -42,10 +43,13 @@
   <div class="modal-body" style="min-height: 150px">
     <form class="form-horizontal">
       <div class="control-group">
+        <div class="alert alert-info">
+          <strong>New user</strong> successfully created.
+        </div>
         <label class="control-label" for="modalStudent">Student name</label>
         <div class="controls">
           <input id="modalStudent" type="text" placeholder="Type something…">
-          <button class="btn" type="button">Create new</button>
+          <button id="modalCreateStudent" type="button" class="btn" data-loading-text="Creating..." onclick="createStudent()">Create new</button>
         </div>
       </div>
       <div class="control-group">
@@ -59,7 +63,7 @@
   <div class="modal-footer">
     <a href="#" class="btn" onclick="deleteForm()">Delete</a>
     <a href="#" class="btn" onclick="closeForm()">Close</a>
-    <a href="#" class="btn btn-primary" onclick="saveForm()">Save changes</a>
+    <a href="#" class="btn btn-primary" data-loading-text="Creating..." onclick="saveForm()">Save changes</a>
   </div>
 </div>
 
@@ -74,6 +78,7 @@
   function hideForm() {
       scheduler._new_event = null;
       $("#schedulerModal").modal("hide");
+      $(".alert").hide();
   }
 
   function deleteForm() {
@@ -103,6 +108,22 @@
       hideForm();
   }
 
+  function createStudent() {
+      $("#modalCreateStudent").button("loading");
+      $(".btn-primary").button("loading");
+
+      $.ajax({
+          type: "POST",
+          url: "/student",
+          data: JSON.stringify({"student": {"name": $("#modalStudent").val()}})
+      }).done(function(data) {
+          SELECTED_STUDENT = data.uri.replace("/student/", "");
+          $("#modalCreateStudent").button("reset");
+          $(".btn-primary").button("reset");
+          $(".alert").show();
+      });
+  }
+
   // Autocomplete
   var STUDENTS_CACHE = null;
   var SELECTED_STUDENT = null;
@@ -127,6 +148,9 @@
           return item;
       }
   });
+
+  // Modal form
+  $(".alert").hide();
 
   // Scheduler templates
   scheduler.templates.event_class=function(start, end, event) {
@@ -153,7 +177,6 @@
       LIGHTBOX_ID = id;
       var event = scheduler.getEvent(LIGHTBOX_ID);
 
-      html("modalText").value = event.text || "";
       SELECTED_STUDENT = event.student_id;
       if (SELECTED_STUDENT != null) {
           $.ajax({
@@ -165,6 +188,7 @@
       } else {
           html("modalStudent").value = "";
       }
+      html("modalText").value = event.text || "";
       $("#schedulerModal").modal("show");
   };
   scheduler.config.api_date="%Y-%m-%d %H:%i";
