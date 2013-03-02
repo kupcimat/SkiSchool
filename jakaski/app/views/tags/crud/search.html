@@ -1,4 +1,4 @@
-#{form action:@list().remove('page'), method:'GET', class:'search pull-left'}
+#{form action:@list().remove('page'), method:'GET', class:'form-search pull-left'}
     #{if _fields}
         <input type="hidden" name="searchFields" value="${_fields.toString().substring(1, _fields.toString().length()-1).replace(',', '')}"/>
     #{/if}
