@@ -13,7 +13,7 @@ public class Langs extends CRUD {
 	static void setConnectedUser() {
 		if (Security.isConnected()) {
 			User user = User.find("byEmail", Security.connected()).first();
-			renderArgs.put("instructor", user);
+			renderArgs.put("user", user);
 		}
 	}
 

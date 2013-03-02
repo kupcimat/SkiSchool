@@ -1,112 +1,176 @@
 #{extends 'content.html' /}
 <h1 class="page-title">
-  <i class="icon-th-large"></i>
-	User Account					
+  <i class="icon-th-large"></i> User Account
 </h1>
-  <div class="row">			
-	 <div class="span9">			
-		<div class="widget">
-		  <div class="widget-header">
-		    <h3>Basic Information</h3>
-		  </div> <!-- /widget-header -->		
-		  <div class="widget-content">					
-			<div class="tabbable">
-			   <ul class="nav nav-tabs">
-				<li class="active"><a href="http://wbpreview.com/previews/WB00U8L84/account.html#1" data-toggle="tab">Profile</a></li>
-				<li><a href="http://wbpreview.com/previews/WB00U8L84/account.html#2" data-toggle="tab">Settings</a></li>
-			   </ul>
-				<br>					
-							<div class="tab-content">
-								<div class="tab-pane active" id="1">
-                                #{form @update() , id:'edit-profile', class:'form-horizontal'} 
-									<fieldset>														
-										    #{ifErrors}
-                                          <p class="error">
-                                            Please correct these errors.
-                                           </p>
-                                            #{/ifErrors}
-					                    
-                                        #{field 'instructor.firstname'}					
-                                        <div class="control-group">		                                     									
-											<label class="control-label" for="firstname">First Name</label>
-											<div class="controls">
-												<input type="text" class="input-medium" id="firstname" name="${field.name}" value="${instructor.firstname}">
-											</div> <!-- /controls --> 				
-										</div> <!-- /control-group -->
-                                        #{/field}
-                    
-										#{field 'instructor.surname'}
-										<div class="control-group">	     										
-											<label class="control-label" for="surname">Last Name</label>
-											<div class="controls">
-												<input type="text" class="input-medium" id="surname" name="${field.name}" value="${instructor.surname}">
-											</div> <!-- /controls -->
-										</div> <!-- /control-group -->	
-										 #{/field}
-                     
-                                         #{field 'instructor.phone'}                    
-                                        <div class="control-group">
-                                            <label class="control-label" for="phone">Phone</label>
-                                            <div class="controls">
-                                                <input type="text" class="input-large" id="phone" name="${field.name}" value="${instructor.phone}">
-                                                <span class="error">#{error 'newInstructor.phone' /}</span>
-                                            </div> <!-- /controls -->
-                                        </div> <!-- /control-group -->
-                                        #{/field}    
-                                         #{field 'instructor.email'}										
-										<div class="control-group">
-											<label class="control-label" for="email">Email Address</label>
-											<div class="controls">
-												<input type="text" class="input-large" id="email" name="${field.name}" value="${instructor.email}">
-                                                <span class="error">#{error 'newInstructor.email' /}</span>
-											</div> <!-- /controls -->
-										</div> <!-- /control-group -->
-                                        #{/field}				
-										
-										<br><br>
-										#{field 'oldPassword'}
-										<div class="control-group">											
-											<label class="control-label" for="oldPassword">Old Password</label>
-											<div class="controls">
-												<input type="password" class="input-medium" id="oldPassword" name="${field.name}" value="${oldPassword}">
-                                                <span class="error">#{error 'oldPassword' /}</span>
-											</div> <!-- /controls -->				
-										</div> <!-- /control-group -->
-										#{/field}
-                                        #{field 'newPassword'}										
-										<div class="control-group">
-											<label class="control-label" for="newPassword">New Password</label>
-											<div class="controls">
-												<input type="password" class="input-large" id="newPassword" name="${field.name}" value="${newPassword}">
-                                                <span class="error">#{error 'newInstructor.password' /}</span>
-											</div> <!-- /controls -->
-										</div> <!-- /control-group -->
-                                        #{/field}
-                                        #{field 'passwordConfirm'}
-                                        <div class="control-group">                     
-                                            <label class="control-label" for="passwordConfirm">Confirm</label>
-                                            <div class="controls">
-                                                <input type="password" class="input-medium" id="passwordConfirm" name="${field.name}" value="${passwordConfirm}">
-                                                <span class="error">#{error 'passwordConfirm' /}</span>
-                                            </div> <!-- /controls -->       
-                                        </div> <!-- /control-group -->
-                                        #{/field}	
-											<br>
-											
-										<div class="form-actions">
-											<button type="submit" class="btn btn-primary">Save</button> 
-											<button class="btn">Cancel</button>
-										</div> <!-- /form-actions -->
-									</fieldset>
-                                #{/form}
-								</div>
-								
-								<div class="tab-pane" id="2">
-									<form id="edit-profile2" class="form-horizontal">
-										<fieldset>
-											
-											
-											<div class="control-group">
+<div class="row">
+  <div class="span9">
+    <div class="widget">
+      <div class="widget-header">
+        <h3>Basic Information</h3>
+      </div>
+      <!-- /widget-header -->
+      <div class="widget-content">
+        <div class="tabbable">
+          <ul class="nav nav-tabs">
+            <li class="${tab1 == 'active' ? 'active' : 'passive'}"><a href="#tab1" data-toggle="tab">Profile</a></li> #{deadbolt.restrict
+            roles:[['instructor']]}
+            <li class="${tab2 == 'active' ? 'active' : 'passive'}"><a href="#tab2" data-toggle="tab">Instructor</a></li> #{/deadbolt.restrict}
+            <li class="${tab3 == 'active' ? 'active' : 'passive'}"><a href="#tab3" data-toggle="tab">Change Password</a></li>
+          </ul>
+          <br>
+          <div class="tab-content">
+            <div class="${tab1 == 'active' ? 'tab-pane active' : 'tab-pane'}" id="tab1">
+              #{form @updateUser() , id:'edit-profile', class:'form-horizontal'}
+              <fieldset>
+
+                #{field 'user.firstname'}
+                <div class="control-group">
+                  <label class="control-label" for="firstname">First Name</label>
+                  <div class="controls">
+                    <input type="text" class="input-medium" id="firstname" name="${field.name}" value="${user.firstname}">
+                  </div>
+                  <!-- /controls -->
+                </div>
+                <!-- /control-group -->
+                #{/field} #{field 'user.surname'}
+                <div class="control-group">
+                  <label class="control-label" for="surname">Last Name</label>
+                  <div class="controls">
+                    <input type="text" class="input-medium" id="surname" name="${field.name}" value="${user.surname}">
+                  </div>
+                  <!-- /controls -->
+                </div>
+                <!-- /control-group -->
+                #{/field} #{field 'user.phone'}
+                <div class="control-group">
+                  <label class="control-label" for="phone">Phone</label>
+                  <div class="controls">
+                    <input type="text" class="input-large" id="phone" name="${field.name}" value="${user.phone}"> <span class="error">#{error
+                      'updatedUser.phone' /}</span>
+                  </div>
+                  <!-- /controls -->
+                </div>
+                <!-- /control-group -->
+                #{/field} #{field 'user.email'}
+                <div class="control-group">
+                  <label class="control-label" for="email">Email Address</label>
+                  <div class="controls">
+                    <input type="text" class="input-large" id="email" name="${field.name}" value="${user.email}"> <span class="error">#{error
+                      'updatedUser.email' /}</span>
+                  </div>
+                  <!-- /controls -->
+                </div>
+                <!-- /control-group -->
+                #{/field} <br>
+
+                <div class="form-actions">
+                  <button type="submit" class="btn btn-primary">Save</button>
+                  <button class="btn">Cancel</button>
+                </div>
+                <!-- /form-actions -->
+              </fieldset>
+              #{/form}
+            </div>
+
+            #{deadbolt.restrict roles:[['instructor']]}
+            <div class="${tab2 == 'active' ? 'tab-pane active' : 'tab-pane'}" id="tab2">
+              #{form @updateInstructor() , id:'edit-profile2', class:'form-horizontal'}
+              <fieldset>
+                #{field 'instructor.positionSki'}
+                <div class="control-group">
+                  <label class="control-label" for="positionSki">Position Ski</label>
+                  <div class="controls">
+                   #{select 'instructor.positionSki', value:instructor?.positionSki} 
+                       #{option 'none'}neuci#{/option} 
+                       #{option 'unlicensed'}nema#{/option} 
+                       #{option 'C'}C#{/option}
+                       #{option 'B'}B#{/option}
+                       #{option 'A'}A#{/option} 
+                   #{/select}
+                  </div>
+                  <!-- /controls -->
+                </div>
+                <!-- /control-group -->
+                #{/field} #{field 'instructor.positionSnowboard'}
+                <div class="control-group">
+                  <label class="control-label" for="positionSnowboard">Position Snowboard</label>
+                  <div class="controls">
+                   #{select 'instructor.positionSnowboard', value:instructor?.positionSnowboard} 
+                       #{option 'none'}neuci#{/option} 
+                       #{option 'unlicensed'}nema#{/option} 
+                       #{option 'C'}C#{/option}
+                       #{option 'B'}B#{/option}
+                       #{option 'A'}A#{/option} 
+                   #{/select}
+                  </div>
+                  <!-- /controls -->
+                </div>
+                <!-- /control-group -->
+                #{/field} #{field 'instructor.languages'}
+                <div class="control-group">
+                  <label class="control-label" for="languages">Language</label>
+                  <div class="controls">
+                    <select id="languages" name="instructor.languages.id" value="" size="1" id="select" multiple>
+                      #{list languages, as:'lang'} 
+ 			            <option value="${lang.id}" ${instructor.languages.contains(lang) ? 'selected' : ''} >${lang.name}</option>
+	                  #{/list} 
+	               </select>
+                    <!--  <select multiple="multiple"> #{list languages, as:'item'}
+                      <option value="${item.name}" ${item.name=='instructor.languages,' ? 'selected' : ''}>${item.name}</option> #{/list}
+                    </select> --><span class="error">#{error 'updatedInstructor.language' /}</span>
+                  </div>
+                  <!-- /controls -->
+                </div>
+                <!-- /control-group -->
+                #{/field}
+                <div class="form-actions">
+                  <button type="submit" class="btn btn-primary">Save</button>
+                  <button class="btn">Cancel</button>
+                </div>
+                <!-- /form-actions -->
+              </fieldset>
+              #{/form}
+            </div>
+
+            #{/deadbolt.restrict}
+
+            <div class="${tab3 == 'active' ? 'tab-pane active' : 'tab-pane'}" id="tab3">
+              #{form @updatePassword() , id:'edit-profile3', class:'form-horizontal'}
+              <fieldset>
+                #{field 'oldPassword'}
+                <div class="control-group">
+                  <label class="control-label" for="oldPassword">Old Password</label>
+                  <div class="controls">
+                    <input type="password" class="input-medium" id="oldPassword" name="${field.name}" value="${oldPassword}"> <span
+                      class="error">#{error 'oldPassword' /}</span>
+                  </div>
+                  <!-- /controls -->
+                </div>
+                <!-- /control-group -->
+                #{/field} #{field 'newPassword'}
+                <div class="control-group">
+                  <label class="control-label" for="newPassword">New Password</label>
+                  <div class="controls">
+                    <input type="password" class="input-large" id="newPassword" name="${field.name}" value="${newPassword}"> <span
+                      class="error">#{error 'updatedUser.password' /}</span>
+                  </div>
+                  <!-- /controls -->
+                </div>
+                <!-- /control-group -->
+                #{/field} #{field 'passwordConfirm'}
+                <div class="control-group">
+                  <label class="control-label" for="passwordConfirm">Confirm</label>
+                  <div class="controls">
+                    <input type="password" class="input-medium" id="passwordConfirm" name="${field.name}" value="${passwordConfirm}"> <span
+                      class="error">#{error 'passwordConfirm' /}</span>
+                  </div>
+                  <!-- /controls -->
+                </div>
+                <!-- /control-group -->
+                #{/field}
+
+
+                <!-- 	<div class="control-group">
 												<label class="control-label" for="accounttype">Account Type</label>
 												<div class="controls">
 													<label class="radio">
@@ -127,19 +191,6 @@
 												</div>
 											</div>
 											<div class="control-group">
-												<label class="control-label" for="emailserver">Email Server</label>
-												<div class="controls">
-													<input type="text" class="input-large" id="emailserver" value="mail.example.com">
-												</div>
-											</div>
-											<div class="control-group">
-												<label class="control-label" for="accountpassword">Password</label>
-												<div class="controls">
-													<input type="text" class="input-large" id="accountpassword" value="password">
-												</div>
-											</div>
-	
-											<div class="control-group">
 												<label class="control-label" for="accountadvanced">Advanced Settings</label>
 												<div class="controls">
 													<label class="checkbox">
@@ -151,20 +202,24 @@
 														Download all message on connection
 													</label>
 												</div>
-											</div>
+											</div>  -->
+                <br>
+                <div class="form-actions">
+                  <button type="submit" class="btn btn-primary">Save</button>
+                  <button class="btn">Cancel</button>
+                </div>
+                <!-- /form-actions -->
+              </fieldset>
 
-											
-											<br>
-											
-											<div class="form-actions">
-												<button type="submit" class="btn btn-primary">Save</button> <button class="btn">Cancel</button>
-											</div>
-										</fieldset>
-									</form>
-								</div>				
-							</div>
-						</div>
-	                </div> <!-- /widget-content -->	
-            </div> <!-- /widget -->
-      </div> <!-- /span9 -->
-</div> <!-- /row -->		
+              #{/form}
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /widget-content -->
+    </div>
+    <!-- /widget -->
+  </div>
+  <!-- /span9 -->
+</div>
+<!-- /row -->
