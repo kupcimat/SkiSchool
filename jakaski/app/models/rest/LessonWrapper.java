@@ -54,6 +54,10 @@ public class LessonWrapper {
         lesson.startTime = this.lesson.start;
         lesson.endTime = this.lesson.end;
         lesson.note = this.lesson.note;
+
+        Student student = Student.findById(getStudentId());
+        lesson.students.clear();
+        lesson.students.add(student);
         // TODO what about other fields
 
         return lesson;
