@@ -5,6 +5,7 @@ import java.util.List;
 import models.ApplicationRole;
 import models.Availability;
 import models.Instructor;
+import models.Lang;
 import models.User;
 import controllers.deadbolt.Deadbolt;
 import controllers.deadbolt.Restrict;
@@ -22,12 +23,16 @@ public class AdminInstructor extends Controller {
 	static void setConnectedUser() {
 		if (Security.isConnected()) {
 			User user = User.find("byEmail", Security.connected()).first();
-			if (user.roles.contains("instructor")) {
+			renderArgs.put("user", user);
+			renderArgs.put("tab1", "active");
+			renderArgs.put("tab2", "passive");
+			renderArgs.put("tab3", "passive");
+			//if (user.roles.contains("instructor")) {
 				Instructor instructor = Instructor.findById(user.id);
+				List<Lang> languages = Lang.findAll();
+				renderArgs.put("languages",languages);
 				renderArgs.put("instructor", instructor);
-			} else {
-				renderArgs.put("instructor", user);
-			}
+		//	}
 		}
 	}
 
@@ -44,20 +49,53 @@ public class AdminInstructor extends Controller {
 		render();
 	}
 
-	public static void update(Instructor instructor, String oldPassword, String newPassword, String passwordConfirm) {
-		Instructor newInstructor = Instructor.find("byEmail", Security.connected()).first();
-		validation.equals(oldPassword, newInstructor.password).message("oldPasswordDiff");
-		validation.equals(passwordConfirm, newPassword).message("newPasswordDiff");
-		newInstructor.firstname = instructor.firstname;
-		newInstructor.surname = instructor.surname;
-		newInstructor.phone = instructor.phone;
-		newInstructor.email = instructor.email;
-		newInstructor.password = newPassword;
-		validation.valid(newInstructor);
+	public static void updateUser(User user) {
+		User updatedUser = User.find("byEmail", Security.connected()).first();
+		updatedUser.firstname = user.firstname;
+		updatedUser.surname = user.surname;
+		updatedUser.phone = user.phone;
+		updatedUser.email = user.email;
+		validation.valid(updatedUser);
+		renderArgs.put("tab1", "active");
+		renderArgs.put("tab2", "passive");
+		renderArgs.put("tab3", "passive");
 		if (validation.hasErrors()) {
-			render("@instructor", newInstructor, newPassword, passwordConfirm, oldPassword);
+			render("@instructor", updatedUser);
 		}
-		newInstructor.save();
+		updatedUser.save();
 		timetable();
 	}
+
+	public static void updateInstructor(Instructor instructor) {
+		Instructor updatedInstructor = Instructor.find("byEmail", Security.connected()).first();
+		updatedInstructor.positionSki = instructor.positionSki;
+		updatedInstructor.positionSnowboard= instructor.positionSnowboard;
+		updatedInstructor.languages = instructor.languages;
+		validation.valid(updatedInstructor);
+		renderArgs.put("tab1", "passive");
+		renderArgs.put("tab2", "active");
+		renderArgs.put("tab3", "passive");
+		if (validation.hasErrors()) {
+			render("@instructor", updatedInstructor);
+		}
+		updatedInstructor.save();
+		timetable();
+	}
+
+	public static void updatePassword(User user, String oldPassword, String newPassword, String passwordConfirm) {
+		User updatedUser = User.find("byEmail", Security.connected()).first();
+		validation.equals(oldPassword, updatedUser.password).message("oldPasswordDiff");
+		validation.equals(passwordConfirm, newPassword).message("newPasswordDiff");
+		updatedUser.password = newPassword;
+		validation.valid(updatedUser);
+		renderArgs.put("tab1", "passive");
+		renderArgs.put("tab2", "passive");
+		renderArgs.put("tab3", "active");
+		if (validation.hasErrors()) {
+			render("@instructor", updatedUser, newPassword, passwordConfirm, oldPassword);
+		}
+		updatedUser.save();
+		timetable();
+	}
+
 }
