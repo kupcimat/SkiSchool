@@ -85,53 +85,53 @@
   }
 
   function deleteForm() {
-      scheduler.deleteEvent(lightboxID);
+      scheduler.deleteEvent(LIGHTBOX_ID);
       hideForm();
   }
 
   function closeForm() {
       if (scheduler._new_event != null) { // it is a new event
           // TODO triggers unnecessary onEventDeleted
-          scheduler.deleteEvent(lightboxID);
+          scheduler.deleteEvent(LIGHTBOX_ID);
       }
       hideForm();
   }
 
   function saveForm() {
-      var event = scheduler.getEvent(lightboxID);
+      var event = scheduler.getEvent(LIGHTBOX_ID);
       event.text = html("modalText").value;
-      event.student_id = selectedStudent;
+      event.student_id = SELECTED_STUDENT;
 
       scheduler.updateView();
       if (scheduler._new_event == null) { // it's not a new event
-          scheduler.callEvent("onEventChanged", [lightboxID, event]);
+          scheduler.callEvent("onEventChanged", [LIGHTBOX_ID, event]);
       } else {                            // it is a new event
-          scheduler.callEvent("onEventAdded", [lightboxID, event]);
+          scheduler.callEvent("onEventAdded", [LIGHTBOX_ID, event]);
       }
       hideForm();
   }
 
   // Autocomplete
-  studentsCache = null;
-  selectedStudent = null;
+  var STUDENTS_CACHE = null;
+  var SELECTED_STUDENT = null;
   $("#modalStudent").typeahead({
       items: 5,
       minLength: 2,
       source: function(query, process) {
-          if (studentsCache == null) {
+          if (STUDENTS_CACHE == null) {
               $.ajax({
                   type: "GET",
                   url: "/students"
               }).done(function(data) {
-                  studentsCache = studentsToMap(data.result);
-                  process(studentsCache.names);
+                  STUDENTS_CACHE = studentsToMap(data.result);
+                  process(STUDENTS_CACHE.names);
               });
           } else {
-              process(studentsCache.names);
+              process(STUDENTS_CACHE.names);
           }
       },
       updater: function(item) {
-          selectedStudent = studentsCache.map[item].id;
+          SELECTED_STUDENT = STUDENTS_CACHE.map[item].id;
           return item;
       }
   });
@@ -170,17 +170,17 @@
   });
 
   // Scheduler configuration
-  var lightboxID = null;
+  var LIGHTBOX_ID = null;
   scheduler.showLightbox = function(id) {
-      lightboxID = id;
-      var event = scheduler.getEvent(lightboxID);
+      LIGHTBOX_ID = id;
+      var event = scheduler.getEvent(LIGHTBOX_ID);
 
       html("modalText").value = event.text || "";
-      selectedStudent = event.student_id;
-      if (selectedStudent != null) {
+      SELECTED_STUDENT = event.student_id;
+      if (SELECTED_STUDENT != null) {
           $.ajax({
               type: "GET",
-              url: "/student/" + selectedStudent
+              url: "/student/" + SELECTED_STUDENT
           }).done(function(data) {
               html("modalStudent").value = data.student.name;
           });
