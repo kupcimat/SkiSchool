@@ -54,13 +54,17 @@ function lessonsToEvents(data) {
         var studentId = lesson.student.replace("/student/", "");
         var instructorId = lesson.instructor.replace("/instructor/", "");
         events.push({
-            id: lesson.id,
-            start_date: lesson.start,
-            end_date: lesson.end,
-            text: lesson.note,
+            id:            lesson.id,
+            start_date:    lesson.start,
+            end_date:      lesson.end,
+            text:          lesson.note,
             instructor_id: instructorId,
-            student_id: studentId,
-            type: "lesson"});
+            student_id:    studentId,
+            location:      lesson.location,
+            language:      lesson.language,
+            snowboard:     lesson.snowboard,
+            type:          lesson.type,
+            count:         lesson.count});
     });
 
     return events;
@@ -112,6 +116,11 @@ function eventToLesson(event, scheduler) {
     lesson.note = event.text;
     lesson.instructor = "/instructor/" + event.instructor_id;
     lesson.student = "/student/" + event.student_id;
+    lesson.location = event.location;
+    lesson.language = event.language;
+    lesson.snowboard = event.snowboard;
+    lesson.type = event.type;
+    lesson.count = event.count;
 
     return {lesson: lesson};
 }

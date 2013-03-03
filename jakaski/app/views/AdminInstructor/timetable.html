@@ -66,7 +66,7 @@
         <div class="controls">
           <select id="modalLanguage">
             #{list languages, as:'lang'}
-              <option value="${lang.name}" ${instructor.languages.contains(lang) ? 'selected' : ''}>${lang.name}</option>
+              <option value="${lang.name}">${lang.name}</option>
             #{/list}
           </select>
         </div>
@@ -75,20 +75,20 @@
       <div class="control-group">
         <label class="control-label" for="modalCount">Count</label>
         <div class="controls">
-          <input id="modalCount" class="span1" type="number" min="1" value="1" required>
+          <input id="modalCount" class="span1" type="number" min="1" required>
         </div>
       </div>
       <!-- Snowboard -->
       <div class="control-group">
-        <label class="control-label" for="modalSnowboard">Type</label>
+        <label class="control-label" for="modalSki">Type</label>
         <div class="controls">
-          <label class="radio inline">
-            <input id="modalSnowboard" type="radio" name="snowboardRadios" value="true" checked>
-            Snowboard
-          </label>
           <label class="radio inline">
             <input id="modalSki" type="radio" name="snowboardRadios" value="false">
             Ski
+          </label>
+          <label class="radio inline">
+            <input id="modalSnowboard" type="radio" name="snowboardRadios" value="true">
+            Snowboard
           </label>
         </div>
       </div>
@@ -102,7 +102,16 @@
 </div>
 
 <script type="text/javascript" charset="utf-8">
+  // Global variables
+  var LIGHTBOX_ID = null;
+  var STUDENTS_CACHE = null;
+  var SELECTED_STUDENT = null;
+
   // Helper functions
+  function isNewEvent(scheduler) {
+      return scheduler._new_event != null;
+  }
+
   function loadData(date) {
       loadSections(date, scheduler);
       loadLessons(date, scheduler);
@@ -110,7 +119,9 @@
   }
 
   function hideForm() {
+      LIGHTBOX_ID = null;
       STUDENTS_CACHE = null;
+      SELECTED_STUDENT = null;
       scheduler._new_event = null;
       $("#schedulerModal").modal("hide");
       $(".alert").hide();
@@ -122,25 +133,62 @@
   }
 
   function closeForm() {
-      if (scheduler._new_event != null) { // it is a new event
-          // TODO triggers unnecessary onEventDeleted
-          scheduler.deleteEvent(LIGHTBOX_ID);
+      if (isNewEvent(scheduler)) {
+          scheduler.deleteEvent(LIGHTBOX_ID); // TODO triggers unnecessary onEventDeleted
       }
       hideForm();
   }
 
   function saveForm() {
       var event = scheduler.getEvent(LIGHTBOX_ID);
-      event.text = html("modalText").value;
       event.student_id = SELECTED_STUDENT;
+      event.text = $("#modalText").val();
+      event.language = $("#modalLanguage").val();
+      event.count = $("#modalCount").val();
+      event.snowboard = $("#modalSnowboard").prop("checked");
+      // TODO Use in template
+      event.location = "jahodna";
+      if (event.count > 1) {
+          event.type = "group";
+      } else {
+          event.type = "individual";
+      }
 
       scheduler.updateView();
-      if (scheduler._new_event == null) { // it's not a new event
-          scheduler.callEvent("onEventChanged", [LIGHTBOX_ID, event]);
-      } else {                            // it is a new event
+      if (isNewEvent(scheduler)) {
           scheduler.callEvent("onEventAdded", [LIGHTBOX_ID, event]);
+      } else {
+          scheduler.callEvent("onEventChanged", [LIGHTBOX_ID, event]);
       }
       hideForm();
+  }
+
+  function initForm(id) {
+      var event = scheduler.getEvent(id);
+      LIGHTBOX_ID = id;
+      SELECTED_STUDENT = event.student_id;
+
+      // Fill form with event values
+      if (SELECTED_STUDENT != null) {
+          $.ajax({
+              type: "GET",
+              url: "/student/" + SELECTED_STUDENT
+          }).done(function(data) {
+              $("#modalStudent").val(data.student.name);
+          });
+      } else {
+          $("#modalStudent").val("");
+      }
+      if (isNewEvent(scheduler)) {
+          event.text = "";
+      }
+
+      $("#modalText").val(event.text);
+      $("#modalLanguage").val(event.language || "sk");
+      $("#modalCount").val(event.count || "1");
+      $("#modalSki").prop("checked", !(event.snowboard || false));
+      $("#modalSnowboard").prop("checked", (event.snowboard || false));
+      $("#schedulerModal").modal("show");
   }
 
   function createStudent() {
@@ -160,8 +208,6 @@
   }
 
   // Autocomplete
-  var STUDENTS_CACHE = null;
-  var SELECTED_STUDENT = null;
   $("#modalStudent").typeahead({
       items: 5,
       minLength: 2,
@@ -184,7 +230,7 @@
       }
   });
 
-  // Modal form
+  // Modal form alert
   $(".alert").hide();
 
   // Scheduler templates
@@ -207,25 +253,7 @@
   });
 
   // Scheduler configuration
-  var LIGHTBOX_ID = null;
-  scheduler.showLightbox = function(id) {
-      LIGHTBOX_ID = id;
-      var event = scheduler.getEvent(LIGHTBOX_ID);
-
-      SELECTED_STUDENT = event.student_id;
-      if (SELECTED_STUDENT != null) {
-          $.ajax({
-              type: "GET",
-              url: "/student/" + SELECTED_STUDENT
-          }).done(function(data) {
-              html("modalStudent").value = data.student.name;
-          });
-      } else {
-          html("modalStudent").value = "";
-      }
-      html("modalText").value = event.text || "";
-      $("#schedulerModal").modal("show");
-  };
+  scheduler.showLightbox = initForm;
   scheduler.config.api_date="%Y-%m-%d %H:%i";
   scheduler.config.xml_date="%Y-%m-%d %H:%i";
 
