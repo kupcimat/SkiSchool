@@ -1,6 +1,19 @@
 // Helper functions
+function zero(number) {
+    var prefix = "";
+    if (number < 10) {
+        prefix = "0";
+    }
+
+    return prefix + number;
+}
+
 function getShortDate(date) {
     return date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
+}
+
+function getShortTime(start, end) {
+    return zero(start.getHours()) + ":" + zero(start.getMinutes()) + " - " + zero(end.getHours()) + ":" + zero(end.getMinutes());
 }
 
 function html(id) {
@@ -17,11 +30,7 @@ function generateTimeValues(time) {
     }
 
     for (var hour = 8; hour <= 18; hour++) {
-        var prefix = "";
-        if (hour < 10) {
-            prefix = "0";
-        }
-        result.push(prefix + hour + ":" + offset);
+        result.push(zero(hour) + ":" + offset);
     }
 
     return result;
