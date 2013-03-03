@@ -1,5 +1,5 @@
 /* Lesson color */
-.dhx_cal_event.lesson div,.dhx_cal_event_line.lesson {
+.dhx_cal_event.individual div,.dhx_cal_event_line.individual {
 	background-color: #FF8100 !important;
 	color: white !important;
 }
