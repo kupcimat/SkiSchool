@@ -42,20 +42,54 @@
   </div>
   <div class="modal-body" style="min-height: 150px">
     <form class="form-horizontal">
+      <!-- Student -->
       <div class="control-group">
         <div class="alert alert-info">
           <strong>New user</strong> successfully created.
         </div>
         <label class="control-label" for="modalStudent">Student name</label>
         <div class="controls">
-          <input id="modalStudent" type="text" placeholder="Type something…">
+          <input id="modalStudent" type="text" placeholder="Type something…" required>
           <button id="modalCreateStudent" type="button" class="btn" data-loading-text="Creating..." onclick="createStudent()">Create new</button>
         </div>
       </div>
+      <!-- Note -->
       <div class="control-group">
         <label class="control-label" for="modalText">Optional Note</label>
         <div class="controls">
           <input id="modalText" type="text">
+        </div>
+      </div>
+      <!-- Language -->
+      <div class="control-group">
+        <label class="control-label" for="modalLanguage">Language</label>
+        <div class="controls">
+          <select id="modalLanguage">
+            #{list languages, as:'lang'}
+              <option value="${lang.name}" ${instructor.languages.contains(lang) ? 'selected' : ''}>${lang.name}</option>
+            #{/list}
+          </select>
+        </div>
+      </div>
+      <!-- Count -->
+      <div class="control-group">
+        <label class="control-label" for="modalCount">Count</label>
+        <div class="controls">
+          <input id="modalCount" class="span1" type="number" min="1" value="1" required>
+        </div>
+      </div>
+      <!-- Snowboard -->
+      <div class="control-group">
+        <label class="control-label" for="modalSnowboard">Type</label>
+        <div class="controls">
+          <label class="radio inline">
+            <input id="modalSnowboard" type="radio" name="snowboardRadios" value="true" checked>
+            Snowboard
+          </label>
+          <label class="radio inline">
+            <input id="modalSki" type="radio" name="snowboardRadios" value="false">
+            Ski
+          </label>
         </div>
       </div>
     </form>
