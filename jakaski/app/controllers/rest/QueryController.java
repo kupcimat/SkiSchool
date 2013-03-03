@@ -22,6 +22,7 @@ import play.data.binding.As;
 import play.mvc.Controller;
 import controllers.rest.binders.DateBinder;
 import controllers.rest.binders.DateSerializer;
+import controllers.rest.binders.LessonTypeSerializer;
 
 public class QueryController extends Controller {
 
@@ -38,7 +39,7 @@ public class QueryController extends Controller {
             wrappers.add(new LessonWrapper(lesson));
         }
 
-        renderJSON(new QueryResponse<LessonWrapper>(wrappers), new DateSerializer());
+        renderJSON(new QueryResponse<LessonWrapper>(wrappers), new DateSerializer(), new LessonTypeSerializer());
     }
 
     public static void getAvailabilities(@As(binder = DateBinder.class) Date date) {

@@ -10,6 +10,7 @@ import models.rest.UriResponse;
 import play.mvc.Controller;
 import play.mvc.Http;
 import controllers.rest.binders.DateSerializer;
+import controllers.rest.binders.LessonTypeSerializer;
 
 public class LessonController extends Controller {
 
@@ -17,7 +18,7 @@ public class LessonController extends Controller {
         Lesson lesson = Lesson.findById(id);
         notFoundIfNull(lesson, "Lesson does not exist");
 
-        renderJSON(new LessonWrapper(lesson), new DateSerializer());
+        renderJSON(new LessonWrapper(lesson), new DateSerializer(), new LessonTypeSerializer());
     }
 
     /*
