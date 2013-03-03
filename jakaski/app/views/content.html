@@ -75,9 +75,8 @@
             <span class="account-role">${user.roles}</span>
             
             <span class="account-actions">
-              <a href="javascript:;">Profile</a> |
               
-              <a href="javascript:;">Edit Settings</a>
+              <a href="@{AdminInstructor.instructor()}">Edit Settings</a>
             </span>
           
           </div> <!-- /account-details -->
@@ -88,32 +87,37 @@
         
         <ul id="main-nav" class="nav nav-tabs nav-stacked">
           
+          #{deadbolt.restrict roles:[['admin'],['editor']]}
           <li class="${request.action == 'AdminInstructor.timetable' ? 'active' : ''}">
             <a href="@{AdminInstructor.timetable()}">
               <i class="icon-table"></i>
              &{'timetable'}     
             </a>
           </li>
+          #{/deadbolt.restrict}
           
+          #{deadbolt.restrict roles:[['instructor']]}
           <li class="${request.action == 'AdminInstructor.availabilities' ? 'active' : ''}">
             <a href="@{AdminInstructor.availabilities()}">
               <i class="icon-calendar"></i>
               &{'availabilities'} 
             </a>
           </li>
+          #{/deadbolt.restrict}
           
+          #{deadbolt.restrict roles:[['admin'],['editor']]}
+          <li class="${request.controller == 'Students' ? 'active' : ''}">
+            <a href="@{Students.list()}">
+              <i class="icon-user"></i>
+              Students              
+            </a>
+          </li>
+          #{/deadbolt.restrict}
           #{deadbolt.restrict roles:[['admin']]}
           <li class="${request.controller == 'Instructors' ? 'active' : ''}">
             <a href="@{Instructors.list()}">
               <i class="icon-user"></i>
               Instructors              
-            </a>
-          </li>
-          
-          <li class="${request.controller == 'Students' ? 'active' : ''}">
-            <a href="@{Students.list()}">
-              <i class="icon-user"></i>
-              Students              
             </a>
           </li>
           

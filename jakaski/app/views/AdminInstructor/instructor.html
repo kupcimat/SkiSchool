@@ -115,9 +115,7 @@
  			            <option value="${lang.id}" ${instructor.languages.contains(lang) ? 'selected' : ''} >${lang.name}</option>
 	                  #{/list} 
 	               </select>
-                    <!--  <select multiple="multiple"> #{list languages, as:'item'}
-                      <option value="${item.name}" ${item.name=='instructor.languages,' ? 'selected' : ''}>${item.name}</option> #{/list}
-                    </select> --><span class="error">#{error 'updatedInstructor.language' /}</span>
+                    <span class="error">#{error 'updatedInstructor.language' /}</span>
                   </div>
                   <!-- /controls -->
                 </div>

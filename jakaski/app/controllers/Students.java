@@ -5,9 +5,10 @@ import play.mvc.Before;
 import play.mvc.With;
 import controllers.deadbolt.Deadbolt;
 import controllers.deadbolt.Restrict;
+import controllers.deadbolt.Restrictions;
 
 @With(Deadbolt.class)
-@Restrict("admin")
+@Restrictions({@Restrict("editor"), @Restrict("admin") })
 public class Students extends CRUD{
 
 	@Before

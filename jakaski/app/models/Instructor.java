@@ -13,7 +13,7 @@ public class Instructor extends User {
 
     public String positionSki;
     public String positionSnowboard;
-    @OneToMany
+    @ManyToMany
     public Set<Lang> languages;
 
     @ManyToMany(mappedBy = "instructors")
