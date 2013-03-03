@@ -1,8 +1,8 @@
 package controllers.rest;
 
 import models.Instructor;
+import models.Lang;
 import models.Lesson;
-import models.LessonType;
 import models.Location;
 import models.Student;
 import models.rest.LessonWrapper;
@@ -33,9 +33,12 @@ public class LessonController extends Controller {
         Student student = Student.findById(body.getStudentId());
         notFoundIfNull(student, "Student does not exist");
 
-        // TODO Temporary static assignment of variables
-        Location location = Location.find("byName", "jahodna").first();
-        Lesson lesson = body.getLesson(location, LessonType.INDIVIDUAL, instructor, student);
+        Location location = Location.find("byName", body.getLocationName()).first();
+        notFoundIfNull(location, "Location does not exist");
+        Lang language = Lang.find("byName", body.getLanguageName()).first();
+        notFoundIfNull(language, "Language does not exist");
+
+        Lesson lesson = body.getLesson(instructor, student, location, language);
         instructor.addLesson(lesson);
         student.addLesson(lesson);
         lesson.save();
@@ -51,9 +54,17 @@ public class LessonController extends Controller {
 
         Lesson lesson = Lesson.findById(id);
         notFoundIfNull(lesson, "Lesson does not exist");
-        // TODO check validity of instructor and student
+        Instructor instructor = Instructor.findById(body.getInstructorId());
+        notFoundIfNull(instructor, "Instructor does not exist");
+        Student student = Student.findById(body.getStudentId());
+        notFoundIfNull(student, "Student does not exist");
 
-        body.updateLesson(lesson).save();
+        Location location = Location.find("byName", body.getLocationName()).first();
+        notFoundIfNull(location, "Location does not exist");
+        Lang language = Lang.find("byName", body.getLanguageName()).first();
+        notFoundIfNull(language, "Language does not exist");
+
+        body.updateLesson(lesson, instructor, student, location, language).save();
         response.status = Http.StatusCode.NO_RESPONSE;
     }
 

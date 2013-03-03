@@ -3,6 +3,11 @@
     "end" : "2012-12-21 21:00",
     "note" : "UPDATED!",
     "instructor" : "/instructor/223",
-    "student" : "/student/224"
+    "student" : "/student/224",
+    "location" : "jahodna",
+    "language" : "sk",
+    "type" : "group",
+    "snowboard" : "true",
+    "count" : 10
   }
 }

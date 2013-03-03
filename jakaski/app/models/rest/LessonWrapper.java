@@ -6,6 +6,7 @@ import static org.apache.commons.lang.Validate.notNull;
 import java.util.Date;
 
 import models.Instructor;
+import models.Lang;
 import models.Lesson;
 import models.LessonType;
 import models.Location;
@@ -24,12 +25,15 @@ public class LessonWrapper {
         notNull(lesson, "Lesson can't be null");
         notEmpty(lesson.instructors, "Instructors can't be empty");
         notEmpty(lesson.students, "Students can't be empty");
+        notNull(lesson.location, "Location can't be empty");
+        notNull(lesson.language, "Language can't be empty");
 
         Instructor instructor = lesson.instructors.iterator().next();
         Student student = lesson.students.iterator().next();
 
         this.lesson = new InnerLesson(lesson.getId(), lesson.startTime, lesson.endTime, lesson.note,
-                Resources.getInstructorUri(instructor), Resources.getStudentUri(student));
+                Resources.getInstructorUri(instructor), Resources.getStudentUri(student), lesson.location.name, lesson.language.name,
+                lesson.lessonType, lesson.snowboard, lesson.studentsCount);
     }
 
     public Long getInstructorId() {
@@ -42,25 +46,64 @@ public class LessonWrapper {
         return Resources.getStudentId(lesson.student);
     }
 
-    public Lesson getLesson(Location location, LessonType lessonType, Instructor instructor, Student student) {
+    public String getLocationName() {
         notNull(lesson, "InnerLesson can't be null");
-        return new Lesson(lesson.start, lesson.end, location, lessonType, lesson.note, instructor, student);
+        return lesson.location;
     }
 
-    public Lesson updateLesson(Lesson lesson) {
-        notNull(lesson, "Lesson can't be null");
-        notNull(this.lesson, "InnerLesson can't be null");
+    public String getLanguageName() {
+        notNull(lesson, "InnerLesson can't be null");
+        return lesson.language;
+    }
 
-        lesson.startTime = this.lesson.start;
-        lesson.endTime = this.lesson.end;
-        lesson.note = this.lesson.note;
+    public Lesson getLesson(Instructor instructor, Student student, Location location, Lang language) {
+        notNull(lesson, "InnerLesson can't be null");
+        notNull(instructor, "Instructor can't be null");
+        notNull(student, "Student can't be null");
+        notNull(location, "Location can't be empty");
+        notNull(language, "Language can't be empty");
 
-        Student student = Student.findById(getStudentId());
-        lesson.students.clear();
-        lesson.students.add(student);
-        // TODO what about other fields
+        Lesson result = new Lesson.Builder()
+                .startTime(lesson.start)
+                .endTime(lesson.end)
+                .note(lesson.note)
+                .instructor(instructor)
+                .student(student)
+                .location(location)
+                .language(language)
+                .lessonType(lesson.type)
+                .snowboard(lesson.snowboard)
+                .studentsCount(lesson.count).build();
 
-        return lesson;
+        return result;
+    }
+
+    public Lesson updateLesson(Lesson oldLesson, Instructor instructor, Student student, Location location, Lang language) {
+        notNull(lesson, "InnerLesson can't be null");
+        notNull(oldLesson, "Lesson can't be null");
+        notEmpty(oldLesson.instructors, "Instructors can't be empty");
+        notEmpty(oldLesson.students, "Students can't be empty");
+        notNull(instructor, "Instructor can't be empty");
+        notNull(student, "Student can't be empty");
+        notNull(location, "Location can't be empty");
+        notNull(language, "Language can't be empty");
+
+        oldLesson.startTime = lesson.start;
+        oldLesson.endTime = lesson.end;
+        oldLesson.note = lesson.note;
+
+        oldLesson.instructors.clear();
+        oldLesson.instructors.add(instructor);
+        oldLesson.students.clear();
+        oldLesson.students.add(student);
+
+        oldLesson.location = location;
+        oldLesson.language = language;
+        oldLesson.lessonType = lesson.type;
+        oldLesson.snowboard = lesson.snowboard;
+        oldLesson.studentsCount = lesson.count;
+
+        return oldLesson;
     }
 
     public static class InnerLesson {
@@ -71,18 +114,29 @@ public class LessonWrapper {
         private String note;
         private String instructor;
         private String student;
+        private String location;
+        private String language;
+        private LessonType type;
+        private boolean snowboard;
+        private int count;
 
         // Default constructor for Gson
         public InnerLesson() {
         }
 
-        public InnerLesson(Long id, Date start, Date end, String note, String instructor, String student) {
+        public InnerLesson(Long id, Date start, Date end, String note, String instructor, String student, String location, String language,
+                LessonType type, boolean snowboard, int count) {
             this.id = id;
             this.start = start;
             this.end = end;
             this.note = note;
             this.instructor = instructor;
             this.student = student;
+            this.location = location;
+            this.language = language;
+            this.type = type;
+            this.snowboard = snowboard;
+            this.count = count;
         }
 
     }

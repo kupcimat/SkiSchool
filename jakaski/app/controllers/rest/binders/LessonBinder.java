@@ -3,6 +3,7 @@ package controllers.rest.binders;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 
+import models.LessonType;
 import models.rest.LessonWrapper;
 import play.Logger;
 import play.data.binding.Global;
@@ -22,7 +23,10 @@ public class LessonBinder implements TypeBinder<LessonWrapper> {
 
         try {
             // TODO check json structure
-            Gson gson = new GsonBuilder().setDateFormat(Resources.DEFAULT_DATE_FORMAT).create();
+            Gson gson = new GsonBuilder()
+                    .setDateFormat(Resources.DEFAULT_DATE_FORMAT)
+                    .registerTypeAdapter(LessonType.class, new LessonTypeDeserializer())
+                    .create();
             result = gson.fromJson(value, LessonWrapper.class);
         } catch (Exception e) {
             Logger.info(e, "Error occured while parsing JSON request = %s", value);
