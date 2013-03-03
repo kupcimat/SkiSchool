@@ -16,7 +16,7 @@ import play.mvc.Controller;
 import play.mvc.With;
 
 @With(Deadbolt.class)
-@Restrictions({ @Restrict("instructor"), @Restrict("admin") })
+@Restrictions({ @Restrict("instructor"), @Restrict("admin"), @Restrict("editor") })
 public class AdminInstructor extends Controller {
 
 	@Before
@@ -27,28 +27,32 @@ public class AdminInstructor extends Controller {
 			renderArgs.put("tab1", "active");
 			renderArgs.put("tab2", "passive");
 			renderArgs.put("tab3", "passive");
-			//if (user.roles.contains("instructor")) {
-				Instructor instructor = Instructor.findById(user.id);
-				List<Lang> languages = Lang.findAll();
-				renderArgs.put("languages",languages);
-				renderArgs.put("instructor", instructor);
-		//	}
+			// if (user.roles.contains("instructor")) {
+			Instructor instructor = Instructor.findById(user.id);
+			List<Lang> languages = Lang.findAll();
+			renderArgs.put("languages", languages);
+			renderArgs.put("instructor", instructor);
+			// }
 		}
 	}
 
+	@Restrictions({ @Restrict("instructor"), @Restrict("editor"), @Restrict("admin") })
 	public static void instructor() {
 		render();
 	}
 
+	@Restrictions({ @Restrict("instructor") })
 	public static void availabilities() {
 		List<Availability> availabilities = Availability.find("instructor.email", Security.connected()).fetch();
 		render(availabilities);
 	}
 
+	@Restrictions({ @Restrict("editor"), @Restrict("admin") })
 	public static void timetable() {
 		render();
 	}
 
+	@Restrictions({ @Restrict("instructor"), @Restrict("editor"), @Restrict("admin") })
 	public static void updateUser(User user) {
 		User updatedUser = User.find("byEmail", Security.connected()).first();
 		updatedUser.firstname = user.firstname;
@@ -66,10 +70,11 @@ public class AdminInstructor extends Controller {
 		timetable();
 	}
 
+	@Restrict("instructor")
 	public static void updateInstructor(Instructor instructor) {
 		Instructor updatedInstructor = Instructor.find("byEmail", Security.connected()).first();
 		updatedInstructor.positionSki = instructor.positionSki;
-		updatedInstructor.positionSnowboard= instructor.positionSnowboard;
+		updatedInstructor.positionSnowboard = instructor.positionSnowboard;
 		updatedInstructor.languages = instructor.languages;
 		validation.valid(updatedInstructor);
 		renderArgs.put("tab1", "passive");
@@ -82,6 +87,7 @@ public class AdminInstructor extends Controller {
 		timetable();
 	}
 
+	@Restrictions({ @Restrict("instructor"), @Restrict("editor"), @Restrict("admin") })
 	public static void updatePassword(User user, String oldPassword, String newPassword, String passwordConfirm) {
 		User updatedUser = User.find("byEmail", Security.connected()).first();
 		validation.equals(oldPassword, updatedUser.password).message("oldPasswordDiff");
