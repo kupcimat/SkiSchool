@@ -6,6 +6,7 @@ import models.ApplicationRole;
 import models.Availability;
 import models.Instructor;
 import models.Lang;
+import models.Location;
 import models.User;
 import controllers.deadbolt.Deadbolt;
 import controllers.deadbolt.Restrict;
@@ -31,6 +32,7 @@ public class AdminInstructor extends Controller {
 			Instructor instructor = Instructor.findById(user.id);
 			List<Lang> languages = Lang.findAll();
 			renderArgs.put("languages", languages);
+			renderArgs.put("locations", Location.findAll());
 			renderArgs.put("instructor", instructor);
 			// }
 		}

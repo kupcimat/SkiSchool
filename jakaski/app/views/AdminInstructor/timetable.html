@@ -60,6 +60,17 @@
           <input id="modalText" type="text">
         </div>
       </div>
+      <!-- Location -->
+      <div class="control-group">
+        <label class="control-label" for="modalLocation">Location</label>
+        <div class="controls">
+          <select id="modalLocation">
+            #{list locations, as:'location'}
+              <option value="${location.name}">${location.name}</option>
+            #{/list}
+          </select>
+        </div>
+      </div>
       <!-- Language -->
       <div class="control-group">
         <label class="control-label" for="modalLanguage">Language</label>
@@ -143,11 +154,10 @@
       var event = scheduler.getEvent(LIGHTBOX_ID);
       event.student_id = SELECTED_STUDENT;
       event.text = $("#modalText").val();
+      event.location = $("#modalLocation").val();
       event.language = $("#modalLanguage").val();
       event.count = $("#modalCount").val();
       event.snowboard = $("#modalSnowboard").prop("checked");
-      // TODO Use in template
-      event.location = "jahodna";
       if (event.count > 1) {
           event.type = "group";
       } else {
@@ -184,7 +194,8 @@
       }
 
       $("#modalText").val(event.text);
-      $("#modalLanguage").val(event.language || "sk");
+      $("#modalLocation").val(event.location);
+      $("#modalLanguage").val(event.language);
       $("#modalCount").val(event.count || "1");
       $("#modalSki").prop("checked", !(event.snowboard || false));
       $("#modalSnowboard").prop("checked", (event.snowboard || false));
