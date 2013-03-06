@@ -17,7 +17,21 @@
   </div>
   <!-- /widget-header -->
   <div class="widget-content">
-    <div id="crudListTable">#{crud.table fields:['fullname', 'phone'] /}</div>
+    <div id="crudListTable">
+      #{crud.table fields:['fullname', 'phone','hodiny']}
+         #{crud.custom 'hodiny'}
+      <a href="@{Overview.lessons(students)}">Lessons</a>
+     #{/crud.custom}
+     <!--    #{crud.custom 'online'}
+        #{if object.online}
+          <span class="online">Online</span>
+        #{/if}
+        #{else}
+          <span class="offline">Offline</span>
+        #{/else}
+      #{/crud.custom} -->
+      #{/crud.table}
+    </div>
   </div>
 </div>
 <div class="widget">
