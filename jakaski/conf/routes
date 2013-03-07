@@ -43,7 +43,9 @@ GET     /students                               rest.StudentController.getAllStu
 
 # Queries
 GET     /query/lessons                          rest.QueryController.getLessons
+GET     /query/lessons/instructor/{<[0-9]+>id}  rest.QueryController.getInstructorLessons
 GET     /query/availabilities                   rest.QueryController.getAvailabilities
+GET     /query/availabilities/instructor/{<[0-9]+>id} rest.QueryController.getInstructorAvailabilities
 GET     /query/instructors                      rest.QueryController.getInstructors
 GET     /query/students                         rest.QueryController.getStudents
 

@@ -42,6 +42,22 @@ public class QueryController extends Controller {
         renderJSON(new QueryResponse<LessonWrapper>(wrappers), new DateSerializer(), new LessonTypeSerializer());
     }
 
+    public static void getInstructorLessons(Long id, @As(binder = DateBinder.class) Date start, @As(binder = DateBinder.class) Date end) {
+        if (start == null || end == null) {
+            badRequest();
+        }
+
+        List<Lesson> lessons = Lesson.find(
+                "select l from Lesson l join l.instructors i where i.id = ? and l.startTime >= ? and l.startTime < ?", id, start, end)
+                .fetch();
+        List<LessonWrapper> wrappers = new ArrayList<>();
+        for (Lesson lesson : lessons) {
+            wrappers.add(new LessonWrapper(lesson));
+        }
+
+        renderJSON(new QueryResponse<LessonWrapper>(wrappers), new DateSerializer(), new LessonTypeSerializer());
+    }
+
     public static void getAvailabilities(@As(binder = DateBinder.class) Date date) {
         if (date == null) {
             badRequest();
@@ -53,6 +69,23 @@ public class QueryController extends Controller {
 
         List<AvailabilityWrapper> wrappers = new ArrayList<>();
         for (Availability availability : availabilities) {
+            wrappers.add(new AvailabilityWrapper(availability));
+        }
+
+        renderJSON(new QueryResponse<AvailabilityWrapper>(wrappers), new DateSerializer());
+    }
+
+    public static void getInstructorAvailabilities(Long id, @As(binder = DateBinder.class) Date start,
+            @As(binder = DateBinder.class) Date end) {
+        if (start == null || end == null) {
+            badRequest();
+        }
+
+        List<Availability> avaiabilities = Availability.find(
+                "select a from Availability a join a.instructor i where i.id = ? and a.startTime >= ? and a.startTime < ?", id, start, end)
+                .fetch();
+        List<AvailabilityWrapper> wrappers = new ArrayList<>();
+        for (Availability availability : avaiabilities) {
             wrappers.add(new AvailabilityWrapper(availability));
         }
 
@@ -91,7 +124,8 @@ public class QueryController extends Controller {
         }
 
         // Students matching query
-        List<Student> students = Student.find("select s from Student s where LOWER(s.fullname) like ?", "%" + name.toLowerCase() + "%").fetch(limit);
+        List<Student> students = Student.find("select s from Student s where LOWER(s.fullname) like ?", "%" + name.toLowerCase() + "%")
+                .fetch(limit);
         List<StudentWrapper> wrappers = new ArrayList<>();
         for (Student student : students) {
             wrappers.add(new StudentWrapper(student));

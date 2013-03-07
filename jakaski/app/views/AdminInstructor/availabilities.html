@@ -32,6 +32,24 @@
   </div>
 
 <script type="text/javascript" charset="utf-8">
+  // Helper functions
+  function loadData(mode, startDate) {
+      var instructorId = ${instructor.getId()};
+      var endDate = new Date(startDate);
+      var offset = 1;
+
+      if (mode == "week") {
+          offset = 7;
+      }
+      if (mode == "month") {
+          offset = 31;
+      }
+
+      endDate.setDate(endDate.getDate() + offset);
+      loadInstructorLessons(instructorId, startDate, endDate, scheduler);
+      loadInstructorAvailabilities(instructorId, startDate, endDate, scheduler);
+  }
+
   // Scheduler configuration
   scheduler.config.api_date="%Y-%m-%d %H:%i";
   scheduler.config.xml_date="%Y-%m-%d %H:%i";
@@ -39,12 +57,13 @@
   scheduler.config.last_hour=19;
 
   // Initialize scheduler
-  scheduler.init("scheduler_here", null, "day");
-  loadAvailabilities(new Date(), scheduler);
+  var viewMode = "week";
+  scheduler.init("scheduler_here", null, viewMode);
+  loadData(viewMode, new Date());
 
   // Events management
   scheduler.attachEvent("onViewChange", function(mode, date) {
-      loadAvailabilities(date, scheduler);
+      loadData(mode, date);
   });
 
   scheduler.attachEvent("onEventAdded", function(eventId, eventObject) {
