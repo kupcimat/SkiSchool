@@ -1,21 +1,18 @@
 #{extends 'content.html' /}
 <h1 class="page-title">
-  <i class="icon-th-large"></i> User Account
+  <i class="icon-th-large"></i>&{'accountSetting'}
 </h1>
 <div class="row">
   <div class="span9">
     <div class="widget">
-      <div class="widget-header">
-        <h3>Basic Information</h3>
-      </div>
       <!-- /widget-header -->
       <div class="widget-content">
         <div class="tabbable">
           <ul class="nav nav-tabs">
-            <li class="${tab1 == 'active' ? 'active' : 'passive'}"><a href="#tab1" data-toggle="tab">Profile</a></li> #{deadbolt.restrict
+            <li class="${tab1 == 'active' ? 'active' : 'passive'}"><a href="#tab1" data-toggle="tab">&{'instructor.profile'}</a></li> #{deadbolt.restrict
             roles:[['instructor']]}
-            <li class="${tab2 == 'active' ? 'active' : 'passive'}"><a href="#tab2" data-toggle="tab">Instructor</a></li> #{/deadbolt.restrict}
-            <li class="${tab3 == 'active' ? 'active' : 'passive'}"><a href="#tab3" data-toggle="tab">Change Password</a></li>
+            <li class="${tab2 == 'active' ? 'active' : 'passive'}"><a href="#tab2" data-toggle="tab">&{'instructor.instructor'}</a></li> #{/deadbolt.restrict}
+            <li class="${tab3 == 'active' ? 'active' : 'passive'}"><a href="#tab3" data-toggle="tab">&{'instructor.changePassword'}</a></li>
           </ul>
           <br>
           <div class="tab-content">
@@ -25,7 +22,7 @@
 
                 #{field 'user.firstname'}
                 <div class="control-group">
-                  <label class="control-label" for="firstname">First Name</label>
+                  <label class="control-label" for="firstname">&{'instructor.firstName'}</label>
                   <div class="controls">
                     <input type="text" class="input-medium" id="firstname" name="${field.name}" value="${user.firstname}">
                   </div>
@@ -34,7 +31,7 @@
                 <!-- /control-group -->
                 #{/field} #{field 'user.surname'}
                 <div class="control-group">
-                  <label class="control-label" for="surname">Last Name</label>
+                  <label class="control-label" for="surname">&{'instructor.lastName'}</label>
                   <div class="controls">
                     <input type="text" class="input-medium" id="surname" name="${field.name}" value="${user.surname}">
                   </div>
@@ -43,7 +40,7 @@
                 <!-- /control-group -->
                 #{/field} #{field 'user.phone'}
                 <div class="control-group">
-                  <label class="control-label" for="phone">Phone</label>
+                  <label class="control-label" for="phone">&{'instructor.phone'}</label>
                   <div class="controls">
                     <input type="text" class="input-large" id="phone" name="${field.name}" value="${user.phone}"> <span class="error">#{error
                       'updatedUser.phone' /}</span>
@@ -53,7 +50,7 @@
                 <!-- /control-group -->
                 #{/field} #{field 'user.email'}
                 <div class="control-group">
-                  <label class="control-label" for="email">Email Address</label>
+                  <label class="control-label" for="email">&{'instructor.emailAddress'}</label>
                   <div class="controls">
                     <input type="text" class="input-large" id="email" name="${field.name}" value="${user.email}"> <span class="error">#{error
                       'updatedUser.email' /}</span>
@@ -64,8 +61,8 @@
                 #{/field} <br>
 
                 <div class="form-actions">
-                  <button type="submit" class="btn btn-primary">Save</button>
-                  <button class="btn">Cancel</button>
+                  <button type="submit" class="btn btn-primary">&{'instructor.save'}</button>
+                  <button class="btn">&{'instructor.cancel'}</button>
                 </div>
                 <!-- /form-actions -->
               </fieldset>
@@ -78,7 +75,7 @@
               <fieldset>
                 #{field 'instructor.positionSki'}
                 <div class="control-group">
-                  <label class="control-label" for="positionSki">Position Ski</label>
+                  <label class="control-label" for="positionSki">&{'instructor.positionSki'}</label>
                   <div class="controls">
                    #{select 'instructor.positionSki', value:instructor?.positionSki} 
                        #{option 'none'}neuci#{/option} 
@@ -93,7 +90,7 @@
                 <!-- /control-group -->
                 #{/field} #{field 'instructor.positionSnowboard'}
                 <div class="control-group">
-                  <label class="control-label" for="positionSnowboard">Position Snowboard</label>
+                  <label class="control-label" for="positionSnowboard">&{'instructor.positionSnowboard'}</label>
                   <div class="controls">
                    #{select 'instructor.positionSnowboard', value:instructor?.positionSnowboard} 
                        #{option 'none'}neuci#{/option} 
@@ -108,7 +105,7 @@
                 <!-- /control-group -->
                 #{/field} #{field 'instructor.languages'}
                 <div class="control-group">
-                  <label class="control-label" for="languages">Language</label>
+                  <label class="control-label" for="languages">&{'instructor.languages'}</label>
                   <div class="controls">
                     <select id="languages" name="instructor.languages.id" value="" size="1" id="select" multiple>
                       #{list languages, as:'lang'} 
@@ -122,8 +119,8 @@
                 <!-- /control-group -->
                 #{/field}
                 <div class="form-actions">
-                  <button type="submit" class="btn btn-primary">Save</button>
-                  <button class="btn">Cancel</button>
+                  <button type="submit" class="btn btn-primary">&{'instructor.save'}</button>
+                  <button class="btn">&{'instructor.cancel'}</button>
                 </div>
                 <!-- /form-actions -->
               </fieldset>
@@ -137,7 +134,7 @@
               <fieldset>
                 #{field 'oldPassword'}
                 <div class="control-group">
-                  <label class="control-label" for="oldPassword">Old Password</label>
+                  <label class="control-label" for="oldPassword">&{'instructor.oldPassword'}</label>
                   <div class="controls">
                     <input type="password" class="input-medium" id="oldPassword" name="${field.name}" value="${oldPassword}"> <span
                       class="error">#{error 'oldPassword' /}</span>
@@ -147,7 +144,7 @@
                 <!-- /control-group -->
                 #{/field} #{field 'newPassword'}
                 <div class="control-group">
-                  <label class="control-label" for="newPassword">New Password</label>
+                  <label class="control-label" for="newPassword">&{'instructor.newPassword'}</label>
                   <div class="controls">
                     <input type="password" class="input-large" id="newPassword" name="${field.name}" value="${newPassword}"> <span
                       class="error">#{error 'updatedUser.password' /}</span>
@@ -157,7 +154,7 @@
                 <!-- /control-group -->
                 #{/field} #{field 'passwordConfirm'}
                 <div class="control-group">
-                  <label class="control-label" for="passwordConfirm">Confirm</label>
+                  <label class="control-label" for="passwordConfirm">&{'instructor.confirm'}</label>
                   <div class="controls">
                     <input type="password" class="input-medium" id="passwordConfirm" name="${field.name}" value="${passwordConfirm}"> <span
                       class="error">#{error 'passwordConfirm' /}</span>
@@ -168,8 +165,8 @@
                 #{/field}
                 <br>
                 <div class="form-actions">
-                  <button type="submit" class="btn btn-primary">Save</button>
-                  <button class="btn">Cancel</button>
+                  <button type="submit" class="btn btn-primary">&{'instructor.save'}</button>
+                  <button class="btn">&{'instructor.cancel'}</button>
                 </div>
                 <!-- /form-actions -->
               </fieldset>

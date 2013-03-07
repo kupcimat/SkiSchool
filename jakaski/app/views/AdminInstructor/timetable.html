@@ -22,7 +22,7 @@
 
 <form class="form-search">
   <input type="text" class="input-medium search-query" id="instructorSearch">
-  <a href="#" class="btn" onclick="addInstructor()">Add instructor</a>
+  <a href="#" class="btn" onclick="addInstructor()">&{'timetable.addInstructor'}</a>
 </form>
 
 <div class="widget">
@@ -43,31 +43,31 @@
 <div id="schedulerModal" class="modal hide fade">
   <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="closeForm()">&times;</button>
-    <h3 id="modalHeader">Event Details</h3>
+    <h3 id="modalHeader">&{'timetable.eventDetails'}</h3>
   </div>
   <div class="modal-body" style="min-height: 150px">
     <form class="form-horizontal">
       <!-- Student -->
       <div class="control-group">
         <div class="alert alert-info">
-          <strong>New user</strong> successfully created.
+          <strong>&{'timetable.newUser'}</strong> &{'timetable.successfullyCreated'}.
         </div>
-        <label class="control-label" for="modalStudent">Student name</label>
+        <label class="control-label" for="modalStudent">&{'timetable.studentName'}</label>
         <div class="controls">
-          <input id="modalStudent" type="text" placeholder="Type something…" required>
-          <button id="modalCreateStudent" type="button" class="btn" data-loading-text="Creating..." onclick="createStudent()">Create new</button>
+          <input id="modalStudent" type="text" placeholder="" required>
+          <button id="modalCreateStudent" type="button" class="btn" data-loading-text="Creating..." onclick="createStudent()">&{'timetable.createNew'}</button>
         </div>
       </div>
       <!-- Note -->
       <div class="control-group">
-        <label class="control-label" for="modalText">Optional Note</label>
+        <label class="control-label" for="modalText">&{'timetable.note'}</label>
         <div class="controls">
           <input id="modalText" type="text">
         </div>
       </div>
       <!-- Location -->
       <div class="control-group">
-        <label class="control-label" for="modalLocation">Location</label>
+        <label class="control-label" for="modalLocation">&{'timetable.location'}</label>
         <div class="controls">
           <select id="modalLocation">
             #{list locations, as:'location'}
@@ -78,7 +78,7 @@
       </div>
       <!-- Language -->
       <div class="control-group">
-        <label class="control-label" for="modalLanguage">Language</label>
+        <label class="control-label" for="modalLanguage">&{'timetable.language'}</label>
         <div class="controls">
           <select id="modalLanguage">
             #{list languages, as:'lang'}
@@ -89,31 +89,31 @@
       </div>
       <!-- Count -->
       <div class="control-group">
-        <label class="control-label" for="modalCount">Count</label>
+        <label class="control-label" for="modalCount">&{'timetable.count'}</label>
         <div class="controls">
           <input id="modalCount" class="span1" type="number" min="1" required>
         </div>
       </div>
       <!-- Snowboard -->
       <div class="control-group">
-        <label class="control-label" for="modalSki">Type</label>
+        <label class="control-label" for="modalSki">&{'timetable.type'}</label>
         <div class="controls">
           <label class="radio inline">
             <input id="modalSki" type="radio" name="snowboardRadios" value="false">
-            Ski
+            &{'timetable.ski'}
           </label>
           <label class="radio inline">
             <input id="modalSnowboard" type="radio" name="snowboardRadios" value="true">
-            Snowboard
+            &{'timetable.snowboard'}
           </label>
         </div>
       </div>
     </form>
   </div>
   <div class="modal-footer">
-    <a href="#" class="btn" onclick="deleteForm()">Delete</a>
-    <a href="#" class="btn" onclick="closeForm()">Close</a>
-    <a href="#" class="btn btn-primary" data-loading-text="Creating..." onclick="saveForm()">Save changes</a>
+    <a href="#" class="btn" onclick="deleteForm()">&{'timetable.delete'}</a>
+    <a href="#" class="btn" onclick="closeForm()">&{'timetable.close'}</a>
+    <a href="#" class="btn btn-primary" data-loading-text="Creating..." onclick="saveForm()">&{'timetable.saveChanges'}</a>
   </div>
 </div>
 
@@ -300,7 +300,7 @@
     x_date: "%H:%i",
     x_step: 60,
     x_start: 8,
-    x_size: 11,
+    x_size: 13,
     x_length: 24,
     y_property: "instructor_id",
     y_unit: []

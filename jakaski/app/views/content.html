@@ -31,7 +31,7 @@
             
             <ul class="dropdown-menu">
               <li>
-                <a href="@{AdminInstructor.instructor()}"><i class="icon-user"></i> Account Setting  </a>
+                <a href="@{AdminInstructor.instructor()}"><i class="icon-user"></i>&{'accountSetting'}</a>
               </li>
               
             <!--  <li>
@@ -41,7 +41,7 @@
               <li class="divider"></li>
               
               <li>
-                <a href="@{Secure.logout()}"><i class="icon-off"></i> Logout</a>
+                <a href="@{Secure.logout()}"><i class="icon-off"></i>&{'content.logout'}</a>
               </li>
             </ul>
           </li>
@@ -76,7 +76,7 @@
             
             <span class="account-actions">
               
-              <a href="@{AdminInstructor.instructor()}">Edit Settings</a>
+              <a href="@{AdminInstructor.instructor()}">&{'accountSetting'}</a>
             </span>
           
           </div> <!-- /account-details -->
@@ -109,7 +109,7 @@
           <li class="${request.controller == 'Students' ? 'active' : ''}">
             <a href="@{Students.list()}">
               <i class="icon-user"></i>
-              Students              
+              &{'students'}              
             </a>
           </li>
           #{/deadbolt.restrict}
@@ -117,21 +117,21 @@
           <li class="${request.controller == 'Instructors' ? 'active' : ''}">
             <a href="@{Instructors.list()}">
               <i class="icon-user"></i>
-              Instructors              
+              &{'instructors'}              
             </a>
           </li>
           
           <li class="${request.controller == 'Employees' ? 'active' : ''}">
             <a href="@{Employees.list()}">
               <i class="icon-user"></i>
-              Users              
+              &{'users'}              
             </a>
           </li>
           
           <li class="${request.controller == 'Langs' ? 'active' : ''}">
             <a href="@{Langs.list()}">
-              <i class="icon-user"></i>
-              Languages              
+              <i class="icon-comments-alt"></i>
+              &{'languages'}              
             </a>
           </li>
           
@@ -164,7 +164,7 @@
   
   <div class="container">       
     <hr>
-    <p>© 2012 Jaka Ski.</p>
+    <p>© 2012 Jaka Ski</p>
   </div> <!-- /container -->
   
 </div> <!-- /footer -->
