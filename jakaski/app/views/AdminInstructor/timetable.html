@@ -20,6 +20,11 @@
   &{'timetable'}
 </h1>
 
+<form class="form-search">
+  <input type="text" class="input-medium search-query" id="instructorSearch">
+  <a href="#" class="btn" onclick="addInstructor()">Add instructor</a>
+</form>
+
 <div class="widget">
   <div class="widget-content">
     <div id="scheduler_here" class="dhx_cal_container" style='width: 100%; height: 600px'>
@@ -117,6 +122,8 @@
   var LIGHTBOX_ID = null;
   var STUDENTS_CACHE = null;
   var SELECTED_STUDENT = null;
+  var INSTRUCTORS_CACHE = null;
+  var SELECTED_INSTRUCTOR = null;
 
   // Helper functions
   function isNewEvent(scheduler) {
@@ -220,6 +227,18 @@
       });
   }
 
+  function addInstructor() {
+      if (SELECTED_INSTRUCTOR == null) {
+          return;
+      }
+
+      if (scheduler.getSection(SELECTED_INSTRUCTOR.key) == null) {
+          scheduler.addSection(SELECTED_INSTRUCTOR, null);
+      }
+      SELECTED_INSTRUCTOR = null;
+      $("#instructorSearch").val("");
+  }
+
   // Autocomplete
   $("#modalStudent").typeahead({
       items: 5,
@@ -239,6 +258,28 @@
       },
       updater: function(item) {
           SELECTED_STUDENT = STUDENTS_CACHE.map[item].id;
+          return item;
+      }
+  });
+
+  $("#instructorSearch").typeahead({
+      items: 5,
+      minLength: 2,
+      source: function(query, process) {
+          if (INSTRUCTORS_CACHE == null) {
+              $.ajax({
+                  type: "GET",
+                  url: "/instructors"
+              }).done(function(data) {
+                  INSTRUCTORS_CACHE = instructorsToMap(data.result);
+                  process(INSTRUCTORS_CACHE.names);
+              });
+          } else {
+              process(INSTRUCTORS_CACHE.names);
+          }
+      },
+      updater: function(item) {
+          SELECTED_INSTRUCTOR = INSTRUCTORS_CACHE.map[item];
           return item;
       }
   });

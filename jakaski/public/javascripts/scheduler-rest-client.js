@@ -44,12 +44,12 @@ function availabilitiesToEvents(data) {
         var availability = value.availability;
         var instructorId = availability.instructor.replace("/instructor/", "");
         events.push({
-            id: availability.id,
-            start_date: availability.start,
-            end_date: availability.end,
-            text: availability.note,
+            id:            availability.id,
+            start_date:    availability.start,
+            end_date:      availability.end,
+            text:          availability.note,
             instructor_id: instructorId,
-            type: "availability"});
+            type:          "availability"});
     });
 
     return events;
@@ -88,6 +88,19 @@ function instructorsToSections(data) {
     });
 
     return sections;
+}
+
+function instructorsToMap(data) {
+    var map = new Object();
+    var names = new Array();
+    var sections = instructorsToSections(data);
+
+    $.each(sections, function(index, value) {
+        map[value.label] = value;
+        names.push(value.label);
+    });
+
+    return {map: map, names: names};
 }
 
 function studentsToMap(data) {

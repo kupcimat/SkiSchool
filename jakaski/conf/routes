@@ -41,12 +41,16 @@ GET     /student/{<[0-9]+>id}                   rest.StudentController.getStuden
 POST    /student                                rest.StudentController.createStudent
 GET     /students                               rest.StudentController.getAllStudents
 
+# Instructor resources
+GET     /instructors                            rest.InstructorController.getAllInstructors
+
 # Queries
 GET     /query/lessons                          rest.QueryController.getLessons
 GET     /query/lessons/instructor/{<[0-9]+>id}  rest.QueryController.getInstructorLessons
 GET     /query/availabilities                   rest.QueryController.getAvailabilities
 GET     /query/availabilities/instructor/{<[0-9]+>id} rest.QueryController.getInstructorAvailabilities
 GET     /query/instructors                      rest.QueryController.getInstructors
+# TODO not used
 GET     /query/name/instructors                 rest.QueryController.getInstructorsByName
 GET     /query/name/students                    rest.QueryController.getStudentsByName
 
