@@ -18,7 +18,7 @@ GET     /admin/timetable                        AdminInstructor.timetable
 GET		/admin/availabilities					AdminInstructor.availabilities
 POST	/admin/instructor						AdminInstructor.update
 GET		/admin/instructor						AdminInstructor.instructor
-GET     /admin/overview/lessons					Overview.lessonsOverview
+GET     /admin/overview/lessons					Overview.lessons
 *      	/admin              					module:crud
 
 # Map static resources from the /app/public folder to the /public path
