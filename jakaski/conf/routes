@@ -47,7 +47,8 @@ GET     /query/lessons/instructor/{<[0-9]+>id}  rest.QueryController.getInstruct
 GET     /query/availabilities                   rest.QueryController.getAvailabilities
 GET     /query/availabilities/instructor/{<[0-9]+>id} rest.QueryController.getInstructorAvailabilities
 GET     /query/instructors                      rest.QueryController.getInstructors
-GET     /query/students                         rest.QueryController.getStudents
+GET     /query/name/instructors                 rest.QueryController.getInstructorsByName
+GET     /query/name/students                    rest.QueryController.getStudentsByName
 
 # Catch all
 *       /{controller}/{action}                  {controller}.{action}

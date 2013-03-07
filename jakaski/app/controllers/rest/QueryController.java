@@ -118,7 +118,23 @@ public class QueryController extends Controller {
         renderJSON(new QueryResponse<InstructorWrapper>(wrappers));
     }
 
-    public static void getStudents(String name, int limit) {
+    public static void getInstructorsByName(String name, int limit) {
+        if (name == null) {
+            badRequest();
+        }
+
+        // Instructors matching query
+        List<Instructor> instructors = Instructor.find("select i from Instructor i where LOWER(i.surname) like ?", "%" + name.toLowerCase() + "%")
+                .fetch(limit);
+        List<InstructorWrapper> wrappers = new ArrayList<>();
+        for (Instructor instructor : instructors) {
+            wrappers.add(new InstructorWrapper(instructor));
+        }
+
+        renderJSON(new QueryResponse<InstructorWrapper>(wrappers));
+    }
+
+    public static void getStudentsByName(String name, int limit) {
         if (name == null) {
             badRequest();
         }
