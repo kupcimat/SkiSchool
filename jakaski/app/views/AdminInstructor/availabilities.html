@@ -67,6 +67,19 @@
   scheduler.init("scheduler_here", null, viewMode);
   loadData(viewMode, new Date());
 
+  // Set readonly events
+  function readonlyCheck(id, mode, object) {
+      if (mode == "create") {
+          return true;
+      } else {
+          // only availabilities are editable
+          return scheduler.getEvent(id).type == "availability";
+      }
+  }
+  scheduler.attachEvent("onClick", readonlyCheck);
+  scheduler.attachEvent("onDblClick", readonlyCheck);
+  scheduler.attachEvent("onBeforeDrag", readonlyCheck);
+
   // Events management
   scheduler.attachEvent("onViewChange", function(mode, date) {
       loadData(mode, date);
@@ -99,5 +112,3 @@
   });
 </script>
 </div>
-
-         

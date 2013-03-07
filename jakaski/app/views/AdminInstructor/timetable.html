@@ -279,6 +279,7 @@
       if (mode == "create") {
           return true;
       } else {
+          // availabilities are read only
           return !(scheduler.getEvent(id).type == "availability");
       }
   }
