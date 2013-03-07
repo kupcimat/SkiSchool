@@ -2,6 +2,7 @@
 
 #{set 'moreStyles'}
 <link rel="stylesheet" href="@{'/public/stylesheets/dhtmlxscheduler_dhx_terrace.css'}" type="text/css" charset="utf-8">
+<link rel="stylesheet" href="@{'/public/stylesheets/scheduler-custom.css'}" type="text/css" charset="utf-8">
 #{/set}
 #{set 'moreScripts'}
 <script src="@{'/public/javascripts/dhtmlxscheduler.js'}" type="text/javascript" charset="utf-8"></script>
@@ -48,6 +49,11 @@
       endDate.setDate(endDate.getDate() + offset);
       loadInstructorLessons(instructorId, startDate, endDate, scheduler);
       loadInstructorAvailabilities(instructorId, startDate, endDate, scheduler);
+  }
+
+  //Scheduler templates
+  scheduler.templates.event_class=function(start, end, event) {
+      return event.type || "";
   }
 
   // Scheduler configuration
