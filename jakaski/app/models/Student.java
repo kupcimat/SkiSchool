@@ -26,7 +26,7 @@ public class Student extends Model {
     /**
      * Absolute number of paid Lessons
      */
-    public int paidLessons;
+    public Integer paidLessons;
 
     public Student(String fullname, String email, String phone) {
         this.fullname = fullname;
