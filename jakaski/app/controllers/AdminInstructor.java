@@ -90,7 +90,7 @@ public class AdminInstructor extends Controller {
 	}
 
 	@Restrictions({ @Restrict("instructor"), @Restrict("editor"), @Restrict("admin") })
-	public static void updatePassword(User user, String oldPassword, String newPassword, String passwordConfirm) {
+	public static void updatePassword(String oldPassword, String newPassword, String passwordConfirm) {
 		User updatedUser = User.find("byEmail", Security.connected()).first();
 		validation.equals(oldPassword, updatedUser.password).message("oldPasswordDiff");
 		validation.equals(passwordConfirm, newPassword).message("newPasswordDiff");
