@@ -94,6 +94,7 @@
              &{'timetable'}     
             </a>
           </li>
+          <br/>
           #{/deadbolt.restrict}
           
           #{deadbolt.restrict roles:[['instructor']]}
@@ -103,10 +104,25 @@
               &{'availabilities'} 
             </a>
           </li>
+          
+          <li class="${request.action == 'Overview.instructorLessons' ? 'active' : ''}">
+            <a href="@{Overview.instructorLessons(user.id)}">
+              <i class="icon-list"></i>
+              &{'myLessons'} 
+            </a>
+          </li>
+          <br/>
           #{/deadbolt.restrict}
           
           #{deadbolt.restrict roles:[['admin'],['editor']]}
-          <li class="${request.controller == 'Students' ? 'active' : ''}">
+          <li class="${request.action== 'Students.students' ? 'active' : ''}">
+            <a href="@{Students.students()}">
+              <i class="icon-credit-card"></i>
+              &{'studentsPayments'}              
+            </a>
+          </li>
+          
+          <li class="${request.action == 'Students.list' ? 'active' : ''}">
             <a href="@{Students.list()}">
               <i class="icon-user"></i>
               &{'students'}              

@@ -37,5 +37,10 @@ public class Student extends Model {
     public void addLesson(Lesson lesson) {
         lessons.add(lesson);
     }
+    
+    @Override
+  	public String toString() {
+  		return fullname;
+  	}
 
 }

@@ -18,7 +18,13 @@
   </div>
   <!-- /widget-header -->
   <div class="widget-content">
-    <div id="crudListTable">#{crud.table fields:['firstname', 'surname', 'phone','roles'] /}</div>
+    <div id="crudListTable">
+    #{crud.table fields:['firstname', 'surname', 'phone','roles','hodiny'] }
+         #{crud.custom 'hodiny'}
+            <a href="@{Overview.instructorLessons(object.id)}">Všetky hodiny</a>
+         #{/crud.custom}
+    #{/crud.table}
+    </div>
   </div>
 </div>
 
