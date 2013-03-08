@@ -73,7 +73,8 @@
           return true;
       } else {
           // only availabilities are editable
-          return scheduler.getEvent(id).type == "availability";
+          var type = scheduler.getEvent(id).type;
+          return (type == null) || (type == "availability");
       }
   }
   scheduler.attachEvent("onClick", readonlyCheck);
