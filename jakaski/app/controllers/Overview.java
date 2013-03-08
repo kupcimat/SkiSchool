@@ -25,17 +25,4 @@ public class Overview extends Controller {
 		renderArgs.put("lessons", lessons);
 		render(lessons);
 	}
-
-	public static void getStudentBalance(Student student) {
-		int lessonCount = 0;
-		int paidLessons = 0;
-		lessonCount = student.lessons.size();
-		paidLessons = student.paidLessons;
-		renderArgs.put("balance", paidLessons - lessonCount);
-	}
-
-	public static void addPaidLessons(Student student, int count) {
-		student.paidLessons += count;
-		student.save();
-	}
 }

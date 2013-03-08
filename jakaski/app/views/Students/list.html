@@ -1,4 +1,7 @@
 #{extends 'CRUD/layout.html' /} #{set title:messages.get('crud.list.title', type.name) /}
+
+<script src="@{'/public/javascripts/bootstrap-modal.js'}" type="text/javascript" charset="utf-8"></script>
+
 <h1 class="page-title">
   <i class="icon-user"></i> Students Management
 </h1>
@@ -18,22 +21,48 @@
   <!-- /widget-header -->
   <div class="widget-content">
     <div id="crudListTable">
-      #{crud.table fields:['fullname', 'phone','hodiny']}
+      #{crud.table fields:['fullname', 'phone','hodiny', 'pocet','add payment']}
          #{crud.custom 'hodiny'}
-      <a href="@{Overview.lessons(students)}">Lessons</a>
-     #{/crud.custom}
-     <!--    #{crud.custom 'online'}
-        #{if object.online}
-          <span class="online">Online</span>
-        #{/if}
-        #{else}
-          <span class="offline">Offline</span>
-        #{/else}
-      #{/crud.custom} -->
+            <a href="@{Overview.lessons(students)}">Lessons</a>
+         #{/crud.custom}
+          #{crud.custom 'pocet'}
+            <a href="@{Students.getStudentBalance(students)}">Lessons</a>
+         #{/crud.custom}
+         #{crud.custom 'add payment'}
+            <a href="#" class="btn" onclick="$('#addingPayments').modal('show')">Add payment</a>
+      #{/crud.custom}
       #{/crud.table}
     </div>
   </div>
 </div>
 <div class="widget">
   <div id="crudListPagination">#{crud.pagination /}</div>
+</div>
+
+<div id="addingPayments" class="modal hide fade">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="closeForm()">&times;</button>
+    <h3 id="modalHeader">Event Details</h3>
+  </div>
+  <div class="modal-body" style="min-height: 150px">
+     #{form @addPaidLessons() , id:'addPaidLesson', class:'form-horizontal'}
+      <!-- PaidLessons -->
+      #{field 'count'}
+      <div class="control-group">
+        <label class="control-label" for="modalCount">Count</label>
+        <div class="controls">
+          <input id="modalCount" class="span1" type="number" value="$count" required>
+        </div>
+      </div>
+      #{/field}
+     #{/form}
+  </div>
+  <div class="modal-footer">
+    <a href="#" class="btn" onclick="deleteForm()">Delete</a>
+    <a href="#" class="btn" onclick="closeForm()">Close</a>
+    <button href="#" type="submit" class="btn btn-primary" data-loading-text="Creating...">Save changes</a>
+                  
+                  <button type="submit" class="btn btn-primary">Save</button>
+                
+  </div>
 </div>
