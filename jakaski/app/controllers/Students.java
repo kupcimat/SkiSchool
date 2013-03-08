@@ -15,26 +15,33 @@ import controllers.deadbolt.Restrictions;
 @Restrictions({ @Restrict("editor"), @Restrict("admin") })
 public class Students extends CRUD {
 
-    @Before
-    static void setConnectedUser() {
-        if (Security.isConnected()) {
-            User user = User.find("byEmail", Security.connected()).first();
-            renderArgs.put("user", user);
-        }
-    }
+	@Before
+	static void setConnectedUser() {
+		if (Security.isConnected()) {
+			User user = User.find("byEmail", Security.connected()).first();
+			renderArgs.put("user", user);
+		}
+	}
 
-    public static void students() {
-        List<Student> students = Student.findAll();
-        List data = new ArrayList();
+	public static void addPaidLessons(Long id, String count) {
+		Student student = Student.findById(id);
+		student.paidLessons += Integer.valueOf(count);
+		student.save();
+		students();
+	}
 
-        for (Student student : students) {
-            List innerList = new ArrayList(2);
-            innerList.add(student);
-            innerList.add(student.paidLessons - student.lessons.size());
-            data.add(innerList);
-        }
+	public static void students() {
+		List<Student> students = Student.findAll();
+		List data = new ArrayList();
 
-        render(data);
-    }
+		for (Student student : students) {
+			List innerList = new ArrayList(2);
+			innerList.add(student);
+			innerList.add(student.paidLessons - student.lessons.size());
+			data.add(innerList);
+		}
+
+		render(data);
+	}
 
 }
