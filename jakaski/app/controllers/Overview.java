@@ -29,9 +29,9 @@ public class Overview extends Controller {
 			lessons = new ArrayList<Lesson>(student.lessons);
 		}
 		renderArgs.put("lessons", lessons);
-		render("@lessons",lessons);
+		render("@lessons", lessons);
 	}
-	
+
 	public static void instructorLessons(Long id) {
 		List<Lesson> lessons = null;
 		Instructor instructor = Instructor.findById(id);
@@ -39,6 +39,18 @@ public class Overview extends Controller {
 			lessons = new ArrayList<Lesson>(instructor.lessons);
 		}
 		renderArgs.put("lessons", lessons);
-		render("@lessons",lessons);
+		render("@lessons", lessons);
+	}
+
+	public static void myLessons(Long id) {
+		List<Lesson> lessons = null;
+		Instructor instructor = Instructor.findById(id);
+		if (instructor.email.equals(Security.connected())) {
+			if (instructor.lessons != null) {
+				lessons = new ArrayList<Lesson>(instructor.lessons);
+			}
+			renderArgs.put("lessons", lessons);
+			render("@lessons", lessons);
+		}
 	}
 }

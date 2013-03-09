@@ -105,8 +105,8 @@
             </a>
           </li>
           
-          <li class="${request.action == 'Overview.instructorLessons' ? 'active' : ''}">
-            <a href="@{Overview.instructorLessons(user.id)}">
+          <li class="${request.action == 'Overview.myLessons' ? 'active' : ''}">
+            <a href="@{Overview.myLessons(user.id)}">
               <i class="icon-list"></i>
               &{'myLessons'} 
             </a>
@@ -130,10 +130,17 @@
           </li>
           #{/deadbolt.restrict}
           #{deadbolt.restrict roles:[['admin']]}
-          <li class="${request.controller == 'Instructors' ? 'active' : ''}">
+          <li class="${request.action == 'Instructors.list' ? 'active' : ''}">
             <a href="@{Instructors.list()}">
               <i class="icon-user"></i>
               &{'instructors'}              
+            </a>
+          </li>
+          
+          <li class="${request.action == 'Instructors.overview' ? 'active' : ''}">
+            <a href="@{Instructors.overview()}">
+              <i class="icon-bar-chart"></i>
+              &{'instructorsOverview'}              
             </a>
           </li>
           

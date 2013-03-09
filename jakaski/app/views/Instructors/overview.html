@@ -1,0 +1,44 @@
+#{extends 'content.html' /}
+
+<h1 class="page-title">
+  <i class="icon-calendar"></i> Štatistika hodín
+</h1>
+<div class="widget widget-table">
+
+  <div class="widget-header">
+    <i class="icon-th-list"></i>
+    <h3>Hodiny</h3>
+  </div>
+  <!-- /widget-header -->
+
+  <div class="widget-content">
+
+    <table class="table table-striped table-bordered">
+      <thead>
+        <tr>
+          <th>Meno</th>
+          <th>Štandardné hodiny</th>
+          <th>Skupinové hodiny</th>
+          <th>Hodiny škôlky</th>
+          <th>Celkovo hodín</th>
+          <th>Cudzojazyčné hodiny</th>
+        </tr>
+      </thead>
+      <tbody>
+        #{list items:data, as:'instructor'}
+        <tr>
+          <td>${instructor.get(0).firstname} ${instructor.get(0).surname}</td>
+          <td>${instructor.get(1)}</td>
+          <td>${instructor.get(2)}</td>
+          <td>${instructor.get(3)}</td>
+          <td>${instructor.get(4)}</td>
+          <td>${instructor.get(5)}</td>
+        </tr>
+        #{/list}
+      </tbody>
+    </table>
+
+  </div>
+  <!-- /widget-content -->
+</div>
+<!-- /widget -->
