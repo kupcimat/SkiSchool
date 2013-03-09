@@ -40,10 +40,12 @@ timetable.delete=Delete
 timetable.close=Close
 timetable.saveChanges=Save Changes
 availabilities=My Timetable
+myLessons=My Lessons
+studentsPayments=Student Payments
+instructorsOverview=Instructor Overview
 students=Students
 instructors=Instructors
 users=Other users
 languages=Languages
-
 oldPasswordDiff=Old and new password are different
 newPasswordDiff=New passwords are different
