@@ -73,7 +73,8 @@ function lessonsToEvents(data) {
             language:      lesson.language,
             snowboard:     lesson.snowboard,
             type:          lesson.type,
-            count:         lesson.count});
+            count:         lesson.count,
+            student_name:  lesson.studentName});
     });
 
     return events;

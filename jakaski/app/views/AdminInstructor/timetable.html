@@ -170,6 +170,7 @@
       } else {
           event.type = "individual";
       }
+      event.student_name = $("#modalStudent").val();
 
       scheduler.updateView();
       if (isNewEvent(scheduler)) {
@@ -288,9 +289,12 @@
   $(".alert").hide();
 
   // Scheduler templates
-  scheduler.templates.event_class=function(start, end, event) {
+  scheduler.templates.event_class = function(start, end, event) {
       return event.type || "";
   }
+  scheduler.templates.event_bar_text = function(start, end, event) {
+      return getShortTime(start, end) + " - <strong>" + event.student_name + "</strong>" + " (" + event.location + ")";
+  };
 
   // Timeline configuration
   scheduler.createTimelineView({

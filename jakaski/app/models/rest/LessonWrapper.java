@@ -33,7 +33,7 @@ public class LessonWrapper {
 
         this.lesson = new InnerLesson(lesson.getId(), lesson.startTime, lesson.endTime, lesson.note,
                 Resources.getInstructorUri(instructor), Resources.getStudentUri(student), lesson.location.name, lesson.language.name,
-                lesson.lessonType, lesson.snowboard, lesson.studentsCount);
+                lesson.lessonType, lesson.snowboard, lesson.studentsCount, student.fullname);
     }
 
     public Long getInstructorId() {
@@ -119,13 +119,14 @@ public class LessonWrapper {
         private LessonType type;
         private boolean snowboard;
         private int count;
+        private String studentName;
 
         // Default constructor for Gson
         public InnerLesson() {
         }
 
         public InnerLesson(Long id, Date start, Date end, String note, String instructor, String student, String location, String language,
-                LessonType type, boolean snowboard, int count) {
+                LessonType type, boolean snowboard, int count, String studentName) {
             this.id = id;
             this.start = start;
             this.end = end;
@@ -137,6 +138,7 @@ public class LessonWrapper {
             this.type = type;
             this.snowboard = snowboard;
             this.count = count;
+            this.studentName = studentName;
         }
 
     }
