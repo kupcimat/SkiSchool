@@ -11,7 +11,7 @@ public class Application extends Controller {
 
     @Restrictions({ @Restrict("admin"), @Restrict("editor"), @Restrict("instructor") })
     public static void index() {
-        render();
+        AdminInstructor.availabilities();
     }
 
 }

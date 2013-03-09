@@ -12,6 +12,7 @@ import controllers.deadbolt.Deadbolt;
 import controllers.deadbolt.Restrict;
 import controllers.deadbolt.Restrictions;
 import play.data.validation.Valid;
+import play.libs.Codec;
 import play.mvc.Before;
 import play.mvc.Controller;
 import play.mvc.With;
@@ -69,7 +70,7 @@ public class AdminInstructor extends Controller {
 			render("@instructor", updatedUser);
 		}
 		updatedUser.save();
-		timetable();
+		availabilities();
 	}
 
 	@Restrict("instructor")
@@ -86,13 +87,13 @@ public class AdminInstructor extends Controller {
 			render("@instructor", updatedInstructor);
 		}
 		updatedInstructor.save();
-		timetable();
+		availabilities();
 	}
 
 	@Restrictions({ @Restrict("instructor"), @Restrict("editor"), @Restrict("admin") })
 	public static void updatePassword(String oldPassword, String newPassword, String passwordConfirm) {
 		User updatedUser = User.find("byEmail", Security.connected()).first();
-		validation.equals(oldPassword, updatedUser.password).message("oldPasswordDiff");
+		validation.equals(Codec.hexSHA1(oldPassword), updatedUser.password).message("oldPasswordDiff");
 		validation.equals(passwordConfirm, newPassword).message("newPasswordDiff");
 		updatedUser.password = newPassword;
 		validation.valid(updatedUser);
@@ -103,7 +104,7 @@ public class AdminInstructor extends Controller {
 			render("@instructor", updatedUser, newPassword, passwordConfirm, oldPassword);
 		}
 		updatedUser.save();
-		timetable();
+		availabilities();
 	}
 
 }

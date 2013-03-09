@@ -1,5 +1,6 @@
 package controllers;
 
+import play.libs.Codec;
 import controllers.deadbolt.DeadboltHandler;
 import controllers.deadbolt.ExternalizedRestrictionsAccessor;
 import controllers.deadbolt.RestrictedResourcesHandler;
@@ -10,7 +11,7 @@ import models.deadbolt.RoleHolder;
 public class Security extends Secure.Security implements DeadboltHandler {
 
 	static boolean authenticate(String username, String password) {
-		return User.connect(username, password) != null;
+		return User.connect(username, Codec.hexSHA1(password)) != null;
 	}
 
 	static void onDisconnected() {
@@ -18,7 +19,7 @@ public class Security extends Secure.Security implements DeadboltHandler {
 	}
 	
 	static void onAuthenticated(){
-		AdminInstructor.timetable();
+		Application.index();
 	}
 	
 	@Override

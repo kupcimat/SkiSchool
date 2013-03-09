@@ -8,6 +8,7 @@ import play.data.validation.Phone;
 import play.data.validation.Required;
 import play.data.validation.Unique;
 import play.db.jpa.*;
+import play.libs.Codec;
 
 import javax.persistence.*;
 
@@ -64,5 +65,11 @@ public class User extends Model implements RoleHolder {
     public List<? extends Role> getRoles() {
 		return this.roles;
     }
+
+	@PreUpdate
+	@PrePersist
+	public void prePersist() {
+	    this.password = Codec.hexSHA1(password);
+	}
 
 }
