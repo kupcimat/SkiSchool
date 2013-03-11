@@ -1,6 +1,12 @@
-/* Lesson color */
-.dhx_cal_event.individual div,.dhx_cal_event_line.individual {
+/* Ski color */
+.dhx_cal_event.ski div,.dhx_cal_event_line.ski {
 	background-color: #FF8100 !important;
+	color: white !important;
+}
+
+/* Snowboard color */
+.dhx_cal_event.snowboard div,.dhx_cal_event_line.snowboard {
+	background-color: #0081FF !important;
 	color: white !important;
 }
 

@@ -1,5 +1,6 @@
 package models.rest;
 
+import controllers.rest.Resources;
 import models.Instructor;
 
 public class InstructorWrapper {
@@ -11,7 +12,7 @@ public class InstructorWrapper {
     }
 
     public InstructorWrapper(Instructor instructor) {
-        String name = instructor.firstname + " " + instructor.surname;
+        String name = instructor.firstname + " " + instructor.surname + " (" +Resources.getInstructorQualification(instructor)+ ")";
         this.instructor = new InnerUser(instructor.getId(), name);
     }
 

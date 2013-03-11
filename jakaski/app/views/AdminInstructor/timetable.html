@@ -165,7 +165,7 @@
       event.language = $("#modalLanguage").val();
       event.count = $("#modalCount").val();
       event.snowboard = $("#modalSnowboard").prop("checked");
-      if (event.count > 1) {
+      if (event.count > 3) {
           event.type = "group";
       } else {
           event.type = "individual";
@@ -290,10 +290,23 @@
 
   // Scheduler templates
   scheduler.templates.event_class = function(start, end, event) {
-      return event.type || "";
-  }
+      if (event.type == "availability") {
+	      return event.type;
+	  }else{ 
+          if (event.snowboard){
+		      return "snowboard";
+	      }else{
+	          return "ski";
+	       } 
+	  }
+      return "";
+  };
+  
   scheduler.templates.event_bar_text = function(start, end, event) {
-      return getShortTime(start, end) + " - <strong>" + event.student_name + "</strong>" + " (" + event.location + ")";
+	  if (event.type == "availability") {
+	      return "";
+	  }    
+      return event.student_name;
   };
 
   // Timeline configuration
