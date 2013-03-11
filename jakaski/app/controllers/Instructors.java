@@ -1,6 +1,8 @@
 package controllers;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import models.Instructor;
@@ -36,7 +38,7 @@ public class Instructors extends CRUD {
 			innerList.add(getLessonCountByType(instructor.id, LessonType.INDIVIDUAL));
 			innerList.add(getLessonCountByType(instructor.id, LessonType.GROUP));
 			innerList.add(getLessonCountByType(instructor.id, LessonType.KINDERGARTEN));
-			innerList.add(instructor.lessons.size());
+			innerList.add(getLessonCount(instructor.id));
 			innerList.add(Lesson
 			        .find("select l from Lesson l join l.instructors i join l.language g where i.id= ? and g.name <> ?", instructor.id, "sk").fetch()
 			        .size());
@@ -47,6 +49,32 @@ public class Instructors extends CRUD {
 	}
 
 	private static int getLessonCountByType(Long id, LessonType lessonType) {
-		return Lesson.find("select l from Lesson l join l.instructors i where i.id= ? and l.lessonType = ?", id, lessonType).fetch().size();
+		int lessonCnt = 0;
+		List<Lesson> lessons = Lesson.find("select l from Lesson l join l.instructors i where i.id= ? and l.lessonType = ?", id, lessonType).fetch();
+		for (Lesson lesson : lessons) {
+			lessonCnt += hoursDifference(lesson.startTime, lesson.endTime);
+		}
+		return lessonCnt;
+	}
+
+	private static int getLessonCount(Long id) {
+		int lessonCnt = 0;
+		List<Lesson> lessons = Lesson.find("select l from Lesson l join l.instructors i where i.id= ?", id).fetch();
+		for (Lesson lesson : lessons) {
+			lessonCnt += hoursDifference(lesson.startTime, lesson.endTime);
+		}
+		return lessonCnt;
+	}
+
+	private static long hoursDifference(Date startTime, Date endTime) {
+		long hours = 0;
+		Calendar cStartTime = Calendar.getInstance();
+		Calendar cEndTime = Calendar.getInstance();
+		cStartTime.setTime(startTime);
+		cEndTime.setTime(endTime);
+		long startHour = cStartTime.get(Calendar.HOUR_OF_DAY);
+		long endHour = cEndTime.get(Calendar.HOUR_OF_DAY);
+		hours = endHour - startHour;
+		return hours;
 	}
 }

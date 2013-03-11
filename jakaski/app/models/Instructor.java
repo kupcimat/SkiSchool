@@ -13,6 +13,7 @@ public class Instructor extends User {
 
     public String positionSki;
     public String positionSnowboard;
+    
     @ManyToMany
     public Set<Lang> languages;
 

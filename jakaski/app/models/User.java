@@ -33,6 +33,7 @@ public class User extends Model implements RoleHolder {
 	@Required
 	public String firstname;
 	public String surname;
+	//TODO pattern for phone
 	@Phone
 	public String phone;
 	@Required
