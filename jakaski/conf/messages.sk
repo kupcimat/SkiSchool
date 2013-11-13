@@ -47,5 +47,7 @@ instructors=Inštruktori
 instructorsOverview=Prehľad Hodín
 users=Ostatní užívatelia
 languages=Jazyky
+prices=Cenník
+payments=Platby
 oldPasswordDiff=Heslo sa nezhoduje s pôvodným
 newPasswordDiff=Nové heslá sa nerovnajú

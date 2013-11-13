@@ -1,0 +1,26 @@
+#{extends 'CRUD/layout.html' /} #{set title:messages.get('crud.list.title', type.name) /}
+<h1 class="page-title">
+  <i class="icon-user"></i> PriceList
+</h1>
+<div class="widget">#{crud.search /}</div>
+<div class="widget">
+  <p id="crudListAdd">
+    <a href="@{blank()}" class="btn"> <i class="icon-plus"></i> &{'crud.add', type.modelName}
+    </a>
+  </p>
+</div>
+
+<div id="crudList" class="widget widget-table">
+  <div class="widget-header">
+    <i class="icon-th-list"></i>
+    <h3 id="crudListTitle">&{'crud.list.title', type.name}</h3>
+  </div>
+  <!-- /widget-header -->
+  <div class="widget-content">
+    <div id="crudListTable">#{crud.table fields:['lessonType', 'lessonCount','price'] /}</div>
+  </div>
+</div>
+
+<div class="widget">
+  <div id="crudListPagination">#{crud.pagination /}</div>
+</div>

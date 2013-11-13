@@ -2,8 +2,10 @@ package models;
 
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 
 import play.data.validation.Email;
 import play.data.validation.Phone;
@@ -22,6 +24,9 @@ public class Student extends Model {
 
     @ManyToMany(mappedBy = "students")
     public Set<Lesson> lessons;
+    
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
+    public Set<Payment> payments;
 
     /**
      * Absolute number of paid Lessons

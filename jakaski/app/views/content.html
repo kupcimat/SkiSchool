@@ -151,10 +151,24 @@
             </a>
           </li>
           
+          <li class="${request.controller == 'Payments' ? 'active' : ''}">
+            <a href="@{Payments.list()}">
+              <i class="icon-comments-alt"></i>
+              &{'payments'}              
+            </a>
+          </li>
+          
           <li class="${request.controller == 'Langs' ? 'active' : ''}">
             <a href="@{Langs.list()}">
               <i class="icon-comments-alt"></i>
               &{'languages'}              
+            </a>
+          </li>
+          
+          <li class="${request.controller == 'Prices' ? 'active' : ''}">
+            <a href="@{Prices.list()}">
+              <i class="icon-comments-alt"></i>
+              &{'prices'}              
             </a>
           </li>
           
@@ -187,7 +201,7 @@
   
   <div class="container">       
     <hr>
-    <p>© 2012 Jaka Ski</p>
+    <p>© 2013 Jaka Ski</p>
   </div> <!-- /container -->
   
 </div> <!-- /footer -->

@@ -47,5 +47,7 @@ students=Students
 instructors=Instructors
 users=Other users
 languages=Languages
+prices=Prices
+payments=Payments
 oldPasswordDiff=Old and new password are different
 newPasswordDiff=New passwords are different
