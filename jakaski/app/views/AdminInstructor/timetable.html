@@ -25,6 +25,18 @@
   <a href="#" class="btn" onclick="addInstructor()">&{'timetable.addInstructor'}</a>
 </form>
 
+<div class="control-group">
+  <label class="control-label" for="selectLocation">&{'timetable.location'}</label>
+  <div class="controls">
+    <select id="selectLocation" onchange="loadData(scheduler.getState().date, this.value)">
+      #{list locations, as:'location'}
+      <option value="${location.id}">${location.name}</option>
+      #{/list}
+      <option value="null">&{'timetable.location.all'}</option>
+    </select>
+  </div>
+</div>
+
 <div class="widget">
   <div class="widget-content">
     <div id="scheduler_here" class="dhx_cal_container" style='width: 100%; height: 600px'>
@@ -130,10 +142,11 @@
       return scheduler._new_event != null;
   }
 
-  function loadData(date) {
-      loadSections(date, scheduler);
-      loadLessons(date, scheduler);
-      loadAvailabilities(date, scheduler);
+  function loadData(date, location) {
+      scheduler.clearAll();
+      loadSections(date, location, scheduler);
+      loadLessons(date, location, scheduler);
+      loadAvailabilities(date, location, scheduler);
   }
 
   function hideForm() {
@@ -330,7 +343,7 @@
 
   // Initialize scheduler
   scheduler.init("scheduler_here", null, "timeline");
-  loadData(new Date());
+  loadData(new Date(), $("#selectLocation").val());
 
   // Set readonly events
   function readonlyCheck(id, mode, object) {
@@ -347,7 +360,7 @@
 
   // Events management
   scheduler.attachEvent("onViewChange", function(mode, date) {
-      loadData(date);
+      loadData(date, $("#selectLocation").val());
   });
 
   scheduler.attachEvent("onEventAdded", function(eventId, eventObject) {

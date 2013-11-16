@@ -149,10 +149,10 @@ function eventToLesson(event, scheduler) {
 }
 
 // Data loading in scheduler
-function loadLessons(date, scheduler) {
+function loadLessons(date, location, scheduler) {
     $.ajax({
         type: "GET",
-        url: "/query/lessons",
+        url: "/query/lessons" + (location == "null" ? "" : "/" + location),
         data: {"date": getShortDate(date)}
     }).done(function(data) {
         scheduler.parse(lessonsToEvents(data.result), "json");
@@ -169,10 +169,10 @@ function loadInstructorLessons(instructorId, startDate, endDate, scheduler) {
     });
 }
 
-function loadAvailabilities(date, scheduler) {
+function loadAvailabilities(date, location, scheduler) {
     $.ajax({
         type: "GET",
-        url: "/query/availabilities",
+        url: "/query/availabilities"  + (location == "null" ? "" : "/" + location),
         data: {"date": getShortDate(date)}
     }).done(function(data) {
         scheduler.parse(availabilitiesToEvents(data.result), "json");
@@ -189,10 +189,10 @@ function loadInstructorAvailabilities(instructorId, startDate, endDate, schedule
     });
 }
 
-function loadSections(date, scheduler) {
+function loadSections(date, location, scheduler) {
     $.ajax({
         type: "GET",
-        url: "/query/instructors",
+        url: "/query/instructors" + (location == "null" ? "" : "/" + location),
         data: {"date": getShortDate(date)}
     }).done(function(data) {
         $.each(instructorsToSections(data.result), function(index, value) {

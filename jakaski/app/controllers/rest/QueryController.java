@@ -42,6 +42,22 @@ public class QueryController extends Controller {
         renderJSON(new QueryResponse<LessonWrapper>(wrappers), new DateSerializer(), new LessonTypeSerializer());
     }
 
+    public static void getLessonsWithLocation(@As(binder = DateBinder.class) Date date, Long locationId) {
+        if (date == null) {
+            badRequest();
+        }
+
+        Date nextDay = DateUtils.addDays(date, 1);
+        List<Lesson> lessons = Lesson.find("select l from Lesson l join l.location lo where l.startTime >= ? and l.startTime < ? and lo.id = ?", date, nextDay, locationId).fetch();
+
+        List<LessonWrapper> wrappers = new ArrayList<>();
+        for (Lesson lesson : lessons) {
+            wrappers.add(new LessonWrapper(lesson));
+        }
+
+        renderJSON(new QueryResponse<LessonWrapper>(wrappers), new DateSerializer(), new LessonTypeSerializer());
+    }
+
     public static void getInstructorLessons(Long id, @As(binder = DateBinder.class) Date start, @As(binder = DateBinder.class) Date end) {
         if (start == null || end == null) {
             badRequest();
@@ -66,6 +82,23 @@ public class QueryController extends Controller {
         Date nextDay = DateUtils.addDays(date, 1);
         List<Availability> availabilities = Availability.find("select a from Availability a where a.startTime >= ? and a.startTime < ?",
                 date, nextDay).fetch();
+
+        List<AvailabilityWrapper> wrappers = new ArrayList<>();
+        for (Availability availability : availabilities) {
+            wrappers.add(new AvailabilityWrapper(availability));
+        }
+
+        renderJSON(new QueryResponse<AvailabilityWrapper>(wrappers), new DateSerializer());
+    }
+
+    public static void getAvailabilitiesWithLocation(@As(binder = DateBinder.class) Date date, Long locationId) {
+        if (date == null) {
+            badRequest();
+        }
+
+        Date nextDay = DateUtils.addDays(date, 1);
+        List<Availability> availabilities = Availability.find("select a from Availability a join a.location l where a.startTime >= ? and a.startTime < ? and l.id = ?",
+                date, nextDay, locationId).fetch();
 
         List<AvailabilityWrapper> wrappers = new ArrayList<>();
         for (Availability availability : availabilities) {
@@ -104,6 +137,33 @@ public class QueryController extends Controller {
         // Available instructors
         List<Instructor> available = Instructor.find(
                 "select distinct i from Instructor i join i.availabilities a where a.startTime >= ? and a.startTime < ?", date, nextDay)
+                .fetch();
+
+        Set<Instructor> instructors = new HashSet<>();
+        instructors.addAll(withLesson);
+        instructors.addAll(available);
+
+        List<InstructorWrapper> wrappers = new ArrayList<>();
+        for (Instructor instructor : instructors) {
+            wrappers.add(new InstructorWrapper(instructor));
+        }
+
+        renderJSON(new QueryResponse<InstructorWrapper>(wrappers));
+    }
+
+    public static void getInstructorsWithLocation(@As(binder = DateBinder.class) Date date, Long locationId) {
+        if (date == null) {
+            badRequest();
+        }
+
+        Date nextDay = DateUtils.addDays(date, 1);
+        // Instructors with lessons
+        List<Instructor> withLesson = Instructor.find(
+                "select distinct i from Instructor i join i.lessons l join l.location lo where l.startTime >= ? and l.startTime < ? and lo.id = ?", date, nextDay, locationId)
+                .fetch();
+        // Available instructors
+        List<Instructor> available = Instructor.find(
+                "select distinct i from Instructor i join i.availabilities a join a.location lo where a.startTime >= ? and a.startTime < ? and lo.id = ?", date, nextDay, locationId)
                 .fetch();
 
         Set<Instructor> instructors = new HashSet<>();
