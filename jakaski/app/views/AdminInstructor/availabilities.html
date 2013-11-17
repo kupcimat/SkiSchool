@@ -75,9 +75,10 @@
 	  return scheduler._new_event != null;
   }
   
-  function loadData(mode, startDate) {
+  function loadData(mode, inputDate) {
       var instructorId = ${instructor.getId()};
-      var endDate = new Date(startDate);
+      var endDate = new Date(inputDate);
+      var startDate = new Date(inputDate);
       var offset = 1;
 
       if (mode == "week") {
@@ -87,8 +88,8 @@
           offset = 31;
       }
 
-      endDate.setDate(endDate.getDate() + offset);
-      startDate.setDate(startDate.getDate() - offset);
+      endDate.setDate(inputDate.getDate() + offset);
+      startDate.setDate(inputDate.getDate() - offset);
       loadInstructorLessons(instructorId, startDate, endDate, scheduler);
       loadInstructorAvailabilities(instructorId, startDate, endDate, scheduler);
   }
