@@ -10,6 +10,13 @@ import play.mvc.Controller;
 
 public class InstructorController extends Controller {
 
+    public static void getInstructor(Long id) {
+        Instructor instructor = Instructor.findById(id);
+        notFoundIfNull(instructor, "Instructor does not exist");
+
+        renderJSON(new InstructorWrapper(instructor));
+    }
+
     public static void getAllInstructors() {
         List<Instructor> instructors = Instructor.findAll();
         List<InstructorWrapper> wrappers = new ArrayList<>();

@@ -93,9 +93,6 @@
         <label class="control-label" for="modalLanguage">&{'timetable.language'}</label>
         <div class="controls">
           <select id="modalLanguage">
-            #{list languages, as:'lang'}
-              <option value="${lang.name}">${lang.name}</option>
-            #{/list}
           </select>
         </div>
       </div>
@@ -174,6 +171,7 @@
       var event = scheduler.getEvent(LIGHTBOX_ID);
       event.student_id = SELECTED_STUDENT;
       event.text = $("#modalText").val();
+      // TODO location is sent by name, not id
       event.location = $("#modalLocation").val();
       event.language = $("#modalLanguage").val();
       event.count = $("#modalCount").val();
@@ -198,6 +196,8 @@
       var event = scheduler.getEvent(id);
       LIGHTBOX_ID = id;
       SELECTED_STUDENT = event.student_id;
+      // js wtf workaround
+      event.snowboard = event.snowboard || null;
 
       // Fill form with event values
       if (SELECTED_STUDENT != null) {
@@ -215,11 +215,11 @@
       }
 
       $("#modalText").val(event.text);
+      createLocationSelect();
       $("#modalLocation").val(event.location);
+      createInstructorSelect(event);
       $("#modalLanguage").val(event.language);
       $("#modalCount").val(event.count || "1");
-      $("#modalSki").prop("checked", !(event.snowboard || false));
-      $("#modalSnowboard").prop("checked", (event.snowboard || false));
 
       $("#modalHeader").html(getShortTime(event.start_date, event.end_date));
       $("#schedulerModal").modal("show");
@@ -251,6 +251,43 @@
       }
       SELECTED_INSTRUCTOR = null;
       $("#instructorSearch").val("");
+  }
+
+  // Create select element for selected location
+  function createLocationSelect() {
+      if ($("#selectLocation").val() == "null") {
+          $("#modalLocation").html("");
+          $.each($("#selectLocation").find("option"), function(i, location) {
+              if (location.getAttribute("value") != "null") {
+                  $("#modalLocation").append("<option value=\"" + location.innerHTML + "\">" + location.innerHTML + "</option>");
+              }
+          });
+      } else {
+          var location = $("#selectLocation").find("option:selected").text();
+          $("#modalLocation").html("<option value=\"" + location + "\">" + location + "</option>");
+      }
+  }
+
+  // Create select element for instructors languages and ski/snowboard qualification
+  function createInstructorSelect(event) {
+      $.ajax({
+          type: "GET",
+          url: "/instructor/" + event.instructor_id
+      }).done(function(data) {
+                  // update language select according to selected instructor
+                  $("#modalLanguage").html("");
+                  $.each(data.instructor.languages, function(i, lang) {
+                      $("#modalLanguage").append("<option value=\"" + lang + "\">" + lang + "</option>");
+                  });
+                  // update ski/snowboard qualification according to selected instructor
+                  if (event.snowboard == null) {
+                      $("#modalSnowboard").prop("disabled", !data.instructor.snowboard).prop("checked", data.instructor.snowboard);
+                      $("#modalSki").prop("disabled", !data.instructor.ski).prop("checked", data.instructor.ski);
+                  } else {
+                      $("#modalSnowboard").prop("disabled", !data.instructor.snowboard).prop("checked", data.instructor.snowboard && event.snowboard);
+                      $("#modalSki").prop("disabled", !data.instructor.ski).prop("checked", data.instructor.ski && !event.snowboard);
+                  }
+              });
   }
 
   // Autocomplete
