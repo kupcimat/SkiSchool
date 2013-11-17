@@ -11,58 +11,68 @@ import controllers.rest.Resources;
 
 public class AvailabilityWrapper {
 
-    private InnerAvailability availability;
+	private InnerAvailability availability;
 
-    // Default constructor for Gson
-    public AvailabilityWrapper() {
-    }
+	// Default constructor for Gson
+	public AvailabilityWrapper() {
+	}
 
-    public AvailabilityWrapper(Availability a) {
-        notNull(a, "Availability can't be null");
-        this.availability = new InnerAvailability(a.getId(), a.startTime, a.endTime, a.note, Resources.getInstructorUri(a.instructor));
-    }
+	public AvailabilityWrapper(Availability a) {
+		notNull(a, "Availability can't be null");
+		this.availability = new InnerAvailability(a.getId(), a.startTime, a.endTime, a.location.name, a.note,
+		        Resources.getInstructorUri(a.instructor));
+	}
 
-    public Long getInstructorId() {
-        notNull(availability, "InnerAvailability can't be null");
-        return Resources.getInstructorId(availability.instructor);
-    }
+	public Long getInstructorId() {
+		notNull(availability, "InnerAvailability can't be null");
+		return Resources.getInstructorId(availability.instructor);
+	}
 
-    public Availability getAvailability(Location location, Instructor instructor) {
-        notNull(availability, "InnerAvailability can't be null");
-        return new Availability(availability.start, availability.end, location, availability.note, instructor);
-    }
+	public String getLocationName() {
+		notNull(availability, "InnerAvailability can't be null");
+		return availability.location;
+	}
 
-    public Availability updateAvailability(Availability availability) {
-        notNull(availability, "Availability can't be null");
-        notNull(this.availability, "InnerAvailability can't be null");
+	public Availability getAvailability(Location location, Instructor instructor) {
+		notNull(availability, "InnerAvailability can't be null");
+		return new Availability(availability.start, availability.end, location, availability.note, instructor);
+	}
 
-        availability.startTime = this.availability.start;
-        availability.endTime = this.availability.end;
-        availability.note = this.availability.note;
+	public Availability updateAvailability(Availability availability, Location location) {
+		notNull(availability, "Availability can't be null");
+		notNull(location, "Location can't be empty");
+		notNull(this.availability, "InnerAvailability can't be null");
 
-        return availability;
-    }
+		availability.startTime = this.availability.start;
+		availability.endTime = this.availability.end;
+		availability.location = location;
+		availability.note = this.availability.note;
 
-    public static class InnerAvailability {
+		return availability;
+	}
 
-        private Long id;
-        private Date start;
-        private Date end;
-        private String note;
-        private String instructor;
+	public static class InnerAvailability {
 
-        // Default constructor for Gson
-        public InnerAvailability() {
-        }
+		private Long id;
+		private Date start;
+		private Date end;
+		private String location;
+		private String note;
+		private String instructor;
 
-        public InnerAvailability(Long id, Date start, Date end, String note, String instructor) {
-            this.id = id;
-            this.start = start;
-            this.end = end;
-            this.note = note;
-            this.instructor = instructor;
-        }
+		// Default constructor for Gson
+		public InnerAvailability() {
+		}
 
-    }
+		public InnerAvailability(Long id, Date start, Date end, String location, String note, String instructor) {
+			this.id = id;
+			this.start = start;
+			this.end = end;
+			this.location = location;
+			this.note = note;
+			this.instructor = instructor;
+		}
+
+	}
 
 }

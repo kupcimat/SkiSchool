@@ -3,6 +3,7 @@ package controllers.rest;
 import models.Availability;
 import models.Instructor;
 import models.Location;
+import models.Student;
 import models.rest.AvailabilityWrapper;
 import models.rest.UriResponse;
 import play.mvc.Controller;
@@ -28,9 +29,9 @@ public class AvailabilityController extends Controller {
 
         Instructor instructor = Instructor.findById(body.getInstructorId());
         notFoundIfNull(instructor, "Instructor does not exist");
-
-        // TODO Temporary static assignment of variables
-        Location location = Location.find("byName", "jahodna").first();
+        Location location = Location.find("byName", body.getLocationName()).first();
+        notFoundIfNull(location, "Location does not exist");
+        
         Availability availability = body.getAvailability(location, instructor);
         instructor.addAvailability(availability);
         availability.save();
@@ -45,10 +46,13 @@ public class AvailabilityController extends Controller {
         }
 
         Availability availability = Availability.findById(id);
-        notFoundIfNull(availability, "Availability does not exist");
-        // TODO check validity of instructor
+        notFoundIfNull(availability, "Availability does not exist");  
+        Instructor instructor = Instructor.findById(body.getInstructorId());
+        notFoundIfNull(instructor, "Instructor does not exist");
+        Location location = Location.find("byName", body.getLocationName()).first();
+        notFoundIfNull(location, "Location does not exist");
 
-        body.updateAvailability(availability).save();
+        body.updateAvailability(availability, location).save();
         response.status = Http.StatusCode.NO_RESPONSE;
     }
 

@@ -31,9 +31,50 @@
       <div class="dhx_cal_data"></div>
     </div>
   </div>
+  
+  <div id="schedulerModal" class="modal hide fade">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="closeForm()">&times;</button>
+    <h3 id="modalHeader">&{'timetable.eventDetails'}</h3>
+  </div>
+  <div class="modal-body" style="min-height: 150px">
+    <form class="form-horizontal">
+      <!-- Location -->
+      <div class="control-group">
+        <label class="control-label" for="modalLocation">&{'timetable.location'}</label>
+        <div class="controls">
+          <select id="modalLocation">
+            #{list locations, as:'location'}
+              <option value="${location.name}">${location.name}</option>
+            #{/list}
+          </select>
+        </div>
+      </div>
+      <!-- Note -->
+      <div class="control-group">
+        <label class="control-label" for="modalText">&{'timetable.note'}</label>
+        <div class="controls">
+          <input id="modalText" type="text">
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <a href="#" class="btn" onclick="deleteForm()">&{'timetable.delete'}</a>
+    <a href="#" class="btn" onclick="closeForm()">&{'timetable.close'}</a>
+    <a href="#" class="btn btn-primary" data-loading-text="Creating..." onclick="saveForm()">&{'timetable.saveChanges'}</a>
+  </div>
+ </div>
 
 <script type="text/javascript" charset="utf-8">
+  // Global variables
+  var LIGHTBOX_ID = null;
+  
   // Helper functions
+  function isNewEvent(scheduler) {
+	  return scheduler._new_event != null;
+  }
+  
   function loadData(mode, startDate) {
       var instructorId = ${instructor.getId()};
       var endDate = new Date(startDate);
@@ -47,16 +88,64 @@
       }
 
       endDate.setDate(endDate.getDate() + offset);
+      startDate.setDate(startDate.getDate() - offset);
       loadInstructorLessons(instructorId, startDate, endDate, scheduler);
       loadInstructorAvailabilities(instructorId, startDate, endDate, scheduler);
   }
+  
+  //Modal form alert
+  $(".alert").hide();
 
   //Scheduler templates
   scheduler.templates.event_class=function(start, end, event) {
       return event.type || "";
   }
+  
+  function hideForm() {
+      LIGHTBOX_ID = null;
+      scheduler._new_event = null;
+      $("#schedulerModal").modal("hide");
+      $(".alert").hide();
+  }
 
+  function deleteForm() {
+      scheduler.deleteEvent(LIGHTBOX_ID);
+      hideForm();
+  }
+
+  function closeForm() {
+      if (isNewEvent(scheduler)) {
+          scheduler.deleteEvent(LIGHTBOX_ID); // TODO triggers unnecessary onEventDeleted
+      }
+      hideForm();
+  }
+  
+  function saveForm() {
+      var event = scheduler.getEvent(LIGHTBOX_ID);
+      event.text = $("#modalText").val();
+      event.location = $("#modalLocation").val();
+      scheduler.updateView();
+      if (isNewEvent(scheduler)) {
+          scheduler.callEvent("onEventAdded", [LIGHTBOX_ID, event]);
+      } else {
+          scheduler.callEvent("onEventChanged", [LIGHTBOX_ID, event]);
+      }
+      hideForm();
+  }
+  
+  function initForm(id) {
+      var event = scheduler.getEvent(id);
+      LIGHTBOX_ID = id;
+      $("#modalText").val(event.text);
+      $("#modalLocation").val(event.location);
+      $("#modalHeader").html(getShortTime(event.start_date, event.end_date));
+      $("#schedulerModal").modal("show");
+  }
+  
   // Scheduler configuration
+  scheduler.config.details_on_dblclick = true;
+  scheduler.config.details_on_create = true;
+  scheduler.showLightbox = initForm;
   scheduler.config.api_date="%Y-%m-%d %H:%i";
   scheduler.config.xml_date="%Y-%m-%d %H:%i";
   scheduler.config.first_hour=8;

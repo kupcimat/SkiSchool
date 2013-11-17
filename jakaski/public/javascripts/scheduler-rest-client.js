@@ -47,6 +47,7 @@ function availabilitiesToEvents(data) {
             id:            availability.id,
             start_date:    availability.start,
             end_date:      availability.end,
+            location:      availability.location,
             text:          availability.note,
             instructor_id: instructorId,
             type:          "availability"});
@@ -124,6 +125,7 @@ function eventToAvailability(event, scheduler) {
 
     availability.start = convert(event.start_date);
     availability.end = convert(event.end_date);
+    availability.location = event.location;
     availability.note = event.text;
     availability.instructor = "/instructor/" + event.instructor_id;
 
