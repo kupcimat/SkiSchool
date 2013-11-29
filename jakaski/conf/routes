@@ -58,7 +58,7 @@ GET     /query/instructors/{locationId}         rest.QueryController.getInstruct
 GET     /query/name/instructors                 rest.QueryController.getInstructorsByName
 GET     /query/name/students                    rest.QueryController.getStudentsByName
 
-GET     /overview/students                      Students.students
+# GET     /overview/students                      Students.students
 
 # Catch all
 *       /{controller}/{action}                  {controller}.{action}
