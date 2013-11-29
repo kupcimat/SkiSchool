@@ -6,6 +6,7 @@
 #{/set}
 #{set 'moreScripts'}
 <script src="@{'/public/javascripts/dhtmlxscheduler.js'}" type="text/javascript" charset="utf-8"></script>
+<script src="@{'/public/javascripts/locale_sk.js'}" type="text/javascript" charset="utf-8"></script>
 <script src="@{'/public/javascripts/dhtmlxscheduler_dhx_terrace.js'}" type="text/javascript" charset="utf-8"></script>
 <script src="@{'/public/javascripts/scheduler-rest-client.js'}" type="text/javascript" charset="utf-8"></script>
 #{/set}
@@ -15,8 +16,8 @@
   &{'availabilities'}
 </h1>
 
-<div class="widget">
-  <div class="widget-content">
+<div class="">
+  <div class="">
     <div id="scheduler_here" class="dhx_cal_container" style='width: 100%; height: 700px'>
       <div class="dhx_cal_navline">
         <div class="dhx_cal_prev_button">&nbsp;</div>
@@ -39,6 +40,14 @@
   </div>
   <div class="modal-body" style="min-height: 150px">
     <form class="form-horizontal">
+      <!-- Time -->
+      <div class="control-group">
+        <label class="control-label" for="modalStartTime">&{'timetable.time'}</label>
+        <div class="controls">
+          <input id="modalStartTime" type="text" class="time ui-timepicker-input span1" autocomplete="off">
+          <input id="modalEndTime" type="text" class="time ui-timepicker-input span1" autocomplete="off">
+        </div>
+      </div>
       <!-- Location -->
       <div class="control-group">
         <label class="control-label" for="modalLocation">&{'timetable.location'}</label>
@@ -97,10 +106,20 @@
   //Modal form alert
   $(".alert").hide();
 
-  //Scheduler templates
-  scheduler.templates.event_class=function(start, end, event) {
-      return event.type || "";
-  }
+  
+  // Scheduler templates
+  scheduler.templates.event_class = function(start, end, event) {
+      if (event.type == "availability" || event.type == null) {
+	      return "availability";
+	  }else{ 
+          if (event.snowboard){
+		      return "snowboard";
+	      }else{
+	          return "ski";
+	       } 
+	  }
+      return "";
+  };
   
   function hideForm() {
       LIGHTBOX_ID = null;
@@ -125,6 +144,8 @@
       var event = scheduler.getEvent(LIGHTBOX_ID);
       event.text = $("#modalText").val();
       event.location = $("#modalLocation").val();
+      event.start_date = $('#modalStartTime').timepicker('getTime', scheduler.getEventEndDate(LIGHTBOX_ID));
+      event.end_date = $('#modalEndTime').timepicker('getTime', scheduler.getEventEndDate(LIGHTBOX_ID));
       scheduler.updateView();
       if (isNewEvent(scheduler)) {
           scheduler.callEvent("onEventAdded", [LIGHTBOX_ID, event]);
@@ -139,7 +160,19 @@
       LIGHTBOX_ID = id;
       $("#modalText").val(event.text);
       $("#modalLocation").val(event.location);
-      $("#modalHeader").html(getShortTime(event.start_date, event.end_date));
+      //Timepicker
+      $('#modalStartTime').timepicker({
+      	'timeFormat': 'H:i', 
+      	'minTime': '08:00',
+      	'maxTime': '22:00',
+      	});
+      $('#modalEndTime').timepicker({
+        	'timeFormat': 'H:i', 
+        	'minTime': '08:00',
+        	'maxTime': '22:00',
+        });
+      $('#modalStartTime').timepicker('setTime', event.start_date);
+      $('#modalEndTime').timepicker('setTime', event.end_date);
       $("#schedulerModal").modal("show");
   }
   
@@ -151,7 +184,13 @@
   scheduler.config.xml_date="%Y-%m-%d %H:%i";
   scheduler.config.first_hour=8;
   scheduler.config.last_hour=21;
-
+  
+  scheduler.attachEvent("onTemplatesReady", function(){
+	    scheduler.templates.event_text=function(start,end,event){
+	      return "<b>" + event.location + "</b><br><i>" + event.text + "</i>";
+	    }
+  }); 
+  
   // Initialize scheduler
   var viewMode = "week";
   scheduler.init("scheduler_here", null, viewMode);
@@ -170,7 +209,7 @@
   scheduler.attachEvent("onClick", readonlyCheck);
   scheduler.attachEvent("onDblClick", readonlyCheck);
   scheduler.attachEvent("onBeforeDrag", readonlyCheck);
-
+ 
   // Events management
   scheduler.attachEvent("onViewChange", function(mode, date) {
       loadData(mode, date);
@@ -186,8 +225,9 @@
           scheduler.changeEventId(eventId, data.uri.replace("/availability/", ""));
       });
   });
-
+  
   scheduler.attachEvent("onEventChanged", function(eventId, eventObject) {
+	  
       $.ajax({
           type: "PUT",
           url: "/availability/" + eventId,
