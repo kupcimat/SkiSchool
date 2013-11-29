@@ -6,6 +6,7 @@
 #{/set}
 #{set 'moreScripts'}
 <script src="@{'/public/javascripts/dhtmlxscheduler.js'}" type="text/javascript" charset="utf-8"></script>
+<script src="@{'/public/javascripts/locale_sk.js'}" type="text/javascript" charset="utf-8"></script>
 <script src="@{'/public/javascripts/dhtmlxscheduler_timeline.js'}" type="text/javascript" charset="utf-8"></script>
 <script src="@{'/public/javascripts/dhtmlxscheduler_treetimeline.js'}" type="text/javascript" charset="utf-8"></script>
 <script src="@{'/public/javascripts/dhtmlxscheduler_dhx_terrace.js'}" type="text/javascript" charset="utf-8"></script>
@@ -59,6 +60,14 @@
   </div>
   <div class="modal-body" style="min-height: 150px">
     <form class="form-horizontal">
+       <!-- Time -->
+      <div class="control-group">
+        <label class="control-label" for="modalStartTime">&{'timetable.time'}</label>
+        <div class="controls">
+          <input id="modalStartTime" type="text" class="time ui-timepicker-input span1" autocomplete="off">
+          <input id="modalEndTime" type="text" class="time ui-timepicker-input span1" autocomplete="off">
+        </div>
+      </div>
       <!-- Student -->
       <div class="control-group">
         <div class="alert alert-info">
@@ -68,6 +77,13 @@
         <div class="controls">
           <input id="modalStudent" type="text" placeholder="" required>
           <button id="modalCreateStudent" type="button" class="btn" data-loading-text="Creating..." onclick="createStudent()">&{'timetable.createNew'}</button>
+        </div>
+      </div>
+      <!-- Phone -->
+      <div class="control-group">
+        <label class="control-label" for="modalStudentPhone">&{'timetable.studentPhone'}</label>
+        <div class="controls">
+          <input id="modalStudentPhone" type="text">
         </div>
       </div>
       <!-- Note -->
@@ -183,6 +199,8 @@
       }
       event.student_name = $("#modalStudent").val();
 
+      event.start_date = $('#modalStartTime').timepicker('getTime',scheduler.getState().date);
+      event.end_date = $('#modalEndTime').timepicker('getTime',scheduler.getState().date);
       scheduler.updateView();
       if (isNewEvent(scheduler)) {
           scheduler.callEvent("onEventAdded", [LIGHTBOX_ID, event]);
@@ -206,9 +224,11 @@
               url: "/student/" + SELECTED_STUDENT
           }).done(function(data) {
               $("#modalStudent").val(data.student.name);
+              $("#modalStudentPhone").val(data.student.phone);
           });
       } else {
           $("#modalStudent").val("");
+          $("#modalStudentPhone").val("");
       }
       if (isNewEvent(scheduler)) {
           event.text = "";
@@ -220,8 +240,19 @@
       createInstructorSelect(event);
       $("#modalLanguage").val(event.language);
       $("#modalCount").val(event.count || "1");
-
-      $("#modalHeader").html(getShortTime(event.start_date, event.end_date));
+      //Timepicker
+      $('#modalStartTime').timepicker({
+    	'timeFormat': 'H:i', 
+    	'minTime': '08:00',
+    	'maxTime': '22:00',
+    	});
+      $('#modalEndTime').timepicker({
+      	'timeFormat': 'H:i', 
+      	'minTime': '08:00',
+      	'maxTime': '22:00',
+      	});
+      $('#modalStartTime').timepicker('setTime', event.start_date);
+      $('#modalEndTime').timepicker('setTime', event.end_date);
       $("#schedulerModal").modal("show");
   }
 
@@ -232,7 +263,7 @@
       $.ajax({
           type: "POST",
           url: "/student",
-          data: JSON.stringify({"student": {"name": $("#modalStudent").val()}})
+          data: JSON.stringify({"student": {"name": $("#modalStudent").val(),"phone": $("#modalStudentPhone").val()}})
       }).done(function(data) {
           SELECTED_STUDENT = data.uri.replace("/student/", "");
           $("#modalCreateStudent").button("reset");
@@ -279,6 +310,11 @@
                   $.each(data.instructor.languages, function(i, lang) {
                       $("#modalLanguage").append("<option value=\"" + lang + "\">" + lang + "</option>");
                   });
+                  if(event.language == null){
+                	  $("#modalLanguage").val("sk");  
+                  }else{
+                      $("#modalLanguage").val(event.language);
+                  }
                   // update ski/snowboard qualification according to selected instructor
                   if (event.snowboard == null) {
                       $("#modalSnowboard").prop("disabled", !data.instructor.snowboard).prop("checked", data.instructor.snowboard);
@@ -292,7 +328,7 @@
 
   // Autocomplete
   $("#modalStudent").typeahead({
-      items: 5,
+      items: 7,
       minLength: 1,
       source: function(query, process) {
           if (STUDENTS_CACHE == null) {
@@ -309,13 +345,14 @@
       },
       updater: function(item) {
           SELECTED_STUDENT = STUDENTS_CACHE.map[item].id;
+          $("#modalStudentPhone").val(STUDENTS_CACHE.map[item].phone);
           return item;
       }
   });
 
   $("#instructorSearch").typeahead({
       items: 5,
-      minLength: 2,
+      minLength: 1,
       source: function(query, process) {
           if (INSTRUCTORS_CACHE == null) {
               $.ajax({

@@ -8,14 +8,18 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 import play.data.validation.Email;
+import play.data.validation.MinSize;
 import play.data.validation.Phone;
 import play.data.validation.Required;
+import play.data.validation.Unique;
 import play.db.jpa.Model;
 
 @Entity
 public class Student extends Model {
 
+	@Unique
     @Required
+    @MinSize(2)
     public String fullname;
     @Email
     public String email;
