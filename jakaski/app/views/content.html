@@ -114,14 +114,7 @@
           <br/>
           #{/deadbolt.restrict}
           
-          #{deadbolt.restrict roles:[['admin'],['editor']]}
-          <li class="${request.action== 'Students.students' ? 'active' : ''}">
-            <a href="@{Students.students()}">
-              <i class="icon-credit-card"></i>
-              &{'studentsPayments'}              
-            </a>
-          </li>
-          
+          #{deadbolt.restrict roles:[['admin'],['editor']]}          
           <li class="${request.action == 'Students.list' ? 'active' : ''}">
             <a href="@{Students.list()}">
               <i class="icon-user"></i>
@@ -153,7 +146,7 @@
           
           <li class="${request.controller == 'Payments' ? 'active' : ''}">
             <a href="@{Payments.list()}">
-              <i class="icon-comments-alt"></i>
+              <i class="icon-credit-card"></i>
               &{'payments'}              
             </a>
           </li>
@@ -167,7 +160,7 @@
           
           <li class="${request.controller == 'Prices' ? 'active' : ''}">
             <a href="@{Prices.list()}">
-              <i class="icon-comments-alt"></i>
+              <i class="icon-credit-card"></i>
               &{'prices'}              
             </a>
           </li>
