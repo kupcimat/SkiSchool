@@ -107,7 +107,7 @@
                 <div class="control-group">
                   <label class="control-label" for="languages">&{'instructor.languages'}</label>
                   <div class="controls">
-                    <select id="languages" name="instructor.languages.id" value="" size="1" id="select" multiple>
+                    <select id="languages" name="instructor.languages.id" value="" size="10" id="select" multiple>
                       #{list languages, as:'lang'} 
  			            <option value="${lang.id}" ${instructor.languages.contains(lang) ? 'selected' : ''} >${lang.name}</option>
 	                  #{/list} 
