@@ -16,30 +16,29 @@ public class StudentWrapper {
 
 	public StudentWrapper(final Student student) {
 		notNull(student, "Student can't be null");
-		this.student = new InnerStudent(
-				student.getId(), 
-				student.fullname, 
-				student.phone);
+		this.student = new InnerStudent(student.getId(), student.fullname, student.email, student.phone);
 	}
 
 	public Student getStudent() {
 		notNull(student, "InnerStudent can't be null");
-		return new Student(student.name, "", student.phone);
+		return new Student(student.name, student.email, student.phone);
 	}
 
 	public static class InnerStudent {
 
 		private Long id;
 		private String name;
+		private String email;
 		private String phone;
 
 		// Default constructor for Gson
 		public InnerStudent() {
 		}
 
-		public InnerStudent(final Long id, final String name, final String phone) {
+		public InnerStudent(final Long id, final String name, final String email, final String phone) {
 			this.id = id;
 			this.name = name;
+			this.email = email;
 			this.phone = phone;
 		}
 	}

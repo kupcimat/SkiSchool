@@ -29,6 +29,7 @@ timetable.newUser=Nový žiak
 timetable.successfullyCreated= bol úspešne vytvorený
 timetable.studentName=Meno žiaka
 timetable.studentPhone=Tel. číslo žiaka
+timetable.studentEmail=Email žiaka
 timetable.createNew=Vytvoriť nového
 timetable.time=Čas
 timetable.note=Poznámka

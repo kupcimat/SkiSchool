@@ -73,6 +73,12 @@
         <div class="alert alert-info">
           <strong>&{'timetable.newUser'}</strong> &{'timetable.successfullyCreated'}.
         </div>
+        <div class="alert alert-error" id="isEmpty">
+          <strong>Meno žiaka</strong> nemôže byť prázdne.
+        </div>
+        <div class="alert alert-error" id="noCreated">
+          Je potrebné vytvoriť nového žiaka.
+        </div>
         <label class="control-label" for="modalStudent">&{'timetable.studentName'}</label>
         <div class="controls">
           <input id="modalStudent" type="text" placeholder="" required>
@@ -84,6 +90,13 @@
         <label class="control-label" for="modalStudentPhone">&{'timetable.studentPhone'}</label>
         <div class="controls">
           <input id="modalStudentPhone" type="text">
+        </div>
+      </div>
+      <!-- Email -->
+      <div class="control-group">
+        <label class="control-label" for="modalStudentEmail">&{'timetable.studentEmail'}</label>
+        <div class="controls">
+          <input id="modalStudentEmail" type="text">
         </div>
       </div>
       <!-- Note -->
@@ -185,6 +198,18 @@
 
   function saveForm() {
       var event = scheduler.getEvent(LIGHTBOX_ID);
+      if (SELECTED_STUDENT == null){
+    	  if ($("#modalStudent").val() != ""){
+    		  $("#noCreated").show();
+    		  setTimeout(function() {
+               	$("#noCreated").hide();}, 2000);
+    	  }else{
+      	  	$("#isEmpty").show(); 
+      	  	setTimeout(function() {
+             	$("#isEmpty").hide();}, 2000);	  
+    	  }
+          return;
+      }
       event.student_id = SELECTED_STUDENT;
       event.text = $("#modalText").val();
       // TODO location is sent by name, not id
@@ -224,10 +249,12 @@
               url: "/student/" + SELECTED_STUDENT
           }).done(function(data) {
               $("#modalStudent").val(data.student.name);
+              $("#modalStudentEmail").val(data.student.email);
               $("#modalStudentPhone").val(data.student.phone);
           });
       } else {
           $("#modalStudent").val("");
+          $("#modalStudentEmail").val("");
           $("#modalStudentPhone").val("");
       }
       if (isNewEvent(scheduler)) {
@@ -259,16 +286,23 @@
   function createStudent() {
       $("#modalCreateStudent").button("loading");
       $(".btn-primary").button("loading");
-
+      if ($("#modalStudent").val() == ""){
+    	  $("#modalCreateStudent").button("reset");
+          $(".btn-primary").button("reset");
+          $("#isEmpty").show();
+          setTimeout(function() {
+        	$("#isEmpty").hide();}, 2000);
+          return;
+	  }		
       $.ajax({
           type: "POST",
           url: "/student",
-          data: JSON.stringify({"student": {"name": $("#modalStudent").val(),"phone": $("#modalStudentPhone").val()}})
+          data: JSON.stringify({"student": {"name": $("#modalStudent").val(),"email": $("#modalStudentEmail").val(),"phone": $("#modalStudentPhone").val()}})
       }).done(function(data) {
           SELECTED_STUDENT = data.uri.replace("/student/", "");
           $("#modalCreateStudent").button("reset");
           $(".btn-primary").button("reset");
-          $(".alert").show();
+          $(".alert-info").show();
       });
   }
 
@@ -345,6 +379,7 @@
       },
       updater: function(item) {
           SELECTED_STUDENT = STUDENTS_CACHE.map[item].id;
+          $("#modalStudentEmail").val(STUDENTS_CACHE.map[item].email);
           $("#modalStudentPhone").val(STUDENTS_CACHE.map[item].phone);
           return item;
       }

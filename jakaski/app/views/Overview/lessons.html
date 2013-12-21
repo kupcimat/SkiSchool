@@ -11,12 +11,6 @@
 </h1>
 <div class="widget widget-table">
 
-  <div class="widget-header">
-    <i class="icon-th-list"></i>
-    <h3></h3>
-  </div>
-  <!-- /widget-header -->
-
   <div class="widget-content">
 
     <table id="lessonOverview" class="table table-striped table-bordered">
@@ -26,6 +20,8 @@
           <th>Trvanie</th>
           <th>Žiaci</th>
           <th>Stredisko</th>
+          <th>Výstroj</th>
+          <th>Jazyk</th>
           <th>Poznámka</th>
         </tr>
       </thead>
@@ -36,6 +32,13 @@
           <td>${(lesson.startTime).format('kk:mm')} - ${(lesson.endTime).format('kk:mm')}</td>
           <td>${lesson.students}</td>
           <td>${lesson.location}</td>
+          #{if ( lesson.snowboard == true) }
+    	   <td>Snowboard</td>
+          #{/if}
+          #{else}
+   	       <td>Lyže</td>
+          #{/else}
+          <td>${lesson.language}</td>
           <td>${lesson.note}</td>
         </tr>
         #{/list}
@@ -45,6 +48,15 @@
     <script>
     $(document).ready(function() {
         $('#lessonOverview').dataTable({
+        	"aoColumns": [
+        	                { "sType": "date-eu" },
+        	                null,
+        	                null,
+        	                null,
+        	                null,
+        	                null,
+        	                null
+        	            ],
         	"oLanguage":{
         	    "sProcessing":   "Pracujem...",
         	    "sLengthMenu":   "Zobraz _MENU_ záznamov",

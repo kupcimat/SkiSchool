@@ -2,29 +2,7 @@
 /*
  * Table
  */
-table.dataTable {
-	margin: 0 auto;
-	clear: both;
-	width: 100%;
-}
 
-table.dataTable thead th {
-	padding: 3px 18px 3px 10px;
-	border-bottom: 1px solid black;
-	font-weight: bold;
-	cursor: pointer;
-	*cursor: hand;
-}
-
-table.dataTable tfoot th {
-	padding: 3px 18px 3px 10px;
-	border-top: 1px solid black;
-	font-weight: bold;
-}
-
-table.dataTable td {
-	padding: 3px 10px;
-}
 
 table.dataTable td.center,
 table.dataTable td.dataTables_empty {
@@ -48,6 +26,7 @@ table.dataTable tr.even td.sorting_3 { background-color: #F9F9FF; }
 .dataTables_wrapper {
 	position: relative;
 	clear: both;
+	padding: 20px 10px 50px 10px;
 	*zoom: 1;
 }
 
@@ -56,7 +35,7 @@ table.dataTable tr.even td.sorting_3 { background-color: #F9F9FF; }
  * Page length menu
  */
 .dataTables_length {
-	float: left;
+	float: right;
 }
 
 
@@ -64,8 +43,8 @@ table.dataTable tr.even td.sorting_3 { background-color: #F9F9FF; }
  * Filter
  */
 .dataTables_filter {
-	float: right;
-	text-align: right;
+	float: left;
+	text-align: left;
 }
 
 

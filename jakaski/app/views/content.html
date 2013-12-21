@@ -12,9 +12,85 @@
         <span class="icon-bar"></span>        
       </a>
       
-      <a class="brand">SkiSchool Manager</a>
+      <a class="brand">JAKA Ski Manager</a>
       
-      <div class="nav-collapse">
+      <div class="nav-collapse collapse">
+      
+        <ul class="nav">
+          #{deadbolt.restrict roles:[['admin'],['editor']]}
+          <li class="${request.action == 'AdminInstructor.timetable' ? 'active' : ''}">
+            <a href="@{AdminInstructor.timetable()}">
+              <i class="icon-table"></i>
+             &{'timetable'}     
+            </a>
+          </li>
+          #{/deadbolt.restrict}
+          #{deadbolt.restrict roles:[['instructor']]}
+          <li class="${request.action == 'AdminInstructor.availabilities' ? 'active' : ''}">
+            <a href="@{AdminInstructor.availabilities()}">
+              <i class="icon-calendar"></i>
+              &{'availabilities'} 
+            </a>
+          </li>
+          <li class="${request.action == 'Overview.myLessons' ? 'active' : ''}">
+            <a href="@{Overview.myLessons(user.id)}">
+              <i class="icon-list"></i>
+              &{'myLessons'} 
+            </a>
+          </li>
+          #{/deadbolt.restrict}
+          #{deadbolt.restrict roles:[['admin'],['editor']]}          
+          <li class="${request.action == 'Students.list' ? 'active' : ''}">
+            <a href="@{Students.list()}">
+              <i class="icon-user"></i>
+              &{'students'}              
+            </a>
+          </li>
+          #{/deadbolt.restrict}
+          #{deadbolt.restrict roles:[['admin']]}
+           <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Nastavenia <b class="caret"></b></a>      
+              <ul class="dropdown-menu">   
+                  <li class="${request.action == 'Instructors.list' ? 'active' : ''}">
+                    <a href="@{Instructors.list()}">
+                      <i class="icon-user"></i>
+                      &{'instructors'}              
+                    </a>
+                  </li>  
+                  <li class="${request.action == 'Instructors.overview' ? 'active' : ''}">
+                    <a href="@{Instructors.overview()}">
+                      <i class="icon-bar-chart"></i>
+                      &{'instructorsOverview'}              
+                    </a>
+                  </li>       
+                  <li class="${request.controller == 'Employees' ? 'active' : ''}">
+                    <a href="@{Employees.list()}">
+                      <i class="icon-user"></i>
+                      &{'users'}              
+                    </a>
+                  </li>
+                  <li class="${request.controller == 'Payments' ? 'active' : ''}">
+                    <a href="@{Payments.list()}">
+                      <i class="icon-credit-card"></i>
+                      &{'payments'}              
+                    </a>
+                  </li>
+                  <li class="${request.controller == 'Langs' ? 'active' : ''}">
+                    <a href="@{Langs.list()}">
+                      <i class="icon-comments-alt"></i>
+                      &{'languages'}              
+                    </a>
+                  </li>
+                  <li class="${request.controller == 'Prices' ? 'active' : ''}">
+                    <a href="@{Prices.list()}">
+                      <i class="icon-credit-card"></i>
+                      &{'prices'}              
+                    </a>
+                  </li>
+               #{/deadbolt.restrict}
+              </ul> 
+          </li>
+         </ul>    
       
         <ul class="nav pull-right">
          <!-- <li>
@@ -62,129 +138,8 @@
   
   <div class="container">
     
-    <div class="row">
-      
-      <div class="span2">
-        
-        <div class="account-container">
-        
-          <div class="account-details">
-          
-            <span class="account-name">${user.toString()}</span>
-            
-            <span class="account-role">${user.roles}</span>
-            
-            <span class="account-actions">
-              
-              <a href="@{AdminInstructor.instructor()}">&{'accountSetting'}</a>
-            </span>
-          
-          </div> <!-- /account-details -->
-        
-        </div> <!-- /account-container -->
-        
-        <hr>
-        
-        <ul id="main-nav" class="nav nav-tabs nav-stacked">
-          
-          #{deadbolt.restrict roles:[['admin'],['editor']]}
-          <li class="${request.action == 'AdminInstructor.timetable' ? 'active' : ''}">
-            <a href="@{AdminInstructor.timetable()}">
-              <i class="icon-table"></i>
-             &{'timetable'}     
-            </a>
-          </li>
-          <br/>
-          #{/deadbolt.restrict}
-          
-          #{deadbolt.restrict roles:[['instructor']]}
-          <li class="${request.action == 'AdminInstructor.availabilities' ? 'active' : ''}">
-            <a href="@{AdminInstructor.availabilities()}">
-              <i class="icon-calendar"></i>
-              &{'availabilities'} 
-            </a>
-          </li>
-          
-          <li class="${request.action == 'Overview.myLessons' ? 'active' : ''}">
-            <a href="@{Overview.myLessons(user.id)}">
-              <i class="icon-list"></i>
-              &{'myLessons'} 
-            </a>
-          </li>
-          <br/>
-          #{/deadbolt.restrict}
-          
-          #{deadbolt.restrict roles:[['admin'],['editor']]}          
-          <li class="${request.action == 'Students.list' ? 'active' : ''}">
-            <a href="@{Students.list()}">
-              <i class="icon-user"></i>
-              &{'students'}              
-            </a>
-          </li>
-          #{/deadbolt.restrict}
-          #{deadbolt.restrict roles:[['admin']]}
-          <li class="${request.action == 'Instructors.list' ? 'active' : ''}">
-            <a href="@{Instructors.list()}">
-              <i class="icon-user"></i>
-              &{'instructors'}              
-            </a>
-          </li>
-          
-          <li class="${request.action == 'Instructors.overview' ? 'active' : ''}">
-            <a href="@{Instructors.overview()}">
-              <i class="icon-bar-chart"></i>
-              &{'instructorsOverview'}              
-            </a>
-          </li>
-          
-          <li class="${request.controller == 'Employees' ? 'active' : ''}">
-            <a href="@{Employees.list()}">
-              <i class="icon-user"></i>
-              &{'users'}              
-            </a>
-          </li>
-          
-          <li class="${request.controller == 'Payments' ? 'active' : ''}">
-            <a href="@{Payments.list()}">
-              <i class="icon-credit-card"></i>
-              &{'payments'}              
-            </a>
-          </li>
-          
-          <li class="${request.controller == 'Langs' ? 'active' : ''}">
-            <a href="@{Langs.list()}">
-              <i class="icon-comments-alt"></i>
-              &{'languages'}              
-            </a>
-          </li>
-          
-          <li class="${request.controller == 'Prices' ? 'active' : ''}">
-            <a href="@{Prices.list()}">
-              <i class="icon-credit-card"></i>
-              &{'prices'}              
-            </a>
-          </li>
-          
-      
-          #{/deadbolt.restrict}
-        </ul> 
-        
-        <hr>
-        
-      <!--  <div class="sidebar-extra">
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud.</p>
-        </div> --><!-- .sidebar-extra -->
-        
-        <br>
-    
-      </div> <!-- /span2 -->
-      <div class="span10">		
-         
           #{doLayout /}
-      </div> <!-- /span10 -->
-   
-    </div> <!-- /row -->
-    
+
   </div> <!-- /container -->
   
 </div> <!-- /content -->

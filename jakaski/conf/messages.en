@@ -29,6 +29,7 @@ timetable.newUser=New student
 timetable.successfullyCreated= successfully created
 timetable.studentName=Student Name
 timetable.studentPhone=Student Phone
+timetable.studentEmail=Student Email
 timetable.createNew=Create New
 timetable.time=Time
 timetable.note=Note
